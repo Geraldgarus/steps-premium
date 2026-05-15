@@ -1,7 +1,7 @@
 
 // Auto-create database tables on startup
 const fs = require('fs');
-const path = require('path');
+
 const { Pool } = require('pg');
 
 async function initDatabase() {
