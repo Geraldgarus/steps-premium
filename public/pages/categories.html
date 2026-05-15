@@ -532,7 +532,7 @@
   // ============================================================
   // API FUNCTIONS
   // ============================================================
-  var API_BASE = 'http://localhost:3000';
+  var API_BASE = '';
   async function apiGet(url) { var res = await fetch(API_BASE + url); if (!res.ok) throw new Error(await res.text()); return res.json(); }
   async function apiPost(url, body) { var res = await fetch(API_BASE + url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); if (!res.ok) throw new Error(await res.text()); return res.json(); }
   async function apiPut(url, body) { var res = await fetch(API_BASE + url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); if (!res.ok) throw new Error(await res.text()); return res.json(); }

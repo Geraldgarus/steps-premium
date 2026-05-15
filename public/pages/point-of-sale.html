@@ -454,7 +454,7 @@
     setTimeout(() => toast.innerHTML = '', 3000); 
   }
 
-  const API_BASE = 'http://localhost:3000';
+  const API_BASE = '';
   async function apiGet(url) { const res = await fetch(API_BASE + url); if (!res.ok) throw new Error(await res.text()); return res.json(); }
   async function apiPut(url, body) { const res = await fetch(API_BASE + url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); if (!res.ok) throw new Error(await res.text()); return res.json(); }
 

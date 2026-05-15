@@ -246,7 +246,7 @@
   // ========== GLOBALS ==========
   let salesData = [];
   let salesChart = null;
-  const API_BASE = 'http://localhost:3000';
+  const API_BASE = '';
 
   function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
   function fmtTSH(v) { return 'TSh ' + (v || 0).toLocaleString(); }

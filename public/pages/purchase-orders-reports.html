@@ -317,7 +317,7 @@
   document.addEventListener('click', () => dd.classList.remove('show'));
   
   // API Functions
-  const API_BASE = 'http://localhost:3000';
+  const API_BASE = '';
   async function apiGet(url) { const res = await fetch(API_BASE + url); if (!res.ok) throw new Error(await res.text()); return res.json(); }
   
   // Load Vendors

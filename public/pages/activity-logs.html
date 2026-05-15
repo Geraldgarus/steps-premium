@@ -831,7 +831,7 @@
         const actionFilter = document.getElementById('filter-action').value;
         const entityFilter = document.getElementById('filter-entity').value;
         
-        let url = 'http://localhost:3000/api/activity-logs?';
+        let url = '/api/activity-logs?';
         const params = [];
         if (fromDate) params.push(`from=${fromDate}`);
         if (toDate) params.push(`to=${toDate}`);
@@ -1000,7 +1000,7 @@
                 }
                 
                 try {
-                    const response = await fetch('http://localhost:3000/api/auth/change-password', {
+                    const response = await fetch('/api/auth/change-password', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({

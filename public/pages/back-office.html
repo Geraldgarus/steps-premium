@@ -369,7 +369,7 @@
     if (newPass !== confirmPass) { showToast('Passwords do not match', 'error'); return; }
     if (newPass.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
     try {
-      const res = await fetch('http://localhost:3000/api/auth/change-password', {
+      const res = await fetch('/api/auth/change-password', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: cu.id, oldPassword: oldPass, newPassword: newPass })
       });

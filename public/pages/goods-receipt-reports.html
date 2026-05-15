@@ -818,7 +818,7 @@
   // ============================================================
   // API FUNCTIONS
   // ============================================================
-  var API_BASE = 'http://localhost:3000';
+  var API_BASE = '';
   async function apiGet(url) { var res = await fetch(API_BASE + url); if (!res.ok) throw new Error(await res.text()); return res.json(); }
   
   // ============================================================
