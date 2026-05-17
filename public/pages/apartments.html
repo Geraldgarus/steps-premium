@@ -7,6 +7,71 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    /* Searchable select styles */
+.select-wrapper {
+  position: relative;
+}
+.searchable-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.searchable-select:hover {
+  border-color: #c9933a;
+}
+.select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-top: 4px;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 100;
+  display: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.select-dropdown.show {
+  display: block;
+}
+.select-search {
+  padding: 8px;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  background: white;
+}
+.select-search input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.select-option {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.select-option:hover {
+  background: #f8fafc;
+}
+.select-option.selected {
+  background: #fef3c7;
+  color: #c9933a;
+}
+  </style>
   
 </head>
 <body>
@@ -55,6 +120,10 @@
     <a href="/goods-receipt-reports" class="nav-item">📋 Goods Receipt Report</a>
     <a href="/store-inventory-reports" class="nav-item">📦 Store Inventory Report</a>
     
+      <!-- GUEST MANAGEMENT (NEW SECTION) -->
+    <div class="nav-section-label">Guest Management</div>
+   <a href="/guest-database" class="nav-item">👥 Guest Database</a>
+   
     <!-- ADMIN -->
     <div class="nav-section-label">Administration</div>
     <a href="/users" class="nav-item">👥 User Management</a>
@@ -191,32 +260,30 @@
         </div>
       </div>
       
-      <div class="form-group-row cols-2">
-        <div class="form-group">
-          <label>🌍 Country</label>
-          <select id="modal-f-country" class="form-control">
-            <option value="">Select Country</option>
-            <option>Tanzania</option>
-            <option>Kenya</option>
-            <option>Uganda</option>
-            <option>Rwanda</option>
-            <option>Ethiopia</option>
-            <option>South Africa</option>
-            <option>United Kingdom</option>
-            <option>United States</option>
-            <option>Germany</option>
-            <option>France</option>
-            <option>China</option>
-            <option>India</option>
-            <option>Other</option>
-          </select>
+     <div class="form-group-row cols-2">
+  <div class="form-group">
+    <label>🌍 Country</label>
+    <div class="select-wrapper" id="modal-country-wrapper">
+      <div class="searchable-select" id="modal-country-select-btn">
+        <span id="modal-selected-country-text">Select Country</span>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="select-dropdown" id="modal-country-dropdown">
+        <div class="select-search">
+          <input type="text" id="modal-country-search" placeholder="🔍 Search country..." autocomplete="off">
         </div>
-        <div class="form-group">
-          <label>🏙️ City</label>
-          <input type="text" id="modal-f-city" class="form-control" placeholder="City" />
+        <div id="modal-country-options">
+          <div style="padding: 20px; text-align: center; color: #94a3b8;">Loading countries...</div>
         </div>
       </div>
-      
+    </div>
+    <input type="hidden" id="modal-f-country" value="">
+  </div>
+  <div class="form-group">
+    <label>🏙️ City</label>
+    <input type="text" id="modal-f-city" class="form-control" placeholder="City" />
+  </div>
+</div>
       <hr class="divider" />
       
       <button type="submit" class="btn btn-success">✅ Confirm Reservation</button>
@@ -305,31 +372,29 @@
       </div>
       
       <div class="form-group-row cols-2">
-        <div class="form-group">
-          <label>🌍 Country</label>
-          <select id="edit-f-country" class="form-control">
-            <option value="">Select Country</option>
-            <option>Tanzania</option>
-            <option>Kenya</option>
-            <option>Uganda</option>
-            <option>Rwanda</option>
-            <option>Ethiopia</option>
-            <option>South Africa</option>
-            <option>United Kingdom</option>
-            <option>United States</option>
-            <option>Germany</option>
-            <option>France</option>
-            <option>China</option>
-            <option>India</option>
-            <option>Other</option>
-          </select>
+  <div class="form-group">
+    <label>🌍 Country</label>
+    <div class="select-wrapper" id="edit-country-wrapper">
+      <div class="searchable-select" id="edit-country-select-btn">
+        <span id="edit-selected-country-text">Select Country</span>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="select-dropdown" id="edit-country-dropdown">
+        <div class="select-search">
+          <input type="text" id="edit-country-search" placeholder="🔍 Search country..." autocomplete="off">
         </div>
-        <div class="form-group">
-          <label>🏙️ City</label>
-          <input type="text" id="edit-f-city" class="form-control" placeholder="City" />
+        <div id="edit-country-options">
+          <div style="padding: 20px; text-align: center; color: #94a3b8;">Loading countries...</div>
         </div>
       </div>
-      
+    </div>
+    <input type="hidden" id="edit-f-country" value="">
+  </div>
+  <div class="form-group">
+    <label>🏙️ City</label>
+    <input type="text" id="edit-f-city" class="form-control" placeholder="City" />
+  </div>
+</div>
       <hr class="divider" />
       
       <button type="submit" class="btn btn-gold">💾 Update Reservation</button>
@@ -365,7 +430,178 @@ let modalAPARTMENTS = [];
 let editAPARTMENTS = [];
 let currentEditReservation = null;
 
-// ========== RESERVATION MODAL FUNCTIONS ==========
+// ========== RESERVATION MODAL FUNCTIONS ========
+// ==
+
+// ============================================================
+// MODAL COUNTRY DROPDOWN FUNCTIONS (Add Modal)
+// ============================================================
+let modalCountriesList = [];
+
+async function loadModalCountries() {
+  try {
+    console.log('🌍 Loading countries for add modal...');
+    const countries = await apiGet('/countries');
+    modalCountriesList = countries;
+    renderModalCountryOptions('');
+  } catch (err) {
+    console.error('Error loading countries:', err);
+    const optionsContainer = document.getElementById('modal-country-options');
+    if (optionsContainer) {
+      optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #ef4444;">Failed to load countries</div>';
+    }
+  }
+}
+
+function renderModalCountryOptions(searchTerm = '') {
+  const optionsContainer = document.getElementById('modal-country-options');
+  if (!optionsContainer) return;
+  
+  if (!modalCountriesList || modalCountriesList.length === 0) {
+    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8;">No countries available</div>';
+    return;
+  }
+  
+  const filtered = modalCountriesList.filter(c => 
+    c.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
+  if (filtered.length === 0) {
+    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8;">No countries found</div>';
+    return;
+  }
+  
+  optionsContainer.innerHTML = filtered.map(country => `
+    <div class="select-option" data-country="${country.name.replace(/"/g, '&quot;')}" data-id="${country.id}">
+      ${escapeHtml(country.name)}
+    </div>
+  `).join('');
+  
+  document.querySelectorAll('#modal-country-options .select-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const countryName = opt.getAttribute('data-country');
+      document.getElementById('modal-selected-country-text').textContent = countryName;
+      document.getElementById('modal-f-country').value = countryName;
+      document.getElementById('modal-country-dropdown').classList.remove('show');
+    });
+  });
+}
+
+function initModalCountryDropdown() {
+  const wrapper = document.getElementById('modal-country-wrapper');
+  const selectBtn = document.getElementById('modal-country-select-btn');
+  const dropdown = document.getElementById('modal-country-dropdown');
+  const searchInput = document.getElementById('modal-country-search');
+  
+  if (!wrapper || !selectBtn || !dropdown) return;
+  
+  selectBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('show');
+    if (dropdown.classList.contains('show')) {
+      searchInput.value = '';
+      searchInput.focus();
+      renderModalCountryOptions('');
+    }
+  });
+  
+  searchInput.addEventListener('input', (e) => {
+    renderModalCountryOptions(e.target.value);
+  });
+  
+  document.addEventListener('click', (e) => {
+    if (!wrapper.contains(e.target)) {
+      dropdown.classList.remove('show');
+    }
+  });
+}
+
+// ============================================================
+// EDIT MODAL COUNTRY DROPDOWN FUNCTIONS
+// ============================================================
+let editCountriesList = [];
+
+async function loadEditCountries() {
+  try {
+    console.log('🌍 Loading countries for edit modal...');
+    const countries = await apiGet('/countries');
+    editCountriesList = countries;
+    renderEditCountryOptions('');
+  } catch (err) {
+    console.error('Error loading countries:', err);
+    const optionsContainer = document.getElementById('edit-country-options');
+    if (optionsContainer) {
+      optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #ef4444;">Failed to load countries</div>';
+    }
+  }
+}
+
+function renderEditCountryOptions(searchTerm = '') {
+  const optionsContainer = document.getElementById('edit-country-options');
+  if (!optionsContainer) return;
+  
+  if (!editCountriesList || editCountriesList.length === 0) {
+    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8;">No countries available</div>';
+    return;
+  }
+  
+  const filtered = editCountriesList.filter(c => 
+    c.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
+  if (filtered.length === 0) {
+    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8;">No countries found</div>';
+    return;
+  }
+  
+  optionsContainer.innerHTML = filtered.map(country => `
+    <div class="select-option" data-country="${country.name.replace(/"/g, '&quot;')}" data-id="${country.id}">
+      ${escapeHtml(country.name)}
+    </div>
+  `).join('');
+  
+  document.querySelectorAll('#edit-country-options .select-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const countryName = opt.getAttribute('data-country');
+      document.getElementById('edit-selected-country-text').textContent = countryName;
+      document.getElementById('edit-f-country').value = countryName;
+      document.getElementById('edit-country-dropdown').classList.remove('show');
+    });
+  });
+}
+
+function initEditCountryDropdown() {
+  const wrapper = document.getElementById('edit-country-wrapper');
+  const selectBtn = document.getElementById('edit-country-select-btn');
+  const dropdown = document.getElementById('edit-country-dropdown');
+  const searchInput = document.getElementById('edit-country-search');
+  
+  if (!wrapper || !selectBtn || !dropdown) return;
+  
+  selectBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('show');
+    if (dropdown.classList.contains('show')) {
+      searchInput.value = '';
+      searchInput.focus();
+      renderEditCountryOptions('');
+    }
+  });
+  
+  searchInput.addEventListener('input', (e) => {
+    renderEditCountryOptions(e.target.value);
+  });
+  
+  document.addEventListener('click', (e) => {
+    if (!wrapper.contains(e.target)) {
+      dropdown.classList.remove('show');
+    }
+  });
+}
+
+
+
+
 async function initModalForm() {
   if (!modalAPARTMENTS.length) {
     try { 
@@ -383,6 +619,10 @@ async function initModalForm() {
     opt.textContent = `${apt.emoji} ${apt.name} – Max ${apt.maxAdults} Adults – ${fmtTSH(apt.ratePerNight)}/night`;
     sel.appendChild(opt);
   });
+  
+  // Load countries from database for add modal
+  await loadModalCountries();
+  initModalCountryDropdown();
   
   const today = new Date();
   document.getElementById('modal-f-checkin').value = isoDate(today);
@@ -463,11 +703,25 @@ async function initEditForm(reservationId) {
       sel.appendChild(opt);
     });
     
+    // Load countries for edit modal
+    await loadEditCountries();
+    initEditCountryDropdown();
+    
     document.getElementById('edit-res-id').value = reservation.id;
     document.getElementById('edit-f-guest').value = reservation.guest;
     document.getElementById('edit-f-email').value = reservation.email;
     document.getElementById('edit-f-mobile').value = reservation.mobile || '';
-    document.getElementById('edit-f-country').value = reservation.country || '';
+    
+    // Set country value for custom dropdown
+    const countryValue = reservation.country || '';
+    if (countryValue) {
+      document.getElementById('edit-selected-country-text').textContent = countryValue;
+      document.getElementById('edit-f-country').value = countryValue;
+    } else {
+      document.getElementById('edit-selected-country-text').textContent = 'Select Country';
+      document.getElementById('edit-f-country').value = '';
+    }
+    
     document.getElementById('edit-f-city').value = reservation.city || '';
     document.getElementById('edit-f-checkin').value = isoDate(reservation.checkin);
     document.getElementById('edit-f-checkout').value = isoDate(reservation.checkout);

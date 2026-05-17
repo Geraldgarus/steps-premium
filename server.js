@@ -1073,6 +1073,10 @@ async function resetFailedAttempts(email) {
   console.log(`✅ Lockout reset for ${email}`);
 }
 
+
+
+
+
 // POST /api/auth/login – email and password only (RETURNS TOKEN) WITH ACCOUNT LOCKOUT
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
@@ -1339,19 +1343,39 @@ app.get('/api/users', async (req, res) => {
 
 
 // Add this to your server.js if not already there
+// UNLOCK USER - Admin only
 app.post('/api/users/unlock/:id', protectAPI, async (req, res) => {
+  // Check if user is admin
   if (req.user.role !== 'admin') {
     return res.status(403).json({ error: 'Admin access required' });
   }
   
   const { id } = req.params;
   try {
+    // Get user email first
+    const { rows } = await pool.query('SELECT email FROM users WHERE id = $1', [id]);
+    
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    const email = rows[0].email;
+    
+    // Clear database
     await pool.query(
       'UPDATE users SET failed_attempts = 0, locked_until = NULL WHERE id = $1',
       [id]
     );
+    
+    // ========== CLEAR MEMORY LOCKOUT ==========
+    if (failedAttempts && typeof failedAttempts.delete === 'function') {
+      failedAttempts.delete(email);
+    }
+    
+    console.log(`🔓 User ${email} unlocked by admin ${req.user.email}`);
     res.json({ message: 'User unlocked successfully' });
   } catch (err) {
+    console.error('Unlock error:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -2404,4 +2428,39 @@ setupDatabase().then(() => {
     console.log(`📄 Clean URLs enabled - access pages without .html`);
     console.log(`   Example: http://localhost:${PORT}/dashboard`);
   });
+});
+
+
+// ============================================================
+// COUNTRIES API
+// ============================================================
+
+// GET all countries (alphabetical)
+app.get('/api/countries', async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT id, name FROM countries ORDER BY name ASC'
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('Error fetching countries:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST add new country (for future expansion)
+app.post('/api/countries', async (req, res) => {
+  const { name } = req.body;
+  if (!name) {
+    return res.status(400).json({ error: 'Country name required' });
+  }
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO countries (name) VALUES ($1) ON CONFLICT (name) DO NOTHING RETURNING *',
+      [name.trim()]
+    );
+    res.status(201).json(rows[0] || { message: 'Country already exists' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
