@@ -466,84 +466,88 @@
 // ============================================================
 // NOTIFICATION SYSTEM
 // ============================================================
+// ============================================================
+// SIMPLIFIED NOTIFICATION SYSTEM FOR REPORT PAGES
+// ============================================================
 let notifications = [];
 let notificationCheckInterval = null;
 
 async function loadNotifications() {
   try {
-    // Get today's date
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
-    
-    // Get reservations
-    const reservations = await apiGet('/reservations');
-    
     // Clear existing notifications
     notifications = [];
     
-    // Check for checkouts today
-    const checkoutsToday = reservations.filter(r => r.checkout === todayStr);
-    checkoutsToday.forEach(r => {
-      notifications.push({
-        id: `checkout_${r.id}`,
-        type: 'checkout',
-        message: `${r.guest} checks out today at 11:00 AM`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        reservationId: r.id,
-        icon: '🚪'
+    // Get PO data from the current page
+    const poTable = document.getElementById('po-body');
+    if (poTable) {
+      const rows = poTable.querySelectorAll('tr');
+      const pendingPOs = [];
+      
+      // Check for pending purchase orders
+      rows.forEach(row => {
+        const statusCell = row.querySelector('td:nth-child(6)');
+        if (statusCell) {
+          const statusText = statusCell.innerText.toLowerCase();
+          if (statusText.includes('pending')) {
+            const poNumberCell = row.querySelector('td:first-child');
+            if (poNumberCell) {
+              pendingPOs.push(poNumberCell.innerText);
+            }
+          }
+        }
       });
-    });
-    
-    // Check for upcoming check-ins (next 7 days)
-    const nextWeek = new Date();
-    nextWeek.setDate(today.getDate() + 7);
-    const upcomingCheckins = reservations.filter(r => {
-      const checkin = new Date(r.checkin);
-      return checkin > today && checkin <= nextWeek;
-    });
-    upcomingCheckins.forEach(r => {
-      const checkinDate = new Date(r.checkin).toLocaleDateString();
-      notifications.push({
-        id: `checkin_${r.id}`,
-        type: 'upcoming',
-        message: `${r.guest} arrives on ${checkinDate}`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        reservationId: r.id,
-        icon: '📅'
-      });
-    });
-    
-    // Check for low stock items (if on store page)
-    try {
-      const storeItems = await apiGet('/store/items');
-      const lowStock = storeItems.filter(i => parseFloat(i.quantity) < 5);
-      lowStock.forEach(item => {
+      
+      if (pendingPOs.length > 0) {
         notifications.push({
-          id: `stock_${item.id}`,
-          type: 'stock',
-          message: `${item.name} is low in stock (${item.quantity} left)`,
+          id: 'pending_pos',
+          type: 'po_pending',
+          message: `${pendingPOs.length} purchase order(s) pending approval`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '📦'
         });
-      });
-    } catch(e) {
-      // Store API might not be accessible, ignore
+      }
     }
     
-    // Sort by time (newest first) and limit to 20
+    // Check for low stock (if store items are accessible)
+    try {
+      const token = getAuthToken();
+      const response = await fetch('/api/store/items', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const storeItems = await response.json();
+        const lowStock = storeItems.filter(i => parseFloat(i.quantity) < 5);
+        if (lowStock.length > 0) {
+          notifications.push({
+            id: 'low_stock',
+            type: 'stock',
+            message: `${lowStock.length} item(s) are low in stock`,
+            time: new Date().toLocaleTimeString(),
+            read: false,
+            icon: '⚠️'
+          });
+        }
+      }
+    } catch(e) {
+      // Store API not available, ignore
+      console.log('Store items not available');
+    }
+    
+    // Sort by time (newest first)
     notifications.sort((a, b) => new Date(b.time) - new Date(a.time));
-    notifications = notifications.slice(0, 20);
+    notifications = notifications.slice(0, 10);
     
     // Update UI
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications`);
+    console.log(`📢 Loaded ${notifications.length} notifications for report page`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
+    renderNotifications();
+    updateNotificationBadge();
   }
 }
 
@@ -559,7 +563,7 @@ function renderNotifications() {
   }
   
   container.innerHTML = notifications.map(notif => `
-    <div class="notification-item ${notif.read ? 'read' : 'unread'}" data-id="${notif.id}" data-type="${notif.type}" data-reservation-id="${notif.reservationId || ''}">
+    <div class="notification-item ${notif.read ? 'read' : 'unread'}" data-id="${notif.id}" data-type="${notif.type}">
       <div class="notification-message">
         <span class="notification-icon">${notif.icon}</span>
         ${escapeHtml(notif.message)}
@@ -580,11 +584,10 @@ function renderNotifications() {
         renderNotifications();
         updateNotificationBadge();
         
-        // Handle click action based on type
-        if (notif.type === 'checkout' && notif.reservationId) {
-          openDetail(notif.reservationId);
-        } else if (notif.type === 'upcoming' && notif.reservationId) {
-          openDetail(notif.reservationId);
+        // Handle click based on type
+        if (notif.type === 'po_pending') {
+          // Reload the report to show pending POs
+          loadReport();
         } else if (notif.type === 'stock') {
           window.location.href = '/store-main';
         }
@@ -660,13 +663,20 @@ if (closeNotifBtn) {
   });
 }
 
-// Load notifications on page load
+// Load notifications on page load and after report loads
 document.addEventListener('DOMContentLoaded', function() {
   loadNotifications();
   // Refresh every 5 minutes
   if (notificationCheckInterval) clearInterval(notificationCheckInterval);
   notificationCheckInterval = setInterval(loadNotifications, 300000);
 });
+
+// Also reload notifications when report data changes
+const originalLoadReport = window.loadReport;
+window.loadReport = async function() {
+  await originalLoadReport();
+  loadNotifications();
+};
 function escapeHtml(str) {
   if (!str) return '';
   return str.replace(/[&<>]/g, function(m) {
@@ -699,9 +709,11 @@ function escapeHtml(str) {
   function getCurrentUser() { const u = sessionStorage.getItem('pms_user'); return u ? JSON.parse(u) : null; }
   function logout() { sessionStorage.removeItem('pms_user'); window.location.href = '/'; }
   const cu = getCurrentUser(); if (!cu) window.location.href = '/';
-  document.getElementById('userName').innerText = cu.fullName || cu.username;
-  document.getElementById('userRole').innerText = cu.role || 'User';
-  document.getElementById('userAvatar').innerText = (cu.fullName || cu.username || 'U')[0];
+ // Display user info
+document.getElementById('userName').innerText = cu.fullName || cu.username;
+document.getElementById('userRole').innerText = cu.role || 'User';
+const userInitial = (cu.fullName || cu.username || 'U')[0];
+document.getElementById('userAvatar').innerText = userInitial.toUpperCase();
   const up = document.getElementById('userPill'), dd = document.getElementById('dropdownMenu');
   up?.addEventListener('click', (e) => { e.stopPropagation(); dd.classList.toggle('show'); up.classList.toggle('active'); });
   document.addEventListener('click', () => dd.classList.remove('show'));

@@ -1580,9 +1580,7 @@ h1, h2, h3, .logo-text, .card-title {
     padding: 4px 8px;
   }
   
-  .notif-btn {
-    display: none;
-  }
+ 
   
   .btn-add-reservation {
     padding: 6px 12px;
@@ -1687,6 +1685,33 @@ h1, h2, h3, .logo-text, .card-title {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .btn-add-reservation {
+    width: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0 !important;
+    background: #f1f5f9 !important;
+    border: none !important;
+    color: #1e2a3e !important;
+  }
+  
+  .btn-add-reservation:before {
+    content: "＋";
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .btn-add-reservation:hover {
+    background: #c9933a !important;
+    color: white !important;
   }
 }
 
@@ -1902,4 +1927,97 @@ h1, h2, h3, .logo-text, .card-title {
 
 .card-header {
   padding: 12px 24px;
+}
+/* User Dropdown Menu Styles */
+.user-dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  background: white;
+  min-width: 200px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  padding: 0.5rem 0;
+  z-index: 100;
+  display: none;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  text-decoration: none;
+  color: #1e2a3e;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+  background: #f5f3ef;
+}
+
+.dropdown-menu hr {
+  margin: 0.3rem 0;
+}
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--gray-100);
+  border-radius: 40px;
+  cursor: pointer;
+}
+
+.user-pill:hover {
+  background: var(--gray-200);
+}
+
+.fa-chevron-down {
+  font-size: 12px;
+  color: #aaa;
+  transition: transform 0.2s;
+}
+
+.user-pill.active .fa-chevron-down {
+  transform: rotate(180deg);
+}
+/* Make reservation stats display in a row */
+.reservation-stats {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+  align-items: center !important;
+}
+
+@media (max-width: 640px) {
+  .reservation-stats {
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .reservation-stats {
+    gap: 8px !important;
+  }
 }

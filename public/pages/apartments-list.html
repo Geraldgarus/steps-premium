@@ -376,6 +376,61 @@
     top: 55px;
   }
 }
+
+/* Navbar Icons */
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: #f1f5f9;
+  border-radius: 40px;
+  color: #1e2a3e;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-size: 18px;
+}
+
+.nav-icon-btn:hover {
+  background: #c9933a;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.nav-icon-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .nav-icons {
+    gap: 8px;
+  }
+  
+  .nav-icon-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-icons {
+    gap: 6px;
+  }
+  
+  .nav-icon-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+}
   </style>
 </head>
 <body>
@@ -442,6 +497,13 @@
     </div>
   </div>
   <div class="navbar-right">
+      <div class="nav-icons">
+    <a href="/reservations" class="nav-icon-btn" title="Reservations">
+      <i class="fas fa-calendar-alt"></i>
+    </a>
+    <a href="/reports" class="nav-icon-btn" title="Reports">
+      <i class="fas fa-chart-line"></i>
+    </a>
     <button class="" onclick="openReservationModal()"></button>
     <button class="notif-btn" id="notif-btn">
   🔔<span class="badge" id="notif-badge">0</span>
@@ -1040,86 +1102,87 @@ async function apiPut(endpoint, data) {
   // ============================================================
   // CHANGE PASSWORD MODAL
   // ============================================================
-  function openChangePasswordModal() {
-    if (!document.getElementById('change-password-modal')) {
-      const modalHTML = `
-        <div class="reservation-modal-overlay" id="change-password-modal-overlay" onclick="closeChangePasswordModal()"></div>
-        <div class="reservation-modal" id="change-password-modal">
-          <div class="reservation-modal-header">
-            <h3>🔐 Change Password</h3>
-            <button class="reservation-modal-close" onclick="closeChangePasswordModal()">✕</button>
-          </div>
-          <div class="reservation-modal-body">
-            <form id="change-password-form">
-              <div class="form-group"><label>Current Password</label><input type="password" id="current-password" class="form-control" required></div>
-              <div class="form-group"><label>New Password (min 6)</label><input type="password" id="new-password" class="form-control" required></div>
-              <div class="form-group"><label>Confirm Password</label><input type="password" id="confirm-password" class="form-control" required></div>
-              <hr class="divider" />
-              <button type="submit" class="btn btn-success">✅ Update Password</button>
-              <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeChangePasswordModal()">Cancel</button>
-            </form>
-          </div>
-        </div>
-      `;
-      document.body.insertAdjacentHTML('beforeend', modalHTML);
-      
-document.getElementById('change-password-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const currentPassword = document.getElementById('current-password').value;
-  const newPassword = document.getElementById('new-password').value;
-  const confirmPassword = document.getElementById('confirm-password').value;
+// ============================================================
+// CHANGE PASSWORD MODAL
+// ============================================================
+function openChangePasswordModal() {
+  const modal = document.getElementById('change-password-modal');
+  const modalOverlay = document.getElementById('change-password-modal-overlay');
+  if (modal && modalOverlay) {
+    modal.classList.add('open');
+    modalOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  if (dropdownMenu) dropdownMenu.classList.remove('show');
+  if (userPill) userPill.classList.remove('active');
+}
+
+function closeChangePasswordModal() {
+  const modal = document.getElementById('change-password-modal');
+  const modalOverlay = document.getElementById('change-password-modal-overlay');
+  if (modal) modal.classList.remove('open');
+  if (modalOverlay) modalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+  const form = document.getElementById('change-password-form');
+  if (form) form.reset();
+}
+
+// Change Password Form Submit - FIXED
+const changePasswordForm = document.getElementById('change-password-form');
+if (changePasswordForm) {
+  // Remove any existing listeners to avoid duplicates
+  const newForm = changePasswordForm.cloneNode(true);
+  changePasswordForm.parentNode.replaceChild(newForm, changePasswordForm);
   
-  if (newPassword !== confirmPassword) {
-    showToast('New passwords do not match', 'error');
-    return;
-  }
-  if (newPassword.length < 6) {
-    showToast('Password must be at least 6 characters', 'error');
-    return;
-  }
-  
-  try {
-    const token = sessionStorage.getItem('token');
-    const response = await fetch('/api/auth/change-password', {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ 
-        userId: currentUser.id, 
-        oldPassword: currentPassword, 
-        newPassword: newPassword 
-      })
-    });
+  newForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    console.log('Change password form submitted');
     
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error);
+    const currentPassword = document.getElementById('current-password').value;
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
     
-    showToast('Password changed successfully! Please login again.', 'success');
-    setTimeout(() => { logout(); }, 1500);
-  } catch (err) {
-    showToast('Failed to change password: ' + err.message, 'error');
-  }
-});
+    if (newPassword !== confirmPassword) {
+      showToast('New passwords do not match', 'error');
+      return;
+    }
+    if (newPassword.length < 6) {
+      showToast('Password must be at least 6 characters', 'error');
+      return;
     }
     
-    document.getElementById('change-password-modal').classList.add('open');
-    document.getElementById('change-password-modal-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-    dropdownMenu.classList.remove('show');
-    userPill.classList.remove('active');
-  }
-
-  function closeChangePasswordModal() {
-    const modal = document.getElementById('change-password-modal');
-    const overlay = document.getElementById('change-password-modal-overlay');
-    if (modal) modal.classList.remove('open');
-    if (overlay) overlay.classList.remove('open');
-    document.body.style.overflow = '';
-    const form = document.getElementById('change-password-form');
-    if (form) form.reset();
-  }
+    const currentUserData = getCurrentUser();
+    if (!currentUserData) {
+      showToast('User not found. Please login again.', 'error');
+      return;
+    }
+    
+    try {
+      const token = sessionStorage.getItem('token');
+      const response = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ 
+          userId: currentUserData.id,  // Use currentUserData.id
+          oldPassword: currentPassword, 
+          newPassword: newPassword 
+        })
+      });
+      
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error);
+      
+      showToast('Password changed successfully! Please login again.', 'success');
+      setTimeout(() => { logout(); }, 1500);
+    } catch (err) {
+      console.error('Change password error:', err);
+      showToast('Failed to change password: ' + err.message, 'error');
+    }
+  });
+}
 
   // ============================================================
   // RESERVATION MODAL (for the Add Reservation button)

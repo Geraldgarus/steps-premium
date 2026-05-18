@@ -416,6 +416,60 @@
     top: 55px;
   }
 }
+/* Navbar Icons */
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: #f1f5f9;
+  border-radius: 40px;
+  color: #1e2a3e;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-size: 18px;
+}
+
+.nav-icon-btn:hover {
+  background: #c9933a;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.nav-icon-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .nav-icons {
+    gap: 8px;
+  }
+  
+  .nav-icon-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-icons {
+    gap: 6px;
+  }
+  
+  .nav-icon-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+}
   </style>
 </head>
 <body>
@@ -475,6 +529,13 @@
     <div><div class="page-title">Housekeeping Status</div><div class="page-subtitle">Room cleanliness management</div></div>
   </div>
   <div class="navbar-right">
+      <div class="nav-icons">
+    <a href="/reservations" class="nav-icon-btn" title="Reservations">
+      <i class="fas fa-calendar-alt"></i>
+    </a>
+    <a href="/reports" class="nav-icon-btn" title="Reports">
+      <i class="fas fa-chart-line"></i>
+    </a>
     <button class="" onclick="alert('Add reservation')"></button>
     <button class="notif-btn" id="notif-btn">
   🔔<span class="badge" id="notif-badge">0</span>
@@ -798,9 +859,11 @@ function escapeHtml(str) {
   function logout() { sessionStorage.removeItem('pms_user'); window.location.href = '/'; }
   
   const cu = getCurrentUser(); if (!cu) window.location.href = '/';
-  document.getElementById('userName').innerText = cu.fullName || cu.username;
-  document.getElementById('userRole').innerText = cu.role || 'User';
-  document.getElementById('userAvatar').innerText = (cu.fullName || cu.username || 'U')[0];
+ // Display user info
+document.getElementById('userName').innerText = cu.fullName || cu.username;
+document.getElementById('userRole').innerText = cu.role || 'User';
+const userInitial = (cu.fullName || cu.username || 'U')[0];
+document.getElementById('userAvatar').innerText = userInitial.toUpperCase();;
   
   // User Dropdown Toggle
   const up = document.getElementById('userPill');

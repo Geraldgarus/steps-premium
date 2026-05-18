@@ -651,84 +651,62 @@
   // ============================================================
 // NOTIFICATION SYSTEM
 // ============================================================
+// ============================================================
+// SIMPLIFIED NOTIFICATION SYSTEM FOR GOODS RECEIPT PAGE
+// ============================================================
 let notifications = [];
 let notificationCheckInterval = null;
 
 async function loadNotifications() {
   try {
-    // Get today's date
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
-    
-    // Get reservations
-    const reservations = await apiGet('/reservations');
-    
     // Clear existing notifications
     notifications = [];
     
-    // Check for checkouts today
-    const checkoutsToday = reservations.filter(r => r.checkout === todayStr);
-    checkoutsToday.forEach(r => {
-      notifications.push({
-        id: `checkout_${r.id}`,
-        type: 'checkout',
-        message: `${r.guest} checks out today at 11:00 AM`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        reservationId: r.id,
-        icon: '🚪'
-      });
-    });
-    
-    // Check for upcoming check-ins (next 7 days)
-    const nextWeek = new Date();
-    nextWeek.setDate(today.getDate() + 7);
-    const upcomingCheckins = reservations.filter(r => {
-      const checkin = new Date(r.checkin);
-      return checkin > today && checkin <= nextWeek;
-    });
-    upcomingCheckins.forEach(r => {
-      const checkinDate = new Date(r.checkin).toLocaleDateString();
-      notifications.push({
-        id: `checkin_${r.id}`,
-        type: 'upcoming',
-        message: `${r.guest} arrives on ${checkinDate}`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        reservationId: r.id,
-        icon: '📅'
-      });
-    });
-    
-    // Check for low stock items (if on store page)
+    // Get GRN data
     try {
-      const storeItems = await apiGet('/store/items');
-      const lowStock = storeItems.filter(i => parseFloat(i.quantity) < 5);
-      lowStock.forEach(item => {
+      const today = new Date().toISOString().split('T')[0];
+      const grns = await apiGet('/grn?date=' + today);
+      
+      if (grns && grns.length > 0) {
         notifications.push({
-          id: `stock_${item.id}`,
-          type: 'stock',
-          message: `${item.name} is low in stock (${item.quantity} left)`,
+          id: 'grn_summary',
+          type: 'grn',
+          message: `${grns.length} goods receipt note(s) found for today`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '📋'
         });
-      });
+      }
+      
+      // Get total GRNs count (all time)
+      const allGrns = await apiGet('/grn');
+      if (allGrns && allGrns.length > 0) {
+        notifications.push({
+          id: 'grn_total',
+          type: 'grn_total',
+          message: `Total GRNs in system: ${allGrns.length}`,
+          time: new Date().toLocaleTimeString(),
+          read: false,
+          icon: '✅'
+        });
+      }
     } catch(e) {
-      // Store API might not be accessible, ignore
+      console.log('GRN API not available yet');
     }
     
-    // Sort by time (newest first) and limit to 20
+    // Sort by time
     notifications.sort((a, b) => new Date(b.time) - new Date(a.time));
-    notifications = notifications.slice(0, 20);
+    notifications = notifications.slice(0, 10);
     
     // Update UI
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications`);
+    console.log(`📢 Loaded ${notifications.length} notifications for goods receipt page`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
+    renderNotifications();
+    updateNotificationBadge();
   }
 }
 
@@ -736,15 +714,13 @@ function renderNotifications() {
   const container = document.getElementById('notification-list');
   if (!container) return;
   
-  const unreadCount = notifications.filter(n => !n.read).length;
-  
   if (notifications.length === 0) {
     container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
     return;
   }
   
   container.innerHTML = notifications.map(notif => `
-    <div class="notification-item ${notif.read ? 'read' : 'unread'}" data-id="${notif.id}" data-type="${notif.type}" data-reservation-id="${notif.reservationId || ''}">
+    <div class="notification-item ${notif.read ? 'read' : 'unread'}" data-id="${notif.id}" data-type="${notif.type}">
       <div class="notification-message">
         <span class="notification-icon">${notif.icon}</span>
         ${escapeHtml(notif.message)}
@@ -755,7 +731,7 @@ function renderNotifications() {
     </div>
   `).join('');
   
-  // Add click handlers to notification items
+  // Add click handlers
   document.querySelectorAll('.notification-item').forEach(item => {
     item.addEventListener('click', () => {
       const notifId = item.getAttribute('data-id');
@@ -765,13 +741,9 @@ function renderNotifications() {
         renderNotifications();
         updateNotificationBadge();
         
-        // Handle click action based on type
-        if (notif.type === 'checkout' && notif.reservationId) {
-          openDetail(notif.reservationId);
-        } else if (notif.type === 'upcoming' && notif.reservationId) {
-          openDetail(notif.reservationId);
-        } else if (notif.type === 'stock') {
-          window.location.href = '/store-main';
+        // Refresh GRN list on click
+        if (notif.type === 'grn' || notif.type === 'grn_total') {
+          loadGRNs();
         }
       }
       closeNotificationPanel();
@@ -845,14 +817,21 @@ if (closeNotifBtn) {
   });
 }
 
-// Load notifications on page load
+// Load notifications on page load and after data changes
 document.addEventListener('DOMContentLoaded', function() {
-  loadNotifications();
-  // Refresh every 5 minutes
+  setTimeout(() => {
+    loadNotifications();
+  }, 500);
   if (notificationCheckInterval) clearInterval(notificationCheckInterval);
-  notificationCheckInterval = setInterval(loadNotifications, 300000);
+  notificationCheckInterval = setInterval(loadNotifications, 60000);
 });
 
+// Reload notifications when GRN list changes
+const originalLoadGRNs = window.loadGRNs;
+window.loadGRNs = async function() {
+  await originalLoadGRNs();
+  setTimeout(() => loadNotifications(), 500);
+};
 
 function escapeHtml(str) {
   if (!str) return '';

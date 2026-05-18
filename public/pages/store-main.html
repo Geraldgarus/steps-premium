@@ -723,84 +723,94 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
 // ============================================================
 // NOTIFICATION SYSTEM
 // ============================================================
+// ============================================================
+// SIMPLIFIED NOTIFICATION SYSTEM FOR STORE PAGE
+// ============================================================
 let notifications = [];
 let notificationCheckInterval = null;
 
 async function loadNotifications() {
   try {
-    // Get today's date
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
-    
-    // Get reservations
-    const reservations = await apiGet('/reservations');
-    
     // Clear existing notifications
     notifications = [];
     
-    // Check for checkouts today
-    const checkoutsToday = reservations.filter(r => r.checkout === todayStr);
-    checkoutsToday.forEach(r => {
-      notifications.push({
-        id: `checkout_${r.id}`,
-        type: 'checkout',
-        message: `${r.guest} checks out today at 11:00 AM`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        reservationId: r.id,
-        icon: '🚪'
-      });
-    });
-    
-    // Check for upcoming check-ins (next 7 days)
-    const nextWeek = new Date();
-    nextWeek.setDate(today.getDate() + 7);
-    const upcomingCheckins = reservations.filter(r => {
-      const checkin = new Date(r.checkin);
-      return checkin > today && checkin <= nextWeek;
-    });
-    upcomingCheckins.forEach(r => {
-      const checkinDate = new Date(r.checkin).toLocaleDateString();
-      notifications.push({
-        id: `checkin_${r.id}`,
-        type: 'upcoming',
-        message: `${r.guest} arrives on ${checkinDate}`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        reservationId: r.id,
-        icon: '📅'
-      });
-    });
-    
-    // Check for low stock items (if on store page)
+    // Get current store items
     try {
       const storeItems = await apiGet('/store/items');
-      const lowStock = storeItems.filter(i => parseFloat(i.quantity) < 5);
-      lowStock.forEach(item => {
+      
+      // Check for low stock items (quantity < 5)
+      const lowStockItems = storeItems.filter(i => parseFloat(i.quantity) < 5);
+      
+      if (lowStockItems.length > 0) {
         notifications.push({
-          id: `stock_${item.id}`,
+          id: 'low_stock',
           type: 'stock',
-          message: `${item.name} is low in stock (${item.quantity} left)`,
+          message: `${lowStockItems.length} item(s) are low in stock (less than 5 units)`,
           time: new Date().toLocaleTimeString(),
           read: false,
           icon: '⚠️'
         });
-      });
+        
+        // Add individual low stock items
+        lowStockItems.slice(0, 5).forEach(item => {
+          notifications.push({
+            id: `stock_${item.id}`,
+            type: 'stock_detail',
+            message: `${item.name}: only ${parseFloat(item.quantity)} ${item.unit || 'units'} left`,
+            time: new Date().toLocaleTimeString(),
+            read: false,
+            icon: '📦'
+          });
+        });
+      }
+      
+      // Check for zero stock items
+      const zeroStockItems = storeItems.filter(i => parseFloat(i.quantity) === 0);
+      if (zeroStockItems.length > 0) {
+        notifications.push({
+          id: 'out_of_stock',
+          type: 'stock',
+          message: `${zeroStockItems.length} item(s) are out of stock!`,
+          time: new Date().toLocaleTimeString(),
+          read: false,
+          icon: '🚫'
+        });
+      }
+      
+      // Get pending requests count
+      try {
+        const requests = await apiGet('/store/requests?status=pending');
+        if (requests.length > 0) {
+          notifications.push({
+            id: 'pending_requests',
+            type: 'request',
+            message: `${requests.length} pending request(s) from outlets`,
+            time: new Date().toLocaleTimeString(),
+            read: false,
+            icon: '📋'
+          });
+        }
+      } catch(e) {
+        console.log('Requests API not available');
+      }
+      
     } catch(e) {
-      // Store API might not be accessible, ignore
+      console.log('Store items not available yet');
     }
     
-    // Sort by time (newest first) and limit to 20
+    // Sort by time
     notifications.sort((a, b) => new Date(b.time) - new Date(a.time));
-    notifications = notifications.slice(0, 20);
+    notifications = notifications.slice(0, 15);
     
     // Update UI
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications`);
+    console.log(`📢 Loaded ${notifications.length} notifications for store page`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
+    renderNotifications();
+    updateNotificationBadge();
   }
 }
 
@@ -808,15 +818,13 @@ function renderNotifications() {
   const container = document.getElementById('notification-list');
   if (!container) return;
   
-  const unreadCount = notifications.filter(n => !n.read).length;
-  
   if (notifications.length === 0) {
     container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
     return;
   }
   
   container.innerHTML = notifications.map(notif => `
-    <div class="notification-item ${notif.read ? 'read' : 'unread'}" data-id="${notif.id}" data-type="${notif.type}" data-reservation-id="${notif.reservationId || ''}">
+    <div class="notification-item ${notif.read ? 'read' : 'unread'}" data-id="${notif.id}" data-type="${notif.type}">
       <div class="notification-message">
         <span class="notification-icon">${notif.icon}</span>
         ${escapeHtml(notif.message)}
@@ -827,7 +835,7 @@ function renderNotifications() {
     </div>
   `).join('');
   
-  // Add click handlers to notification items
+  // Add click handlers
   document.querySelectorAll('.notification-item').forEach(item => {
     item.addEventListener('click', () => {
       const notifId = item.getAttribute('data-id');
@@ -837,16 +845,17 @@ function renderNotifications() {
         renderNotifications();
         updateNotificationBadge();
         
-        // Handle click action based on type
-        if (notif.type === 'checkout' && notif.reservationId) {
-          openDetail(notif.reservationId);
-        } else if (notif.type === 'upcoming' && notif.reservationId) {
-          openDetail(notif.reservationId);
+        // Handle click based on type
+        if (notif.type === 'request') {
+          // Switch to requests tab
+          document.querySelector('.tab-btn[data-tab="requests"]').click();
+          closeNotificationPanel();
         } else if (notif.type === 'stock') {
-          window.location.href = '/store-main';
+          // Refresh the inventory list
+          loadStoreItems();
+          closeNotificationPanel();
         }
       }
-      closeNotificationPanel();
     });
   });
 }
@@ -917,13 +926,21 @@ if (closeNotifBtn) {
   });
 }
 
-// Load notifications on page load
+// Load notifications on page load and after inventory updates
 document.addEventListener('DOMContentLoaded', function() {
-  loadNotifications();
-  // Refresh every 5 minutes
+  setTimeout(() => {
+    loadNotifications();
+  }, 1000);
   if (notificationCheckInterval) clearInterval(notificationCheckInterval);
-  notificationCheckInterval = setInterval(loadNotifications, 300000);
+  notificationCheckInterval = setInterval(loadNotifications, 60000);
 });
+
+// Reload notifications when store items change
+const originalLoadStoreItems = window.loadStoreItems;
+window.loadStoreItems = async function() {
+  await originalLoadStoreItems();
+  setTimeout(() => loadNotifications(), 500);
+};
 
 function escapeHtml(str) {
   if (!str) return '';

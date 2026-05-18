@@ -1023,84 +1023,89 @@
   // ============================================================
 // NOTIFICATION SYSTEM
 // ============================================================
+// ============================================================
+// SIMPLIFIED NOTIFICATION SYSTEM FOR REPORT PAGES
+// ============================================================
 let notifications = [];
 let notificationCheckInterval = null;
 
 async function loadNotifications() {
   try {
-    // Get today's date
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
-    
-    // Get reservations
-    const reservations = await apiGet('/reservations');
-    
     // Clear existing notifications
     notifications = [];
     
-    // Check for checkouts today
-    const checkoutsToday = reservations.filter(r => r.checkout === todayStr);
-    checkoutsToday.forEach(r => {
-      notifications.push({
-        id: `checkout_${r.id}`,
-        type: 'checkout',
-        message: `${r.guest} checks out today at 11:00 AM`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        reservationId: r.id,
-        icon: '🚪'
+    // Get GRN data from the current page
+    const grnBody = document.getElementById('grn-body');
+    if (grnBody) {
+      const rows = grnBody.querySelectorAll('tr');
+      let totalGRNs = 0;
+      let totalValue = 0;
+      
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length >= 5 && cells[0].innerText !== 'No GRNs found for selected criteria') {
+          totalGRNs++;
+          const valueText = cells[4]?.innerText || '0';
+          const value = parseFloat(valueText.replace(/[^0-9]/g, '')) || 0;
+          totalValue += value;
+        }
       });
-    });
-    
-    // Check for upcoming check-ins (next 7 days)
-    const nextWeek = new Date();
-    nextWeek.setDate(today.getDate() + 7);
-    const upcomingCheckins = reservations.filter(r => {
-      const checkin = new Date(r.checkin);
-      return checkin > today && checkin <= nextWeek;
-    });
-    upcomingCheckins.forEach(r => {
-      const checkinDate = new Date(r.checkin).toLocaleDateString();
-      notifications.push({
-        id: `checkin_${r.id}`,
-        type: 'upcoming',
-        message: `${r.guest} arrives on ${checkinDate}`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        reservationId: r.id,
-        icon: '📅'
-      });
-    });
-    
-    // Check for low stock items (if on store page)
-    try {
-      const storeItems = await apiGet('/store/items');
-      const lowStock = storeItems.filter(i => parseFloat(i.quantity) < 5);
-      lowStock.forEach(item => {
+      
+      if (totalGRNs > 0) {
         notifications.push({
-          id: `stock_${item.id}`,
-          type: 'stock',
-          message: `${item.name} is low in stock (${item.quantity} left)`,
+          id: 'grn_summary',
+          type: 'report',
+          message: `${totalGRNs} Goods Receipt Notes found, total value ${fmtTSH(totalValue)}`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '📋'
         });
-      });
-    } catch(e) {
-      // Store API might not be accessible, ignore
+      }
     }
     
-    // Sort by time (newest first) and limit to 20
+    // Check for recent GRNs (last 7 days)
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 7);
+    
+    try {
+      const token = getAuthToken();
+      const response = await fetch('/api/grn', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const grns = await response.json();
+        const recentGRNs = grns.filter(g => new Date(g.receipt_date) >= sevenDaysAgo);
+        
+        if (recentGRNs.length > 0) {
+          notifications.push({
+            id: 'recent_grns',
+            type: 'recent',
+            message: `${recentGRNs.length} GRN(s) received in the last 7 days`,
+            time: new Date().toLocaleTimeString(),
+            read: false,
+            icon: '✅'
+          });
+        }
+      }
+    } catch(e) {
+      console.log('GRN API not available');
+    }
+    
+    // Sort by time
     notifications.sort((a, b) => new Date(b.time) - new Date(a.time));
-    notifications = notifications.slice(0, 20);
+    notifications = notifications.slice(0, 10);
     
     // Update UI
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications`);
+    console.log(`📢 Loaded ${notifications.length} notifications for GRN report page`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
+    renderNotifications();
+    updateNotificationBadge();
   }
 }
 
@@ -1108,15 +1113,13 @@ function renderNotifications() {
   const container = document.getElementById('notification-list');
   if (!container) return;
   
-  const unreadCount = notifications.filter(n => !n.read).length;
-  
   if (notifications.length === 0) {
     container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
     return;
   }
   
   container.innerHTML = notifications.map(notif => `
-    <div class="notification-item ${notif.read ? 'read' : 'unread'}" data-id="${notif.id}" data-type="${notif.type}" data-reservation-id="${notif.reservationId || ''}">
+    <div class="notification-item ${notif.read ? 'read' : 'unread'}" data-id="${notif.id}" data-type="${notif.type}">
       <div class="notification-message">
         <span class="notification-icon">${notif.icon}</span>
         ${escapeHtml(notif.message)}
@@ -1127,7 +1130,7 @@ function renderNotifications() {
     </div>
   `).join('');
   
-  // Add click handlers to notification items
+  // Add click handlers
   document.querySelectorAll('.notification-item').forEach(item => {
     item.addEventListener('click', () => {
       const notifId = item.getAttribute('data-id');
@@ -1137,13 +1140,9 @@ function renderNotifications() {
         renderNotifications();
         updateNotificationBadge();
         
-        // Handle click action based on type
-        if (notif.type === 'checkout' && notif.reservationId) {
-          openDetail(notif.reservationId);
-        } else if (notif.type === 'upcoming' && notif.reservationId) {
-          openDetail(notif.reservationId);
-        } else if (notif.type === 'stock') {
-          window.location.href = '/store-main';
+        if (notif.type === 'report') {
+          // Refresh the report
+          loadReport();
         }
       }
       closeNotificationPanel();
@@ -1217,13 +1216,19 @@ if (closeNotifBtn) {
   });
 }
 
-// Load notifications on page load
+// Load notifications on page load and after report loads
 document.addEventListener('DOMContentLoaded', function() {
   loadNotifications();
-  // Refresh every 5 minutes
   if (notificationCheckInterval) clearInterval(notificationCheckInterval);
   notificationCheckInterval = setInterval(loadNotifications, 300000);
 });
+
+// Reload notifications when report data changes
+const originalLoadReport = window.loadReport;
+window.loadReport = async function() {
+  await originalLoadReport();
+  loadNotifications();
+};
 function escapeHtml(str) {
   if (!str) return '';
   return str.replace(/[&<>]/g, function(m) {
@@ -1270,10 +1275,9 @@ function escapeHtml(str) {
   var currentUser = getCurrentUser(); 
   if (!currentUser) { window.location.href = '/'; }
   
-  document.getElementById('userName').innerText = currentUser.fullName || currentUser.username;
-  document.getElementById('userRole').innerText = currentUser.role || 'User';
-  document.getElementById('userAvatar').innerText = (currentUser.fullName || currentUser.username || 'U')[0];
-  
+ document.getElementById('userName').innerText = currentUser.fullName || currentUser.username;
+document.getElementById('userRole').innerText = currentUser.role || 'User';
+document.getElementById('userAvatar').innerText = ((currentUser.fullName || currentUser.username || 'U')[0]).toUpperCase();
   // Dropdown toggle
   var userPill = document.getElementById('userPill');
   var dropdownMenu = document.getElementById('dropdownMenu');

@@ -810,10 +810,9 @@ function escapeHtml(str) {
   if (!currentUser) {
     window.location.href = '/';
   }
-  
   document.getElementById('userName').innerText = currentUser.fullName || currentUser.username;
-  document.getElementById('userRole').innerText = currentUser.role || 'User';
-  document.getElementById('userAvatar').innerText = (currentUser.fullName || currentUser.username || 'U')[0];
+document.getElementById('userRole').innerText = currentUser.role || 'User';
+document.getElementById('userAvatar').innerText = ((currentUser.fullName || currentUser.username || 'U')[0]).toUpperCase();
   
   // Dropdown toggle
   const userPill = document.getElementById('userPill');
