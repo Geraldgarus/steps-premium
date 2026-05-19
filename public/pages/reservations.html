@@ -1818,13 +1818,86 @@ window.loadAndRenderReservations = async function() {
 
 // ========== FORM SUBMISSION HANDLERS ==========
 // New Reservation Form
+// Force manual calculation before saving
+function forceManualCalculation() {
+  console.log('🔧 Forcing manual calculation before save...');
+  
+  // Get current form values
+  const aptId = parseInt(document.getElementById('modal-f-apt')?.value);
+  const rateType = document.getElementById('modal-f-ratetype')?.value;
+  const checkin = document.getElementById('modal-f-checkin')?.value;
+  const checkout = document.getElementById('modal-f-checkout')?.value;
+  
+  // Check if custom total is active
+  const useCustomTotal = document.getElementById('modal-use-custom-total')?.value;
+  
+  if (useCustomTotal === '1') {
+    console.log('Custom total active, keeping custom value');
+    return parseFloat(document.getElementById('modal-f-total-hidden').value) || 0;
+  }
+  
+  // Auto-calculate if all fields are present
+  if (!aptId || !checkin || !checkout) {
+    console.log('Missing fields, cannot calculate');
+    return 0;
+  }
+  
+  const apt = modalAPARTMENTS.find(a => a.id === aptId);
+  if (!apt) {
+    console.log('Apartment not found');
+    return 0;
+  }
+  
+  const nights = daysBetween(checkin, checkout);
+  if (nights <= 0) {
+    console.log('Invalid nights');
+    return 0;
+  }
+  
+  const multiplier = rateType === 'Partial' ? 0.6 : 1;
+  const total = Math.round(apt.ratePerNight * nights * multiplier);
+  
+  // Update the hidden field and display
+  document.getElementById('modal-f-total-hidden').value = total;
+  document.getElementById('modal-f-total').innerHTML = fmtTSH(total);
+  
+  console.log(`✅ Manual calculation: ${nights} nights × ${apt.ratePerNight} × ${multiplier} = ${total}`);
+  
+  return total;
+}
+
+
+
+
+
+
 document.getElementById('reservation-form-modal')?.addEventListener('submit', async function(e) {
   e.preventDefault();
+  
+  // 🔧 FORCE MANUAL CALCULATION BEFORE SAVING
+  const forcedTotal = forceManualCalculation();
+  
   const checkin = document.getElementById('modal-f-checkin').value;
   const checkout = document.getElementById('modal-f-checkout').value;
+  
   if (checkin >= checkout) { 
     showToast('Check-out must be after check-in', '⚠️'); 
     return; 
+  }
+
+  // Get the final total (either custom or auto-calculated)
+  let finalTotal = forcedTotal;
+  
+  // If custom total is active, use custom total instead
+  const useCustomTotal = document.getElementById('modal-use-custom-total')?.value;
+  if (useCustomTotal === '1') {
+    finalTotal = parseFloat(document.getElementById('modal-f-total-hidden').value) || 0;
+  }
+  
+  // Validate total is not zero
+  if (finalTotal <= 0) {
+    showToast('Please ensure total amount is calculated correctly', '⚠️');
+    return;
   }
 
   const payload = {
@@ -1838,7 +1911,7 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
     adults: parseInt(document.getElementById('modal-f-adults').value),
     children: parseInt(document.getElementById('modal-f-children').value),
     rateType: document.getElementById('modal-f-ratetype').value,
-    total: parseInt(document.getElementById('modal-f-total-hidden').value) || 0,
+    total: finalTotal,
   };
 
   try {
@@ -1852,8 +1925,12 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
     closeReservationModal();
     document.getElementById('reservation-form-modal').reset();
     
+    // Reset custom total flags
+    document.getElementById('modal-use-custom-total').value = '0';
+    document.getElementById('modal-f-total-hidden').value = 0;
+    
     setTimeout(() => {
-      loadAndRenderReservations();
+      loadAndRenderDashboard();
     }, 100);
     
     submitBtn.textContent = originalText;
@@ -1863,9 +1940,46 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
   }
 });
 
+// Force manual calculation for Edit Modal
+function forceManualCalculationEdit() {
+  console.log('🔧 Forcing manual calculation for edit...');
+  
+  const aptId = parseInt(document.getElementById('edit-f-apt')?.value);
+  const rateType = document.getElementById('edit-f-ratetype')?.value;
+  const checkin = document.getElementById('edit-f-checkin')?.value;
+  const checkout = document.getElementById('edit-f-checkout')?.value;
+  
+  const useCustomTotal = document.getElementById('edit-use-custom-total')?.value;
+  
+  if (useCustomTotal === '1') {
+    console.log('Custom total active, keeping custom value');
+    return parseFloat(document.getElementById('edit-f-total-hidden').value) || 0;
+  }
+  
+  if (!aptId || !checkin || !checkout) return 0;
+  
+  const apt = editAPARTMENTS.find(a => a.id === aptId);
+  if (!apt) return 0;
+  
+  const nights = daysBetween(checkin, checkout);
+  if (nights <= 0) return 0;
+  
+  const multiplier = rateType === 'Partial' ? 0.6 : 1;
+  const total = Math.round(apt.ratePerNight * nights * multiplier);
+  
+  document.getElementById('edit-f-total-hidden').value = total;
+  document.getElementById('edit-f-total').innerHTML = fmtTSH(total);
+  
+  return total;
+}
+
 // Edit Reservation Form
 document.getElementById('edit-form-modal')?.addEventListener('submit', async function(e) {
   e.preventDefault();
+  
+  // Force manual calculation
+  const forcedTotal = forceManualCalculationEdit();
+  
   const reservationId = document.getElementById('edit-res-id').value;
   const checkin = document.getElementById('edit-f-checkin').value;
   const checkout = document.getElementById('edit-f-checkout').value;
@@ -1873,6 +1987,17 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
   if (checkin >= checkout) { 
     showToast('Check-out must be after check-in', '⚠️'); 
     return; 
+  }
+  
+  let finalTotal = forcedTotal;
+  const useCustomTotal = document.getElementById('edit-use-custom-total')?.value;
+  if (useCustomTotal === '1') {
+    finalTotal = parseFloat(document.getElementById('edit-f-total-hidden').value) || 0;
+  }
+  
+  if (finalTotal <= 0) {
+    showToast('Please ensure total amount is calculated correctly', '⚠️');
+    return;
   }
 
   const payload = {
@@ -1886,7 +2011,9 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     adults: parseInt(document.getElementById('edit-f-adults').value),
     children: parseInt(document.getElementById('edit-f-children').value),
     rateType: document.getElementById('edit-f-ratetype').value,
-    total: parseInt(document.getElementById('edit-f-total-hidden').value) || 0,
+    total: finalTotal,
+    userId: currentUser.id,
+    username: currentUser.fullName || currentUser.username
   };
 
   try {
@@ -1900,7 +2027,7 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     closeEditModal();
     
     setTimeout(() => {
-      loadAndRenderReservations();
+      loadAndRenderDashboard();
     }, 100);
     
     submitBtn.textContent = originalText;
