@@ -884,6 +884,11 @@
 // ============================================================
 // SIMPLIFIED NOTIFICATION SYSTEM FOR PURCHASE ORDERS PAGE
 // ============================================================
+
+
+
+
+
 let notifications = [];
 let notificationCheckInterval = null;
 
@@ -1864,6 +1869,11 @@ function escapeHtml(str) {
     loadStoreItems();
     loadPurchaseOrders();
   });
+
+
+
+  // Add this with your other API functions (around line where apiGet, apiPost are defined)
+
   
   window.openItemSelector = openItemSelector;
   window.closeItemSelector = closeItemSelector;

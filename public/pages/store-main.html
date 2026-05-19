@@ -1552,6 +1552,17 @@ for (var i = 0; i < filtered.length; i++) {
   document.getElementById('userName').innerText = currentUser.fullName || currentUser.username;
   document.getElementById('userRole').innerText = currentUser.role ? currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1) : 'User';
   document.getElementById('userAvatar').innerText = (currentUser.fullName || currentUser.username || 'U').charAt(0).toUpperCase();
+
+
+
+  // Only admin can access this page
+  // Only admin or manager can access this page
+if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
+  alert('Access denied. Only administrators can manage store.');
+  window.location.href = '/dashboard';
+}
+
+
   // ============================================================
 // USER DROPDOWN TOGGLE
 // ============================================================

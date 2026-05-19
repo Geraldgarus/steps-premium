@@ -954,10 +954,11 @@ function escapeHtml(str) {
   }
   
   // Only admin can access this page
-  if (currentUser.role !== 'admin') {
-    alert('Access denied. Only administrators can manage users.');
-    window.location.href = '/dashboard';
-  }
+ // Only admin or manager can access this page
+if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
+  alert('Access denied. Only administrators can manage users.');
+  window.location.href = '/dashboard';
+}
   
   // Display user info in navbar
   document.getElementById('userName').innerText = currentUser.fullName || currentUser.username;

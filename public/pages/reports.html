@@ -579,6 +579,13 @@ if (userPill) {
   });
 }
 
+
+// Only admin or manager can access this page
+if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
+  alert('Access denied. Only administrators  can view reports.');
+  window.location.href = '/dashboard';
+}
+
 // ========== CHANGE PASSWORD MODAL ==========
 function openChangePasswordModal() {
   if (!document.getElementById('change-password-modal')) {

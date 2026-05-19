@@ -1736,6 +1736,57 @@ app.post('/api/purchase-order-items', async (req, res) => {
   }
 });
 
+// ============================================================
+// DELETE PURCHASE ORDER
+// ============================================================
+app.delete('/api/purchase-orders/:id', async (req, res) => {
+  const { id } = req.params;
+  const client = await pool.connect();
+  
+  try {
+    await client.query('BEGIN');
+    
+    // First check if purchase order exists
+    const poCheck = await client.query(
+      'SELECT id, status, po_number FROM purchase_orders WHERE id = $1',
+      [id]
+    );
+    
+    if (poCheck.rows.length === 0) {
+      return res.status(404).json({ error: 'Purchase order not found' });
+    }
+    
+    const po = poCheck.rows[0];
+    
+    // Check if already received (can't delete received orders)
+    if (po.status === 'received') {
+      return res.status(400).json({ 
+        error: 'Cannot delete a received purchase order. It has already been added to inventory.' 
+      });
+    }
+    
+    // Delete items first (due to foreign key constraint)
+    await client.query('DELETE FROM purchase_order_items WHERE po_id = $1', [id]);
+    
+    // Delete the purchase order
+    await client.query('DELETE FROM purchase_orders WHERE id = $1', [id]);
+    
+    await client.query('COMMIT');
+    
+    console.log(`✅ Deleted purchase order #${po.po_number} (ID: ${id})`);
+    res.json({ 
+      message: `Purchase order #${po.po_number} deleted successfully` 
+    });
+    
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('Delete PO error:', err);
+    res.status(500).json({ error: err.message });
+  } finally {
+    client.release();
+  }
+});
+
 // PUT update purchase order (status, notes, items)
 app.put('/api/purchase-orders/:id', async (req, res) => {
   const { id } = req.params;
