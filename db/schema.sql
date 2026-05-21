@@ -412,3 +412,7 @@ INSERT INTO countries (name) VALUES
 ('Uzbekistan'), ('Vanuatu'), ('Vatican City'), ('Venezuela'), ('Vietnam'),
 ('Yemen'), ('Zambia'), ('Zimbabwe')
 ON CONFLICT (name) DO NOTHING;
+
+
+ALTER TABLE reservations ADD COLUMN IF NOT EXISTS identification_type VARCHAR(50);
+ALTER TABLE reservations ADD COLUMN IF NOT EXISTS identification_number VARCHAR(100);

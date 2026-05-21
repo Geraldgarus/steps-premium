@@ -264,6 +264,8 @@ app.get('/api/reservations', async (req, res) => {
         TO_CHAR(r.checkin, 'YYYY-MM-DD') as checkin_str,
         TO_CHAR(r.checkout, 'YYYY-MM-DD') as checkout_str,
         TO_CHAR(r.checkout_time, 'HH24:MI:SS') as checkout_time_str,
+        r.identification,
+        r.id_type,
         CASE 
           WHEN (r.checkout + COALESCE(r.checkout_time, '11:00:00')) <= CURRENT_TIMESTAMP THEN 'checked_out'
           WHEN r.checkin <= CURRENT_DATE THEN 'active'
@@ -281,7 +283,9 @@ app.get('/api/reservations', async (req, res) => {
       checkin: row.checkin_str,
       checkout: row.checkout_str,
       checkoutTime: row.checkout_time_str || '11:00:00',
-      currentStatus: row.current_status
+      currentStatus: row.current_status,
+      identification: row.identification,
+      idType: row.id_type
     }));
     
     res.json(formattedRows.map(camelRes));
@@ -291,6 +295,7 @@ app.get('/api/reservations', async (req, res) => {
 });
 
 // GET /api/reservations/:id
+// ✅ CORRECT - Added comma after checkout_str
 app.get('/api/reservations/:id', async (req, res) => {
   try {
     const { rows } = await pool.query(`
@@ -301,22 +306,28 @@ app.get('/api/reservations/:id', async (req, res) => {
         a.emoji AS apt_emoji, 
         a.color AS apt_color,
         TO_CHAR(r.checkin, 'YYYY-MM-DD') as checkin_str,
-        TO_CHAR(r.checkout, 'YYYY-MM-DD') as checkout_str
+        TO_CHAR(r.checkout, 'YYYY-MM-DD') as checkout_str,
+        r.identification,
+        r.id_type
       FROM reservations r
       JOIN apartments a ON a.id = r.apt_id
       WHERE r.id = $1
     `, [req.params.id]);
+    
     if (!rows.length) return res.status(404).json({ error: 'Reservation not found' });
     
     const row = rows[0];
     const formattedRow = {
       ...row,
       checkin: row.checkin_str,
-      checkout: row.checkout_str
+      checkout: row.checkout_str,
+      identification: row.identification,
+      idType: row.id_type
     };
     
     res.json(camelRes(formattedRow));
   } catch (err) {
+    console.error('Error in GET /api/reservations/:id:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -326,7 +337,7 @@ app.get('/api/reservations/:id', async (req, res) => {
 // POST /api/reservations – create new reservation (with checkout time and logging)
 // POST /api/reservations – create new reservation (with checkout time and logging)
 app.post('/api/reservations', async (req, res) => {
-  let { aptId, guest, email, mobile, country, city, checkin, checkout, adults, children, rateType, total, checkoutTime, userId, username } = req.body;
+  let { aptId, guest, email, mobile, country, city, checkin, checkout, adults, children, rateType, total, checkoutTime, userId, username, identification, idType } = req.body;
 
   // CRITICAL FIX: Ensure dates are pure YYYY-MM-DD strings
   if (checkin) checkin = String(checkin).split('T')[0];
@@ -359,11 +370,11 @@ app.post('/api/reservations', async (req, res) => {
     }
 
     const { rows } = await pool.query(`
-      INSERT INTO reservations (apt_id, guest, email, mobile, country, city, checkin, checkout, checkout_time, adults, children, rate_type, total)
-      VALUES ($1,$2,$3,$4,$5,$6,$7::date,$8::date,$9::time,$10,$11,$12,$13)
-      RETURNING *
-    `, [aptId, guest, email, mobile || null, country || null, city || null,
-        checkin, checkout, finalCheckoutTime, adults || 1, children || 0, rateType || 'Full', total || 0]);
+  INSERT INTO reservations (apt_id, guest, email, mobile, country, city, checkin, checkout, checkout_time, adults, children, rate_type, total, identification, id_type)
+  VALUES ($1,$2,$3,$4,$5,$6,$7::date,$8::date,$9::time,$10,$11,$12,$13,$14,$15)
+  RETURNING *
+`, [aptId, guest, email, mobile || null, country || null, city || null,
+    checkin, checkout, finalCheckoutTime, adults || 1, children || 0, rateType || 'Full', total || 0, req.body.identification || null, req.body.idType || null]);
 
     const result = camelRes(rows[0]);
     
@@ -383,8 +394,9 @@ app.post('/api/reservations', async (req, res) => {
 
 // PUT /api/reservations/:id – update a reservation (FIXED)
 // PUT /api/reservations/:id – update a reservation (with logging)
+// PUT /api/reservations/:id – update a reservation (with logging and ID fields)
 app.put('/api/reservations/:id', async (req, res) => {
-  let { aptId, guest, email, mobile, country, city, checkin, checkout, adults, children, rateType, total, userId, username } = req.body;
+  let { aptId, guest, email, mobile, country, city, checkin, checkout, adults, children, rateType, total, userId, username, identification, idType } = req.body;
   
   // CRITICAL FIX: Ensure dates are pure YYYY-MM-DD strings
   if (checkin) checkin = String(checkin).split('T')[0];
@@ -402,9 +414,9 @@ app.put('/api/reservations/:id', async (req, res) => {
     if (aptId && checkin && checkout) {
       const conflict = await pool.query(`
         SELECT id FROM reservations
-        WHERE apt_id   = $1
-          AND id      != $4
-          AND checkin  < $3::date
+        WHERE apt_id = $1
+          AND id != $4
+          AND checkin < $3::date
           AND checkout > $2::date
       `, [aptId, checkin, checkout, req.params.id]);
 
@@ -415,21 +427,23 @@ app.put('/api/reservations/:id', async (req, res) => {
 
     const { rows } = await pool.query(`
       UPDATE reservations SET
-        apt_id    = COALESCE($1,  apt_id),
-        guest     = COALESCE($2,  guest),
-        email     = COALESCE($3,  email),
-        mobile    = COALESCE($4,  mobile),
-        country   = COALESCE($5,  country),
-        city      = COALESCE($6,  city),
-        checkin   = COALESCE($7::date,  checkin),
-        checkout  = COALESCE($8::date,  checkout),
-        adults    = COALESCE($9,  adults),
+        apt_id    = COALESCE($1, apt_id),
+        guest     = COALESCE($2, guest),
+        email     = COALESCE($3, email),
+        mobile    = COALESCE($4, mobile),
+        country   = COALESCE($5, country),
+        city      = COALESCE($6, city),
+        checkin   = COALESCE($7::date, checkin),
+        checkout  = COALESCE($8::date, checkout),
+        adults    = COALESCE($9, adults),
         children  = COALESCE($10, children),
         rate_type = COALESCE($11, rate_type),
-        total     = COALESCE($12, total)
-      WHERE id = $13
+        total     = COALESCE($12, total),
+        identification = COALESCE($13, identification),
+        id_type   = COALESCE($14, id_type)
+      WHERE id = $15
       RETURNING *
-    `, [aptId, guest, email, mobile, country, city, checkin, checkout, adults, children, rateType, total, req.params.id]);
+    `, [aptId, guest, email, mobile, country, city, checkin, checkout, adults, children, rateType, total, identification, idType, req.params.id]);
 
     if (!rows.length) return res.status(404).json({ error: 'Reservation not found' });
     
@@ -446,7 +460,6 @@ app.put('/api/reservations/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 // DELETE /api/reservations/:id
 // DELETE /api/reservations/:id (with logging)
 // DELETE /api/reservations/:id
@@ -573,6 +586,8 @@ function camelRes(r) {
     aptType:   r.apt_type  ?? undefined,
     aptEmoji:  r.apt_emoji ?? undefined,
     aptColor:  r.apt_color ?? undefined,
+    identification: r.identification ?? null,
+    idType: r.id_type ?? null
   };
 }
 

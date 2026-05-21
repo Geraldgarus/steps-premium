@@ -498,3 +498,28 @@ INSERT INTO countries (name) VALUES
 ('United Arab Emirates'), ('United Kingdom'), ('United States'), ('Uruguay'),
 ('Uzbekistan'), ('Vanuatu'), ('Vatican City'), ('Venezuela'), ('Vietnam'),
 ('Yemen'), ('Zambia'), ('Zimbabwe');
+
+
+
+-- ============================================================
+-- ADD IDENTIFICATION COLUMNS TO RESERVATIONS
+-- ============================================================
+
+-- Add identification columns if they don't exist
+ALTER TABLE reservations ADD COLUMN IF NOT EXISTS identification_type VARCHAR(50);
+ALTER TABLE reservations ADD COLUMN IF NOT EXISTS identification_number VARCHAR(100);
+
+-- Create index for faster searches
+CREATE INDEX IF NOT EXISTS idx_reservations_identification ON reservations(identification_number);
+
+-- Verification
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reservations' AND column_name='identification_type') THEN
+        RAISE NOTICE '✅ identification_type column added successfully';
+    END IF;
+    
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reservations' AND column_name='identification_number') THEN
+        RAISE NOTICE '✅ identification_number column added successfully';
+    END IF;
+END $$;
