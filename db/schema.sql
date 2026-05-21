@@ -416,3 +416,5 @@ ON CONFLICT (name) DO NOTHING;
 
 ALTER TABLE reservations ADD COLUMN IF NOT EXISTS identification_type VARCHAR(50);
 ALTER TABLE reservations ADD COLUMN IF NOT EXISTS identification_number VARCHAR(100);
+ALTER TABLE reservations ADD COLUMN IF NOT EXISTS identification VARCHAR(200);
+ALTER TABLE reservations ADD COLUMN IF NOT EXISTS id_type VARCHAR(50);
