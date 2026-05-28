@@ -116,7 +116,7 @@ const pages = [
   'store-housekeeping', 'store-kitchen', 'store-public', 'users', 'users1', 'login',
   'activity-logs', 'register', 'back-office', 'index2', 'purchase-orders', 'goods-receipt',
   'purchase-orders-reports', 'goods-receipt-reports', 'store-inventory-reports', 
-  'point-of-sale', 'sales-report', 'add-reservation','guest-database','maintenance','daily-activities', 'expenditures',  'daily-activities-report','financial-report',  'maintenance-report'
+  'point-of-sale', 'sales-report',  'staff-activities', 'staff-activities-report','add-reservation','guest-database','maintenance','daily-activities', 'expenditures',  'daily-activities-report','financial-report',  'maintenance-report'
 
 ];
 
@@ -2794,14 +2794,19 @@ app.delete('/api/maintenance/:id', async (req, res) => {
 // DAILY ACTIVITIES API
 // ============================================================
 
-// Create daily_activities table
-async function createDailyActivitiesTable() {
+// ============================================================
+// STAFF ACTIVITIES API (Clean table - no conflicts)
+// ============================================================
+
+// Create staff_activities table
+async function createStaffActivitiesTable() {
   try {
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS daily_activities (
+      CREATE TABLE IF NOT EXISTS staff_activities (
         id SERIAL PRIMARY KEY,
         activity_date DATE NOT NULL,
-        description TEXT NOT NULL,
+        tasks JSONB DEFAULT '[]'::jsonb,
+        tasks_description TEXT,
         prepared_by VARCHAR(100) NOT NULL,
         remarks TEXT,
         created_by VARCHAR(100),
@@ -2809,18 +2814,18 @@ async function createDailyActivitiesTable() {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
-    console.log('✅ Daily activities table ready');
+    console.log('✅ Staff activities table ready');
   } catch (err) {
-    console.log('Daily activities table note:', err.message);
+    console.log('Staff activities table note:', err.message);
   }
 }
 
-createDailyActivitiesTable();
+createStaffActivitiesTable();
 
-// GET all daily activities (with filters)
-app.get('/api/daily-activities', async (req, res) => {
+// GET all staff activities (with filters)
+app.get('/api/staff-activities', async (req, res) => {
   const { from, to, preparedBy } = req.query;
-  let query = 'SELECT * FROM daily_activities WHERE 1=1';
+  let query = 'SELECT * FROM staff_activities WHERE 1=1';
   const params = [];
   let paramCount = 1;
   
@@ -2843,26 +2848,25 @@ app.get('/api/daily-activities', async (req, res) => {
     const { rows } = await pool.query(query, params);
     res.json(rows);
   } catch (err) {
-    console.error('GET /api/daily-activities error:', err);
+    console.error('GET /api/staff-activities error:', err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET single daily activity
-app.get('/api/daily-activities/:id', async (req, res) => {
+// GET single staff activity
+app.get('/api/staff-activities/:id', async (req, res) => {
   try {
-    const { rows } = await pool.query('SELECT * FROM daily_activities WHERE id = $1', [req.params.id]);
+    const { rows } = await pool.query('SELECT * FROM staff_activities WHERE id = $1', [req.params.id]);
     if (rows.length === 0) return res.status(404).json({ error: 'Activity not found' });
     res.json(rows[0]);
   } catch (err) {
-    console.error('GET /api/daily-activities/:id error:', err);
+    console.error('GET /api/staff-activities/:id error:', err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// POST create daily activity
-// POST create daily activity with tasks
-app.post('/api/daily-activities', async (req, res) => {
+// POST create staff activity with tasks
+app.post('/api/staff-activities', async (req, res) => {
   const { date, tasks, tasksDescription, preparedBy, remarks } = req.body;
   
   if (!date || !preparedBy) {
@@ -2874,7 +2878,7 @@ app.post('/api/daily-activities', async (req, res) => {
   
   try {
     const { rows } = await pool.query(`
-      INSERT INTO daily_activities (activity_date, tasks, tasks_description, prepared_by, remarks, created_by)
+      INSERT INTO staff_activities (activity_date, tasks, tasks_description, prepared_by, remarks, created_by)
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `, [date, tasksJson, finalDescription, preparedBy, remarks || null, req.body.created_by || 'system']);
@@ -2886,8 +2890,8 @@ app.post('/api/daily-activities', async (req, res) => {
   }
 });
 
-// PUT update daily activity with tasks
-app.put('/api/daily-activities/:id', async (req, res) => {
+// PUT update staff activity with tasks
+app.put('/api/staff-activities/:id', async (req, res) => {
   const { id } = req.params;
   const { date, tasks, tasksDescription, preparedBy, remarks } = req.body;
   
@@ -2896,7 +2900,7 @@ app.put('/api/daily-activities/:id', async (req, res) => {
   
   try {
     const { rows } = await pool.query(`
-      UPDATE daily_activities SET
+      UPDATE staff_activities SET
         activity_date = COALESCE($1, activity_date),
         tasks = COALESCE($2, tasks),
         tasks_description = COALESCE($3, tasks_description),
@@ -2915,19 +2919,18 @@ app.put('/api/daily-activities/:id', async (req, res) => {
   }
 });
 
-// DELETE daily activity
-app.delete('/api/daily-activities/:id', async (req, res) => {
+// DELETE staff activity
+app.delete('/api/staff-activities/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const { rowCount } = await pool.query('DELETE FROM daily_activities WHERE id = $1', [id]);
+    const { rowCount } = await pool.query('DELETE FROM staff_activities WHERE id = $1', [id]);
     if (rowCount === 0) return res.status(404).json({ error: 'Activity not found' });
     res.json({ message: 'Activity deleted successfully' });
   } catch (err) {
-    console.error('DELETE /api/daily-activities/:id error:', err);
+    console.error('DELETE error:', err);
     res.status(500).json({ error: err.message });
   }
 });
-
 
 
 

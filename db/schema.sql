@@ -539,3 +539,23 @@ CREATE TABLE IF NOT EXISTS daily_activities (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+-- ============================================================
+-- STAFF ACTIVITIES TABLE (Clean new table)
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS staff_activities (
+  id SERIAL PRIMARY KEY,
+  activity_date DATE NOT NULL,
+  tasks JSONB DEFAULT '[]'::jsonb,
+  tasks_description TEXT,
+  prepared_by VARCHAR(100) NOT NULL,
+  remarks TEXT,
+  created_by VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_staff_activities_date ON staff_activities(activity_date);
+CREATE INDEX IF NOT EXISTS idx_staff_activities_prepared_by ON staff_activities(prepared_by);

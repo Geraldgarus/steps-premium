@@ -707,3 +707,64 @@ ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS tasks JSONB DEFAULT '[]'::
 ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS tasks_description TEXT;
 ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS prepared_by VARCHAR(100);
 ALTER TABLE daily_activities DROP COLUMN IF EXISTS description;
+
+
+
+-- ============================================================
+-- STAFF ACTIVITIES TABLE (Safe Migration - No Data Loss)
+-- ============================================================
+
+-- Create the new clean table
+CREATE TABLE IF NOT EXISTS staff_activities (
+  id SERIAL PRIMARY KEY,
+  activity_date DATE NOT NULL,
+  tasks JSONB DEFAULT '[]'::jsonb,
+  tasks_description TEXT,
+  prepared_by VARCHAR(100) NOT NULL,
+  remarks TEXT,
+  created_by VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create indexes
+CREATE INDEX IF NOT EXISTS idx_staff_activities_date ON staff_activities(activity_date);
+CREATE INDEX IF NOT EXISTS idx_staff_activities_prepared_by ON staff_activities(prepared_by);
+
+-- Copy data from old daily_activities if it exists and has data
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'daily_activities') THEN
+        INSERT INTO staff_activities (activity_date, prepared_by, remarks, created_at)
+        SELECT activity_date, prepared_by, remarks, created_at
+        FROM daily_activities 
+        WHERE activity_date IS NOT NULL
+        ON CONFLICT DO NOTHING;
+        RAISE NOTICE '✅ Copied data from daily_activities to staff_activities';
+    END IF;
+END $$;
+
+-- Create trigger for updated_at
+CREATE OR REPLACE FUNCTION update_staff_activities_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = CURRENT_TIMESTAMP;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trigger_staff_activities_updated_at ON staff_activities;
+CREATE TRIGGER trigger_staff_activities_updated_at
+  BEFORE UPDATE ON staff_activities
+  FOR EACH ROW
+  EXECUTE FUNCTION update_staff_activities_updated_at();
+
+-- Verification
+DO $$
+BEGIN
+    RAISE NOTICE '✅ Staff activities table migration completed!';
+    
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'staff_activities') THEN
+        RAISE NOTICE '✅ staff_activities table: CREATED';
+    END IF;
+END $$;
