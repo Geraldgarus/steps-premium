@@ -521,3 +521,21 @@ ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS tasks JSONB DEFAULT '[]'::
 ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS tasks_description TEXT;
 ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS prepared_by VARCHAR(100);
 ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS remarks TEXT;
+
+
+
+-- ============================================================
+-- DAILY ACTIVITIES TABLE
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS daily_activities (
+  id SERIAL PRIMARY KEY,
+  activity_date DATE NOT NULL,
+  tasks JSONB DEFAULT '[]'::jsonb,
+  tasks_description TEXT,
+  prepared_by VARCHAR(100) NOT NULL,
+  remarks TEXT,
+  created_by VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

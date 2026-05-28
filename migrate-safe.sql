@@ -696,3 +696,14 @@ ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS tasks JSONB DEFAULT '[]'::
 ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS tasks_description TEXT;
 ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS prepared_by VARCHAR(100);
 ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS remarks TEXT;
+
+
+
+-- ============================================================
+-- FIX DAILY ACTIVITIES TABLE
+-- ============================================================
+
+ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS tasks JSONB DEFAULT '[]'::jsonb;
+ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS tasks_description TEXT;
+ALTER TABLE daily_activities ADD COLUMN IF NOT EXISTS prepared_by VARCHAR(100);
+ALTER TABLE daily_activities DROP COLUMN IF EXISTS description;
