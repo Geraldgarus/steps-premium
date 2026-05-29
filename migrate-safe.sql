@@ -768,3 +768,58 @@ BEGIN
         RAISE NOTICE '✅ staff_activities table: CREATED';
     END IF;
 END $$;
+
+
+-- ============================================================
+-- SAFE MIGRATION: UPDATE MAINTENANCE TASKS TABLE
+-- ============================================================
+
+-- Add item_name column if missing
+ALTER TABLE maintenance_tasks ADD COLUMN IF NOT EXISTS item_name VARCHAR(200);
+
+-- Rename item_type to repair_type if column exists and rename hasn't been done
+DO $$
+BEGIN
+    -- Check if old column exists and new column doesn't exist
+    IF EXISTS (SELECT 1 FROM information_schema.columns 
+               WHERE table_name='maintenance_tasks' AND column_name='item_type') 
+       AND NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                       WHERE table_name='maintenance_tasks' AND column_name='repair_type') THEN
+        ALTER TABLE maintenance_tasks RENAME COLUMN item_type TO repair_type;
+        RAISE NOTICE '✅ Renamed item_type column to repair_type';
+    END IF;
+END $$;
+
+-- Add repair_type if it doesn't exist (for new installations or if above didn't run)
+ALTER TABLE maintenance_tasks ADD COLUMN IF NOT EXISTS repair_type VARCHAR(50);
+
+-- Create indexes for better query performance
+CREATE INDEX IF NOT EXISTS idx_maintenance_tasks_repair_type ON maintenance_tasks(repair_type);
+CREATE INDEX IF NOT EXISTS idx_maintenance_tasks_item_name ON maintenance_tasks(item_name);
+
+-- Update any NULL repair_type values from existing data (copy from item_type if available)
+UPDATE maintenance_tasks SET repair_type = 'Other' WHERE repair_type IS NULL;
+
+-- Verification
+DO $$
+DECLARE
+    has_repair_type BOOLEAN;
+    has_item_name BOOLEAN;
+BEGIN
+    SELECT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name='maintenance_tasks' AND column_name='repair_type') INTO has_repair_type;
+    SELECT EXISTS (SELECT 1 FROM information_schema.columns 
+                   WHERE table_name='maintenance_tasks' AND column_name='item_name') INTO has_item_name;
+    
+    IF has_repair_type THEN
+        RAISE NOTICE '✅ repair_type column: EXISTS';
+    ELSE
+        RAISE NOTICE '❌ repair_type column: MISSING';
+    END IF;
+    
+    IF has_item_name THEN
+        RAISE NOTICE '✅ item_name column: EXISTS';
+    ELSE
+        RAISE NOTICE '❌ item_name column: MISSING';
+    END IF;
+END $$;

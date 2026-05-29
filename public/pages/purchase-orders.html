@@ -1458,39 +1458,48 @@ function escapeHtml(str) {
   }
   
   async function updateItemInPO(itemId, type) {
-    var newValue;
-    if (type === 'price') {
-      newValue = parseFloat(document.getElementById('price-' + itemId).value);
-    } else {
-      newValue = parseFloat(document.getElementById('qty-' + itemId).value);
-    }
-    
-    if (isNaN(newValue) || newValue <= 0) {
-      showToast('Please enter a valid value', 'error');
-      return;
-    }
-    
-    var price = parseFloat(document.getElementById('price-' + itemId).value);
-    var qty = parseFloat(document.getElementById('qty-' + itemId).value);
-    var total = price * qty;
-    document.getElementById('total-' + itemId).innerHTML = fmtTSH(total);
-    updateEditTotal();
+  var newValue;
+  if (type === 'price') {
+    newValue = parseFloat(document.getElementById('price-' + itemId).value);
+  } else {
+    newValue = parseFloat(document.getElementById('qty-' + itemId).value);
   }
   
-  function updateEditTotal() {
-    var rows = document.querySelectorAll('#edit-items-table tbody tr');
-    var total = 0;
-    for (var i = 0; i < rows.length; i++) {
-      var priceInput = rows[i].querySelector('input[id^="price-"]');
-      var qtyInput = rows[i].querySelector('input[id^="qty-"]');
-      if (priceInput && qtyInput) {
-        total += parseFloat(priceInput.value) * parseFloat(qtyInput.value);
-      }
-    }
-    var totalElement = document.getElementById('edit-po-total');
-    if (totalElement) totalElement.innerHTML = fmtTSH(total);
-    window.currentEditTotal = total;
+  if (isNaN(newValue) || newValue <= 0) {
+    showToast('Please enter a valid positive value', 'error');
+    // Reset to previous valid value - you may want to store previous values
+    return;
   }
+  
+  var price = parseFloat(document.getElementById('price-' + itemId).value) || 0;
+  var qty = parseFloat(document.getElementById('qty-' + itemId).value) || 0;
+  var total = price * qty;
+  
+  document.getElementById('total-' + itemId).innerHTML = fmtTSH(total);
+  updateEditTotal();
+}
+  
+ function updateEditTotal() {
+  var rows = document.querySelectorAll('#edit-items-table tbody tr');
+  var total = 0;
+  
+  for (var i = 0; i < rows.length; i++) {
+    var priceInput = rows[i].querySelector('input[id^="price-"]');
+    var qtyInput = rows[i].querySelector('input[id^="qty-"]');
+    
+    if (priceInput && qtyInput) {
+      var price = parseFloat(priceInput.value) || 0;
+      var qty = parseFloat(qtyInput.value) || 0;
+      total += price * qty;
+    }
+  }
+  
+  var totalElement = document.getElementById('edit-po-total');
+  if (totalElement) {
+    totalElement.innerHTML = fmtTSH(total);
+  }
+  window.currentEditTotal = total;
+}
   
   async function removeItemFromPO(itemId) {
     if (!confirm('Remove this item from the purchase order?')) return;
@@ -1565,37 +1574,53 @@ function escapeHtml(str) {
   }
   
   async function savePOChanges() {
-    if (!currentEditPOId) return;
-    var status = document.getElementById('edit-po-status').value;
-    var notes = document.getElementById('edit-po-notes').value;
+  if (!currentEditPOId) return;
+  
+  var status = document.getElementById('edit-po-status').value;
+  var notes = document.getElementById('edit-po-notes').value;
+  
+  var items = [];
+  var rows = document.querySelectorAll('#edit-items-table tbody tr');
+  
+  for (var i = 0; i < rows.length; i++) {
+    var priceInput = rows[i].querySelector('input[id^="price-"]');
+    var qtyInput = rows[i].querySelector('input[id^="qty-"]');
     
-    var items = [];
-    var rows = document.querySelectorAll('#edit-items-table tbody tr');
-    for (var i = 0; i < rows.length; i++) {
-      var priceInput = rows[i].querySelector('input[id^="price-"]');
-      var qtyInput = rows[i].querySelector('input[id^="qty-"]');
-      if (priceInput && qtyInput) {
-        items.push({
-          item_id: priceInput.id.split('-')[1],
-          unit_price: parseFloat(priceInput.value),
-          quantity: parseFloat(qtyInput.value)
-        });
-      }
-    }
-    
-    try {
-      await apiPut('/purchase-orders/' + currentEditPOId, {
-        status: status,
-        notes: notes,
-        items: items
+    if (priceInput && qtyInput) {
+      // Parse values as floats to avoid string multiplication issues
+      var unitPrice = parseFloat(priceInput.value) || 0;
+      var quantity = parseFloat(qtyInput.value) || 0;
+      
+      items.push({
+        item_id: priceInput.id.split('-')[1],
+        unit_price: unitPrice,
+        quantity: quantity
       });
-      showToast('Purchase order updated successfully!', 'success');
-      await loadPurchaseOrders();
-      viewPurchaseOrderDetails(currentEditPOId);
-    } catch(err) {
-      showToast('Failed to update: ' + err.message, 'error');
     }
   }
+  
+  // Validate items have valid values
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].unit_price <= 0 || items[i].quantity <= 0) {
+      showToast('Please ensure all unit prices and quantities are greater than zero', 'error');
+      return;
+    }
+  }
+  
+  try {
+    await apiPut('/purchase-orders/' + currentEditPOId, {
+      status: status,
+      notes: notes,
+      items: items
+    });
+    showToast('Purchase order updated successfully!', 'success');
+    await loadPurchaseOrders();
+    viewPurchaseOrderDetails(currentEditPOId);
+  } catch(err) {
+    console.error('Update error:', err);
+    showToast('Failed to update: ' + err.message, 'error');
+  }
+}
   
   async function printPurchaseOrder(id) {
     try {

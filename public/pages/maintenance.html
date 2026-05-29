@@ -43,7 +43,7 @@
     .form-section.active { display: block; }
     .form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0; }
     .form-header h3 { margin: 0; font-size: 18px; }
-    .form-group-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px; }
+    .form-group-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; }
     .form-group { margin-bottom: 1rem; }
     .form-group label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; color: #2c3e4e; }
     .form-control { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 20px; font-size: 0.9rem; }
@@ -102,45 +102,27 @@
   </div>
   
   <nav class="sidebar-nav">
-    <!-- ============================================================ -->
-    <!-- CORE OPERATIONS -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Core Operations</div>
     <a href="/dashboard" class="nav-item">📊 Stay View</a>
     <a href="/reservations" class="nav-item">📅 Reservations</a>
     <a href="/housekeeping" class="nav-item">🧹 Housekeeping</a>
     
-    <!-- ============================================================ -->
-    <!-- PROPERTY -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Property</div>
     <a href="/apartments" class="nav-item">🏠 Apartments View</a>
     <a href="/apartments-list" class="nav-item">📋 Apartments List</a>
     
-    <!-- ============================================================ -->
-    <!-- STORE & PROCUREMENT -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Store & Procurement</div>
     <a href="/store-main" class="nav-item">🏬 Main Store</a>
     <a href="/store-outlets" class="nav-item">🏪 Outlets Store</a>
     <a href="/purchase-orders" class="nav-item">📦 Purchase Orders</a>
     <a href="/goods-receipt" class="nav-item">✅ Goods Receipt</a>
     
-    <!-- ============================================================ -->
-    <!-- MAINTENANCE -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Maintenance</div>
     <a href="/maintenance" class="nav-item active">🔧 Maintenance</a>
     
-    <!-- ============================================================ -->
-    <!-- STAFF ACTIVITIES -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Staff Activities</div>
     <a href="/staff-activities" class="nav-item">📋 Staff Activities</a>
     
-    <!-- ============================================================ -->
-    <!-- REPORTS (ALL REPORTS GROUPED TOGETHER) -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Reports</div>
     <a href="/reports" class="nav-item">📊 Reservations Report</a>
     <a href="/maintenance-report" class="nav-item">🔧 Maintenance Report</a>
@@ -150,21 +132,12 @@
     <a href="/store-inventory-reports" class="nav-item">📦 Store Inventory Report</a>
     <a href="/financial-report" class="nav-item">💰 Financial Report</a>
     
-    <!-- ============================================================ -->
-    <!-- FINANCIAL -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Financial</div>
     <a href="/expenditures" class="nav-item">💸 Expenditures</a>
     
-    <!-- ============================================================ -->
-    <!-- GUEST MANAGEMENT -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Guest Management</div>
     <a href="/guest-database" class="nav-item">👥 Guest Database</a>
     
-    <!-- ============================================================ -->
-    <!-- ADMINISTRATION -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Administration</div>
     <a href="/users" class="nav-item">👥 User Management</a>
   </nav>
@@ -206,7 +179,7 @@
           <input type="date" id="filter-to">
         </div>
         <div class="filter-row">
-          <select id="filter-item-type"><option value="">All Item Types</option><option value="Electrical">⚡ Electrical</option><option value="Plumbing">🚰 Plumbing</option><option value="HVAC">❄️ HVAC</option><option value="Furniture">🪑 Furniture</option><option value="Appliance">📺 Appliance</option><option value="Building">🏗️ Building</option><option value="Other">🔧 Other</option></select>
+          <select id="filter-item-type"><option value="">All Repair Types</option><option value="Electrical">⚡ Electrical</option><option value="Plumbing">🚰 Plumbing</option><option value="HVAC">❄️ HVAC</option><option value="Furniture">🪑 Furniture</option><option value="Appliance">📺 Appliance</option><option value="Building">🏗️ Building</option><option value="Other">🔧 Other</option></select>
           <select id="filter-status"><option value="">All Status</option><option value="pending">⏳ Pending</option><option value="completed">✅ Completed</option></select>
         </div>
         <div class="filter-actions"><button class="btn btn-outline btn-sm" onclick="applyFilters()">Apply Filters</button><button class="btn btn-outline btn-sm" onclick="resetFilters()">Reset</button></div>
@@ -222,10 +195,22 @@
           <div class="form-group-row">
             <div class="form-group"><label>🔢 Task Number</label><input type="text" id="task-number" class="form-control" readonly></div>
             <div class="form-group"><label>👨‍🔧 Technician Name</label><input type="text" id="technician-name" class="form-control" required></div>
+            <div class="form-group"><label>📅 Date</label><input type="date" id="task-date" class="form-control" required></div>
           </div>
           <div class="form-group-row">
-            <div class="form-group"><label>🔧 Item Type</label><select id="item-type" class="form-control" required><option value="">Select Item Type</option><option value="Electrical">⚡ Electrical</option><option value="Plumbing">🚰 Plumbing</option><option value="HVAC">❄️ HVAC</option><option value="Furniture">🪑 Furniture</option><option value="Appliance">📺 Appliance</option><option value="Building">🏗️ Building</option><option value="Other">🔧 Other</option></select></div>
-            <div class="form-group"><label>📅 Date</label><input type="date" id="task-date" class="form-control" required></div>
+            <div class="form-group"><label>🔧 Repair Type</label>
+              <select id="item-type" class="form-control" required>
+                <option value="">Select Repair Type</option>
+                <option value="Electrical">⚡ Electrical</option>
+                <option value="Plumbing">🚰 Plumbing</option>
+                <option value="HVAC">❄️ HVAC</option>
+                <option value="Furniture">🪑 Furniture</option>
+                <option value="Appliance">📺 Appliance</option>
+                <option value="Building">🏗️ Building</option>
+                <option value="Other">🔧 Other</option>
+              </select>
+            </div>
+            <div class="form-group"><label>🏷️ Item Name</label><input type="text" id="item-name" class="form-control" placeholder="e.g., Air Conditioner, Refrigerator, Toilet" required></div>
           </div>
           <div class="form-group"><label>📝 Description of Repair</label><textarea id="description" class="form-control" rows="2" required></textarea></div>
           <div class="form-group"><label>💰 Labour Cost (TSh)</label><input type="number" id="labour-cost" class="form-control" value="0" min="0" step="1000" oninput="updateGrandTotal()"></div>
@@ -301,6 +286,7 @@ function showForm() {
   document.getElementById('task-number').value = 'MT-' + Date.now();
   document.getElementById('technician-name').value = '';
   document.getElementById('item-type').value = '';
+  document.getElementById('item-name').value = '';
   document.getElementById('description').value = '';
   document.getElementById('labour-cost').value = '0';
   document.getElementById('remarks').value = '';
@@ -322,7 +308,8 @@ document.getElementById('maintenance-form')?.addEventListener('submit', async fu
   let taskData = {
     taskNumber: document.getElementById('task-number').value,
     technicianName: document.getElementById('technician-name').value,
-    itemType: document.getElementById('item-type').value,
+    repairType: document.getElementById('item-type').value,
+    itemName: document.getElementById('item-name').value,
     description: document.getElementById('description').value,
     labourCost: labourCost,
     tools: toolsList,
@@ -332,7 +319,7 @@ document.getElementById('maintenance-form')?.addEventListener('submit', async fu
     remarks: document.getElementById('remarks').value,
     status: 'pending'
   };
-  if (!taskData.technicianName || !taskData.itemType || !taskData.description) { showToast('Please fill all required fields', 'error'); return; }
+  if (!taskData.technicianName || !taskData.repairType || !taskData.itemName || !taskData.description) { showToast('Please fill all required fields', 'error'); return; }
   try {
     if (currentEditId) { await apiPut(`/maintenance/${currentEditId}`, taskData); showToast('Task updated!', 'success'); }
     else { await apiPost('/maintenance', taskData); showToast('Task saved!', 'success'); }
@@ -345,188 +332,12 @@ async function loadTasks() {
     let url = '/maintenance';
     let from = document.getElementById('filter-from')?.value, to = document.getElementById('filter-to')?.value, type = document.getElementById('filter-item-type')?.value, status = document.getElementById('filter-status')?.value;
     let params = new URLSearchParams();
-    if (from) params.append('from', from); if (to) params.append('to', to); if (type) params.append('itemType', type); if (status) params.append('status', status);
+    if (from) params.append('from', from); if (to) params.append('to', to); if (type) params.append('repairType', type); if (status) params.append('status', status);
     if (params.toString()) url += '?' + params.toString();
     tasks = await apiGet(url);
     renderTasksList();
   } catch(err) { document.getElementById('tasks-list').innerHTML = '<div style="text-align:center;padding:20px;color:#ef4444;">Error loading tasks</div>'; }
 }
-
-// ============================================================
-// NOTIFICATION SYSTEM FOR MAINTENANCE PAGE
-// ============================================================
-
-let maintenanceNotifications = [];
-let maintenanceNotifInterval = null;
-
-async function loadMaintenanceNotifications() {
-  try {
-    maintenanceNotifications = [];
-    
-    // Count pending tasks
-    const pendingTasks = tasks.filter(t => t.status === 'pending');
-    if (pendingTasks.length > 0) {
-      maintenanceNotifications.push({
-        id: 'pending_tasks',
-        type: 'pending',
-        message: `${pendingTasks.length} maintenance task(s) pending completion`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        icon: '🔧'
-      });
-    }
-    
-    // Count completed tasks
-    const completedTasks = tasks.filter(t => t.status === 'completed');
-    if (completedTasks.length > 0) {
-      maintenanceNotifications.push({
-        id: 'completed_tasks',
-        type: 'completed',
-        message: `${completedTasks.length} maintenance task(s) completed`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        icon: '✅'
-      });
-    }
-    
-    // Summary notification
-    if (tasks.length > 0) {
-      const totalCost = tasks.reduce((sum, t) => sum + (t.total_cost || 0), 0);
-      maintenanceNotifications.push({
-        id: 'summary',
-        type: 'summary',
-        message: `Total: ${tasks.length} tasks, Total Cost: ${fmtTSH(totalCost)}`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        icon: '📊'
-      });
-    }
-    
-    renderMaintenanceNotifications();
-    updateMaintenanceNotificationBadge();
-    
-  } catch (err) {
-    console.error('Failed to load notifications:', err);
-  }
-}
-
-function renderMaintenanceNotifications() {
-  const container = document.getElementById('notification-list');
-  if (!container) return;
-  
-  if (maintenanceNotifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
-    return;
-  }
-  
-  let html = '';
-  for (let notif of maintenanceNotifications) {
-    html += `
-      <div class="notification-item ${notif.read ? 'read' : 'unread'}" data-id="${notif.id}">
-        <div class="notification-message">
-          <span class="notification-icon">${notif.icon}</span>
-          ${escapeHtml(notif.message)}
-        </div>
-        <div class="notification-time">🕐 ${notif.time}</div>
-      </div>
-    `;
-  }
-  container.innerHTML = html;
-  
-  // Add click handlers
-  document.querySelectorAll('.notification-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const notifId = item.getAttribute('data-id');
-      const notif = maintenanceNotifications.find(n => n.id === notifId);
-      if (notif) {
-        notif.read = true;
-        renderMaintenanceNotifications();
-        updateMaintenanceNotificationBadge();
-        
-        if (notif.type === 'pending') {
-          // Refresh the tasks list
-          loadTasks();
-        }
-      }
-      closeMaintenanceNotificationPanel();
-    });
-  });
-}
-
-function updateMaintenanceNotificationBadge() {
-  const badge = document.getElementById('notif-badge');
-  if (!badge) return;
-  
-  const unreadCount = maintenanceNotifications.filter(n => !n.read).length;
-  badge.textContent = unreadCount;
-  badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
-}
-
-function toggleMaintenanceNotificationPanel() {
-  const panel = document.getElementById('notification-panel');
-  if (panel) {
-    panel.classList.toggle('show');
-  }
-}
-
-function closeMaintenanceNotificationPanel() {
-  const panel = document.getElementById('notification-panel');
-  if (panel) {
-    panel.classList.remove('show');
-  }
-}
-
-function markAllMaintenanceNotificationsRead() {
-  maintenanceNotifications.forEach(n => n.read = true);
-  renderMaintenanceNotifications();
-  updateMaintenanceNotificationBadge();
-  showToast('All notifications marked as read', 'success');
-}
-
-// Override loadTasks to refresh notifications
-const originalLoadTasks = loadTasks;
-loadTasks = async function() {
-  await originalLoadTasks();
-  setTimeout(() => loadMaintenanceNotifications(), 500);
-};
-
-// Initialize notification button
-const maintenanceNotifBtn = document.getElementById('notif-btn');
-if (maintenanceNotifBtn) {
-  maintenanceNotifBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleMaintenanceNotificationPanel();
-  });
-}
-
-// Close panel when clicking outside
-document.addEventListener('click', function(e) {
-  const panel = document.getElementById('notification-panel');
-  const btn = document.getElementById('notif-btn');
-  if (panel && btn && !btn.contains(e.target) && !panel.contains(e.target)) {
-    panel.classList.remove('show');
-  }
-});
-
-// Mark all read button
-const maintenanceMarkAllBtn = document.getElementById('mark-all-read-btn');
-if (maintenanceMarkAllBtn) {
-  maintenanceMarkAllBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    markAllMaintenanceNotificationsRead();
-  });
-}
-
-// Close button
-const maintenanceCloseNotifBtn = document.getElementById('close-notif-panel');
-if (maintenanceCloseNotifBtn) {
-  maintenanceCloseNotifBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    closeMaintenanceNotificationPanel();
-  });
-}
-
-
 
 function applyFilters() { loadTasks(); }
 function resetFilters() { document.getElementById('filter-from').value = ''; document.getElementById('filter-to').value = ''; document.getElementById('filter-item-type').value = ''; document.getElementById('filter-status').value = ''; loadTasks(); }
@@ -540,9 +351,10 @@ function renderTasksList() {
     let statusText = task.status === 'completed' ? 'Completed' : 'Pending';
     let statusColor = task.status === 'completed' ? 'status-completed' : 'status-pending';
     let dateStr = task.task_date ? new Date(task.task_date).toLocaleDateString() : 'No date';
-    let itemType = task.item_type || task.itemType || 'Other';
+    let repairType = task.repair_type || task.repairType || task.item_type || 'Other';
+    let itemName = task.item_name || task.itemName || '';
     let taskNumber = task.task_number || task.taskNumber || 'MT-' + task.id;
-    html += `<div class="task-item ${statusClass}" onclick="viewTaskDetails(${task.id})"><div class="task-number">#${escapeHtml(taskNumber)}</div><div class="task-type">🔧 ${escapeHtml(itemType)}</div><div class="task-status-badge ${statusColor}">${statusText}</div><div class="task-date">📅 ${dateStr}</div></div>`;
+    html += `<div class="task-item ${statusClass}" onclick="viewTaskDetails(${task.id})"><div class="task-number">#${escapeHtml(taskNumber)}</div><div class="task-type">🔧 ${escapeHtml(repairType)}</div><div class="task-type">🛠️ ${escapeHtml(itemName)}</div><div class="task-status-badge ${statusColor}">${statusText}</div><div class="task-date">📅 ${dateStr}</div></div>`;
   }
   container.innerHTML = html;
 }
@@ -554,6 +366,8 @@ async function viewTaskDetails(id) {
     let labour = task.labour_cost || 0;
     let toolsTotal = task.total_tools_cost || 0;
     let grand = task.total_cost || (labour + toolsTotal);
+    let repairType = task.repair_type || task.repairType || task.item_type || 'Other';
+    let itemName = task.item_name || task.itemName || 'N/A';
     let toolsHtml = '<div class="tools-section">No additional tools recorded</div>';
     if (task.tools && task.tools.length > 0) {
       toolsHtml = `<div class="tools-section"><strong>🔧 Tools & Parts Used:</strong><ul>${task.tools.map(t => `<li>${escapeHtml(t.name)} - ${fmtTSH(t.cost || 0)}</li>`).join('')}</ul><div class="total-cost-box"><span>Tools Total:</span><span>${fmtTSH(toolsTotal)}</span></div></div>`;
@@ -564,7 +378,8 @@ async function viewTaskDetails(id) {
         <p><strong>Task Number:</strong> #${escapeHtml(task.task_number || task.taskNumber)}</p>
         <p><strong>Status:</strong> <select id="task-status-select" style="padding:5px 10px;border-radius:20px;border:1px solid #e2e8f0;" onchange="updateTaskStatus(${task.id}, this.value)"><option value="pending" ${task.status==='pending'?'selected':''}>⏳ Pending</option><option value="completed" ${task.status==='completed'?'selected':''}>✅ Completed</option></select></p>
         <p><strong>Technician:</strong> ${escapeHtml(task.technician_name || task.technicianName)}</p>
-        <p><strong>Item Type:</strong> ${escapeHtml(task.item_type || task.itemType)}</p>
+        <p><strong>Repair Type:</strong> ${escapeHtml(repairType)}</p>
+        <p><strong>Item Name:</strong> ${escapeHtml(itemName)}</p>
         <p><strong>Date:</strong> ${task.task_date ? new Date(task.task_date).toLocaleDateString() : 'N/A'}</p>
         <p><strong>Description:</strong><br>${escapeHtml(task.description)}</p>
         <p><strong>Labour Cost:</strong> ${fmtTSH(labour)}</p>
@@ -586,7 +401,8 @@ async function openEditTask(id) {
     currentEditId = id;
     document.getElementById('task-number').value = task.task_number || task.taskNumber || '';
     document.getElementById('technician-name').value = task.technician_name || task.technicianName || '';
-    document.getElementById('item-type').value = task.item_type || task.itemType || '';
+    document.getElementById('item-type').value = task.repair_type || task.repairType || task.item_type || '';
+    document.getElementById('item-name').value = task.item_name || task.itemName || '';
     document.getElementById('description').value = task.description || '';
     document.getElementById('labour-cost').value = task.labour_cost || 0;
     document.getElementById('task-date').value = task.task_date || new Date().toISOString().split('T')[0];
@@ -609,6 +425,111 @@ function logout() { sessionStorage.removeItem('pms_user'); window.location.href 
 function openChangePasswordModal() { document.getElementById('changePwOverlay').classList.add('show'); document.getElementById('changePwModal').classList.add('show'); document.body.style.overflow = 'hidden'; if (dropdownMenu) dropdownMenu.classList.remove('show'); if (userPill) userPill.classList.remove('active'); }
 function closeChangePasswordModal() { document.getElementById('changePwOverlay').classList.remove('show'); document.getElementById('changePwModal').classList.remove('show'); document.body.style.overflow = ''; document.getElementById('change-password-form').reset(); }
 
+// ============================================================
+// NOTIFICATION SYSTEM FOR MAINTENANCE PAGE
+// ============================================================
+
+let maintenanceNotifications = [];
+
+async function loadMaintenanceNotifications() {
+  try {
+    maintenanceNotifications = [];
+    const pendingTasks = tasks.filter(t => t.status === 'pending');
+    if (pendingTasks.length > 0) {
+      maintenanceNotifications.push({
+        id: 'pending_tasks',
+        message: `${pendingTasks.length} maintenance task(s) pending completion`,
+        time: new Date().toLocaleTimeString(),
+        read: false,
+        icon: '🔧'
+      });
+    }
+    renderMaintenanceNotifications();
+    updateMaintenanceNotificationBadge();
+  } catch(err) { console.error('Failed to load notifications:', err); }
+}
+
+function renderMaintenanceNotifications() {
+  const container = document.getElementById('notification-list');
+  if (!container) return;
+  if (maintenanceNotifications.length === 0) {
+    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    return;
+  }
+  container.innerHTML = maintenanceNotifications.map(notif => `
+    <div class="notification-item ${notif.read ? 'read' : 'unread'}">
+      <div class="notification-message">
+        <span class="notification-icon">${notif.icon}</span>
+        ${escapeHtml(notif.message)}
+      </div>
+      <div class="notification-time">🕐 ${notif.time}</div>
+    </div>
+  `).join('');
+}
+
+function updateMaintenanceNotificationBadge() {
+  const badge = document.getElementById('notif-badge');
+  if (!badge) return;
+  const unreadCount = maintenanceNotifications.filter(n => !n.read).length;
+  badge.textContent = unreadCount;
+  badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+}
+
+function toggleMaintenanceNotificationPanel() {
+  const panel = document.getElementById('notification-panel');
+  if (panel) panel.classList.toggle('show');
+}
+
+function closeMaintenanceNotificationPanel() {
+  const panel = document.getElementById('notification-panel');
+  if (panel) panel.classList.remove('show');
+}
+
+function markAllMaintenanceNotificationsRead() {
+  maintenanceNotifications.forEach(n => n.read = true);
+  renderMaintenanceNotifications();
+  updateMaintenanceNotificationBadge();
+  showToast('All notifications marked as read', 'success');
+}
+
+const originalLoadTasks = loadTasks;
+loadTasks = async function() {
+  await originalLoadTasks();
+  setTimeout(() => loadMaintenanceNotifications(), 500);
+};
+
+const maintenanceNotifBtn = document.getElementById('notif-btn');
+if (maintenanceNotifBtn) {
+  maintenanceNotifBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMaintenanceNotificationPanel();
+  });
+}
+
+document.addEventListener('click', function(e) {
+  const panel = document.getElementById('notification-panel');
+  const btn = document.getElementById('notif-btn');
+  if (panel && btn && !btn.contains(e.target) && !panel.contains(e.target)) {
+    panel.classList.remove('show');
+  }
+});
+
+const maintenanceMarkAllBtn = document.getElementById('mark-all-read-btn');
+if (maintenanceMarkAllBtn) {
+  maintenanceMarkAllBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    markAllMaintenanceNotificationsRead();
+  });
+}
+
+const maintenanceCloseNotifBtn = document.getElementById('close-notif-panel');
+if (maintenanceCloseNotifBtn) {
+  maintenanceCloseNotifBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeMaintenanceNotificationPanel();
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   let user = getCurrentUser();
   if (!user) { window.location.href = '/'; return; }
@@ -616,11 +537,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('userRole').innerText = user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User';
   document.getElementById('userAvatar').innerText = (user.fullName || user.username || 'U').charAt(0).toUpperCase();
   loadTasks();
-  loadMaintenanceNotifications();  // ← ADD THIS LINE
-  setInterval(() => { 
-    loadTasks(); 
-    loadMaintenanceNotifications();  // ← ADD THIS LINE
-  }, 60000);
+  loadMaintenanceNotifications();
+  setInterval(() => { loadTasks(); loadMaintenanceNotifications(); }, 60000);
   document.getElementById('openChangePwBtn')?.addEventListener('click', openChangePasswordModal);
   document.getElementById('closeChangePwBtn')?.addEventListener('click', closeChangePasswordModal);
   document.getElementById('cancelChangePwBtn')?.addEventListener('click', closeChangePasswordModal);

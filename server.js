@@ -1892,10 +1892,14 @@ app.put('/api/purchase-orders/:id', async (req, res) => {
       WHERE id = $3
     `, [status, notes, id]);
     
-    // Update item prices and quantities
+    // Update item prices and quantities - CONVERT TO NUMERIC
     for (const item of items) {
+      // Use CAST to convert to numeric/decimal
       await client.query(`
-        UPDATE purchase_order_items SET unit_price = $1, quantity = $2, total_price = $1 * $2
+        UPDATE purchase_order_items 
+        SET unit_price = CAST($1 AS DECIMAL), 
+            quantity = CAST($2 AS DECIMAL), 
+            total_price = CAST($1 AS DECIMAL) * CAST($2 AS DECIMAL)
         WHERE id = $3
       `, [item.unit_price, item.quantity, item.item_id]);
     }
@@ -1911,12 +1915,12 @@ app.put('/api/purchase-orders/:id', async (req, res) => {
     res.json({ message: 'Purchase order updated' });
   } catch (err) {
     await client.query('ROLLBACK');
+    console.error('Update PO error:', err);
     res.status(500).json({ error: err.message });
   } finally {
     client.release();
   }
 });
-
 
 
 // ============================================================
@@ -2631,7 +2635,8 @@ async function createMaintenanceTable() {
         id SERIAL PRIMARY KEY,
         task_number VARCHAR(50) NOT NULL UNIQUE,
         technician_name VARCHAR(100) NOT NULL,
-        item_type VARCHAR(50) NOT NULL,
+        repair_type VARCHAR(50) NOT NULL,
+        item_name VARCHAR(200),
         description TEXT NOT NULL,
         labour_cost INT DEFAULT 0,
         tools JSONB DEFAULT '[]',
@@ -2656,24 +2661,24 @@ createMaintenanceTable();
 
 // GET all maintenance tasks (with filters)
 app.get('/api/maintenance', async (req, res) => {
-  const { from, to, itemType, status } = req.query;
+  const { from, to, repairType, status } = req.query;
   let query = 'SELECT * FROM maintenance_tasks WHERE 1=1';
   const params = [];
   let paramCount = 1;
   
   if (from) {
-    query += ` AND task_date >= $${paramCount++}`;
+    query += ` AND task_date >= $${paramCount++}::date`;
     params.push(from);
   }
   if (to) {
-    query += ` AND task_date <= $${paramCount++}`;
+    query += ` AND task_date <= $${paramCount++}::date`;
     params.push(to);
   }
-  if (itemType) {
-    query += ` AND item_type = $${paramCount++}`;
-    params.push(itemType);
+  if (repairType && repairType !== '') {
+    query += ` AND repair_type = $${paramCount++}`;
+    params.push(repairType);
   }
-  if (status) {
+  if (status && status !== '') {
     query += ` AND status = $${paramCount++}`;
     params.push(status);
   }
@@ -2682,8 +2687,14 @@ app.get('/api/maintenance', async (req, res) => {
   
   try {
     const { rows } = await pool.query(query, params);
-    res.json(rows);
+    // Parse tools JSON for each row
+    const formattedRows = rows.map(row => ({
+      ...row,
+      tools: typeof row.tools === 'string' ? JSON.parse(row.tools) : (row.tools || [])
+    }));
+    res.json(formattedRows);
   } catch (err) {
+    console.error('GET /api/maintenance error:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -2693,31 +2704,55 @@ app.get('/api/maintenance/:id', async (req, res) => {
   try {
     const { rows } = await pool.query('SELECT * FROM maintenance_tasks WHERE id = $1', [req.params.id]);
     if (rows.length === 0) return res.status(404).json({ error: 'Task not found' });
-    res.json(rows[0]);
+    
+    const task = rows[0];
+    // Parse tools JSON
+    task.tools = typeof task.tools === 'string' ? JSON.parse(task.tools) : (task.tools || []);
+    
+    res.json(task);
   } catch (err) {
+    console.error('GET /api/maintenance/:id error:', err);
     res.status(500).json({ error: err.message });
   }
 });
 
 // POST create maintenance task
 app.post('/api/maintenance', async (req, res) => {
-  const { taskNumber, technicianName, itemType, description, labourCost, tools, totalToolsCost, date, remarks, status } = req.body;
+  const { 
+    taskNumber, technicianName, repairType, itemName, description, 
+    labourCost, tools, totalToolsCost, date, remarks, status 
+  } = req.body;
   
-  if (!technicianName || !itemType || !description) {
-    return res.status(400).json({ error: 'Technician name, item type, and description are required' });
+  console.log('📝 Creating maintenance task:', { technicianName, repairType, itemName, labourCost });
+  
+  if (!technicianName || !repairType || !description) {
+    return res.status(400).json({ error: 'Technician name, repair type, and description are required' });
   }
   
   const totalCost = (labourCost || 0) + (totalToolsCost || 0);
   const taskNum = taskNumber || `MT-${Date.now()}`;
+  const toolsJson = JSON.stringify(tools || []);
   
   try {
     const { rows } = await pool.query(`
-      INSERT INTO maintenance_tasks (task_number, technician_name, item_type, description, labour_cost, tools, total_tools_cost, total_cost, task_date, remarks, status, created_by)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      INSERT INTO maintenance_tasks (
+        task_number, technician_name, repair_type, item_name, description, 
+        labour_cost, tools, total_tools_cost, total_cost, 
+        task_date, remarks, status, created_by
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
       RETURNING *
-    `, [taskNum, technicianName, itemType, description, labourCost || 0, JSON.stringify(tools || []), totalToolsCost || 0, totalCost, date, remarks || null, status || 'pending', req.body.created_by || 'system']);
+    `, [
+      taskNum, technicianName, repairType, itemName || null, description,
+      labourCost || 0, toolsJson, totalToolsCost || 0, totalCost,
+      date, remarks || null, status || 'pending', req.body.created_by || 'system'
+    ]);
     
-    res.status(201).json(rows[0]);
+    const newTask = rows[0];
+    newTask.tools = typeof newTask.tools === 'string' ? JSON.parse(newTask.tools) : (newTask.tools || []);
+    
+    console.log('✅ Task created:', newTask.id);
+    res.status(201).json(newTask);
   } catch (err) {
     console.error('Create task error:', err);
     res.status(500).json({ error: err.message });
@@ -2727,30 +2762,43 @@ app.post('/api/maintenance', async (req, res) => {
 // PUT update maintenance task
 app.put('/api/maintenance/:id', async (req, res) => {
   const { id } = req.params;
-  const { technicianName, itemType, description, labourCost, tools, totalToolsCost, date, remarks, status } = req.body;
+  const { 
+    technicianName, repairType, itemName, description, 
+    labourCost, tools, totalToolsCost, date, remarks, status 
+  } = req.body;
   
   const totalCost = (labourCost || 0) + (totalToolsCost || 0);
+  const toolsJson = JSON.stringify(tools || []);
   
   try {
     const { rows } = await pool.query(`
       UPDATE maintenance_tasks SET
         technician_name = COALESCE($1, technician_name),
-        item_type = COALESCE($2, item_type),
-        description = COALESCE($3, description),
-        labour_cost = COALESCE($4, labour_cost),
-        tools = COALESCE($5, tools),
-        total_tools_cost = COALESCE($6, total_tools_cost),
-        total_cost = COALESCE($7, total_cost),
-        task_date = COALESCE($8, task_date),
-        remarks = COALESCE($9, remarks),
-        status = COALESCE($10, status),
+        repair_type = COALESCE($2, repair_type),
+        item_name = COALESCE($3, item_name),
+        description = COALESCE($4, description),
+        labour_cost = COALESCE($5, labour_cost),
+        tools = COALESCE($6, tools),
+        total_tools_cost = COALESCE($7, total_tools_cost),
+        total_cost = COALESCE($8, total_cost),
+        task_date = COALESCE($9, task_date),
+        remarks = COALESCE($10, remarks),
+        status = COALESCE($11, status),
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = $11
+      WHERE id = $12
       RETURNING *
-    `, [technicianName, itemType, description, labourCost, JSON.stringify(tools || []), totalToolsCost, totalCost, date, remarks, status, id]);
+    `, [
+      technicianName, repairType, itemName, description, 
+      labourCost, toolsJson, totalToolsCost, totalCost, 
+      date, remarks, status, id
+    ]);
     
     if (rows.length === 0) return res.status(404).json({ error: 'Task not found' });
-    res.json(rows[0]);
+    
+    const updatedTask = rows[0];
+    updatedTask.tools = typeof updatedTask.tools === 'string' ? JSON.parse(updatedTask.tools) : (updatedTask.tools || []);
+    
+    res.json(updatedTask);
   } catch (err) {
     console.error('Update task error:', err);
     res.status(500).json({ error: err.message });
@@ -2786,7 +2834,6 @@ app.delete('/api/maintenance/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 
 

@@ -191,7 +191,6 @@
       margin-top: 24px;
     }
     
-    /* Change Password Modal */
     #changePwOverlay {
       position: fixed;
       top: 0;
@@ -248,7 +247,6 @@
       font-weight: 700;
     }
     
-    /* Notification Styles */
     .notif-btn {
       position: relative;
       background: #f1f5f9;
@@ -336,45 +334,27 @@
   </div>
   
   <nav class="sidebar-nav">
-    <!-- ============================================================ -->
-    <!-- CORE OPERATIONS -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Core Operations</div>
     <a href="/dashboard" class="nav-item">📊 Stay View</a>
     <a href="/reservations" class="nav-item">📅 Reservations</a>
     <a href="/housekeeping" class="nav-item">🧹 Housekeeping</a>
     
-    <!-- ============================================================ -->
-    <!-- PROPERTY -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Property</div>
     <a href="/apartments" class="nav-item">🏠 Apartments View</a>
     <a href="/apartments-list" class="nav-item">📋 Apartments List</a>
     
-    <!-- ============================================================ -->
-    <!-- STORE & PROCUREMENT -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Store & Procurement</div>
     <a href="/store-main" class="nav-item">🏬 Main Store</a>
     <a href="/store-outlets" class="nav-item">🏪 Outlets Store</a>
     <a href="/purchase-orders" class="nav-item">📦 Purchase Orders</a>
     <a href="/goods-receipt" class="nav-item">✅ Goods Receipt</a>
     
-    <!-- ============================================================ -->
-    <!-- MAINTENANCE -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Maintenance</div>
     <a href="/maintenance" class="nav-item">🔧 Maintenance</a>
     
-    <!-- ============================================================ -->
-    <!-- STAFF ACTIVITIES -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Staff Activities</div>
     <a href="/staff-activities" class="nav-item">📋 Staff Activities</a>
     
-    <!-- ============================================================ -->
-    <!-- REPORTS (ALL REPORTS GROUPED TOGETHER) -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Reports</div>
     <a href="/reports" class="nav-item">📊 Reservations Report</a>
     <a href="/maintenance-report" class="nav-item active">🔧 Maintenance Report</a>
@@ -384,21 +364,12 @@
     <a href="/store-inventory-reports" class="nav-item">📦 Store Inventory Report</a>
     <a href="/financial-report" class="nav-item">💰 Financial Report</a>
     
-    <!-- ============================================================ -->
-    <!-- FINANCIAL -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Financial</div>
     <a href="/expenditures" class="nav-item">💸 Expenditures</a>
     
-    <!-- ============================================================ -->
-    <!-- GUEST MANAGEMENT -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Guest Management</div>
     <a href="/guest-database" class="nav-item">👥 Guest Database</a>
     
-    <!-- ============================================================ -->
-    <!-- ADMINISTRATION -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Administration</div>
     <a href="/users" class="nav-item">👥 User Management</a>
   </nav>
@@ -443,8 +414,8 @@
         <input type="date" id="filter-to" value="">
       </div>
       <div class="filter-group">
-        <label>🔧 Item Type</label>
-        <select id="filter-item-type">
+        <label>🔧 Repair Type</label>
+        <select id="filter-repair-type">
           <option value="">All Types</option>
           <option value="Electrical">⚡ Electrical</option>
           <option value="Plumbing">🚰 Plumbing</option>
@@ -506,7 +477,8 @@
             <tr>
               <th>Task #</th>
               <th>Date</th>
-              <th>Item Type</th>
+              <th>Repair Type</th>
+              <th>Item Name</th>
               <th>Description</th>
               <th>Technician</th>
               <th>Labour Cost</th>
@@ -516,11 +488,11 @@
             </tr>
           </thead>
           <tbody id="tasks-body">
-            <tr><td colspan="9" style="text-align: center;">Loading...</td></tr>
+            <tr><td colspan="10" style="text-align: center;">Loading...</td</tr>
           </tbody>
           <tfoot id="tasks-footer" style="display: none;">
             <tr class="total-row">
-              <td colspan="6"><strong>GRAND TOTAL</strong></td>
+              <td colspan="7"><strong>GRAND TOTAL</strong></td>
               <td id="footer-tools-cost">TSh 0</td>
               <td id="footer-total-cost">TSh 0</td>
               <td></td>
@@ -591,13 +563,13 @@ async function loadReport() {
     let url = '/maintenance';
     let from = document.getElementById('filter-from')?.value;
     let to = document.getElementById('filter-to')?.value;
-    let itemType = document.getElementById('filter-item-type')?.value;
+    let repairType = document.getElementById('filter-repair-type')?.value;
     let status = document.getElementById('filter-status')?.value;
     
     let params = new URLSearchParams();
     if (from) params.append('from', from);
     if (to) params.append('to', to);
-    if (itemType && itemType !== '') params.append('itemType', itemType);
+    if (repairType && repairType !== '') params.append('repairType', repairType);
     if (status && status !== '') params.append('status', status);
     
     if (params.toString()) url += '?' + params.toString();
@@ -608,7 +580,7 @@ async function loadReport() {
     loadNotifications();
   } catch(err) {
     console.error('Failed to load report:', err);
-    document.getElementById('tasks-body').innerHTML = '<tr><td colspan="9" style="text-align: center; color: #ef4444;">Error loading tasks</td></tr>';
+    document.getElementById('tasks-body').innerHTML = '</tr><td colspan="10" style="text-align: center; color: #ef4444;">Error loading tasks</td></tr>';
     showToast('Failed to load report: ' + err.message, 'error');
   }
 }
@@ -618,7 +590,7 @@ function renderReport() {
   const footer = document.getElementById('tasks-footer');
   
   if (!tasks.length) {
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No maintenance tasks found</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">No maintenance tasks found</td></tr>';
     footer.style.display = 'none';
     return;
   }
@@ -635,7 +607,8 @@ function renderReport() {
     const totalCost = task.total_cost || (labourCost + toolsCost);
     const statusClass = task.status === 'completed' ? 'status-completed' : 'status-pending';
     const statusText = task.status === 'completed' ? 'Completed' : 'Pending';
-    const itemType = task.item_type || task.itemType || 'Other';
+    const repairType = task.repair_type || task.repairType || task.item_type || 'Other';
+    const itemName = task.item_name || task.itemName || '—';
     const description = task.description ? (task.description.length > 40 ? task.description.substring(0, 40) + '...' : task.description) : 'N/A';
     const technician = task.technician_name || task.technicianName || 'N/A';
     const taskNumber = task.task_number || task.taskNumber || 'MT-' + task.id;
@@ -648,7 +621,8 @@ function renderReport() {
       <tr>
         <td><strong>#${escapeHtml(taskNumber)}</strong></td>
         <td>${dateStr}</td>
-        <td><span style="background:#e2e8f0;padding:4px 10px;border-radius:20px;font-size:11px;">🔧 ${escapeHtml(itemType)}</span></td>
+        <td><span style="background:#e2e8f0;padding:4px 10px;border-radius:20px;font-size:11px;">🔧 ${escapeHtml(repairType)}</span></td>
+        <td><strong>${escapeHtml(itemName)}</strong></td>
         <td>${escapeHtml(description)}</td>
         <td>${escapeHtml(technician)}</td>
         <td>${fmtTSH(labourCost)}</td>
@@ -677,6 +651,7 @@ function updateSummaryCards() {
   document.getElementById('total-cost').innerHTML = fmtTSH(totalCost);
   document.getElementById('total-tasks').innerHTML = tasks.length;
 }
+
 function applyFilters() { 
   loadReport(); 
 }
@@ -684,28 +659,16 @@ function applyFilters() {
 function resetFilters() {
   document.getElementById('filter-from').value = '';
   document.getElementById('filter-to').value = '';
-  document.getElementById('filter-item-type').value = '';
+  document.getElementById('filter-repair-type').value = '';
   document.getElementById('filter-status').value = '';
   loadReport();
 }
 
-
 // Make sure filter buttons trigger the report
-document.getElementById('filter-from')?.addEventListener('change', function() {
-  loadReport();
-});
-
-document.getElementById('filter-to')?.addEventListener('change', function() {
-  loadReport();
-});
-
-document.getElementById('filter-item-type')?.addEventListener('change', function() {
-  loadReport();
-});
-
-document.getElementById('filter-status')?.addEventListener('change', function() {
-  loadReport();
-});
+document.getElementById('filter-from')?.addEventListener('change', function() { loadReport(); });
+document.getElementById('filter-to')?.addEventListener('change', function() { loadReport(); });
+document.getElementById('filter-repair-type')?.addEventListener('change', function() { loadReport(); });
+document.getElementById('filter-status')?.addEventListener('change', function() { loadReport(); });
 
 // ============================================================
 // NOTIFICATION SYSTEM
@@ -850,12 +813,12 @@ window.closeChangePasswordModal = closeChangePasswordModal;
 (function() {
   const fromDate = document.getElementById('filter-from');
   const toDate = document.getElementById('filter-to');
-  const itemType = document.getElementById('filter-item-type');
+  const repairType = document.getElementById('filter-repair-type');
   const status = document.getElementById('filter-status');
   
   if (fromDate) fromDate.addEventListener('change', () => loadReport());
   if (toDate) toDate.addEventListener('change', () => loadReport());
-  if (itemType) itemType.addEventListener('change', () => loadReport());
+  if (repairType) repairType.addEventListener('change', () => loadReport());
   if (status) status.addEventListener('change', () => loadReport());
   
   // Initial load

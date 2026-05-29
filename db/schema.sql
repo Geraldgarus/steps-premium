@@ -559,3 +559,28 @@ CREATE TABLE IF NOT EXISTS staff_activities (
 
 CREATE INDEX IF NOT EXISTS idx_staff_activities_date ON staff_activities(activity_date);
 CREATE INDEX IF NOT EXISTS idx_staff_activities_prepared_by ON staff_activities(prepared_by);
+
+
+-- ============================================================
+-- UPDATE MAINTENANCE TASKS TABLE
+-- ============================================================
+
+-- Add item_name column
+ALTER TABLE maintenance_tasks ADD COLUMN IF NOT EXISTS item_name VARCHAR(200);
+
+-- Rename item_type to repair_type (if column exists)
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns 
+               WHERE table_name='maintenance_tasks' AND column_name='item_type') THEN
+        ALTER TABLE maintenance_tasks RENAME COLUMN item_type TO repair_type;
+        RAISE NOTICE '✅ Renamed item_type column to repair_type';
+    END IF;
+END $$;
+
+-- Add repair_type if it doesn't exist (for new installations)
+ALTER TABLE maintenance_tasks ADD COLUMN IF NOT EXISTS repair_type VARCHAR(50);
+
+-- Create index on new columns
+CREATE INDEX IF NOT EXISTS idx_maintenance_tasks_repair_type ON maintenance_tasks(repair_type);
+CREATE INDEX IF NOT EXISTS idx_maintenance_tasks_item_name ON maintenance_tasks(item_name);
