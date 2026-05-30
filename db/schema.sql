@@ -584,3 +584,9 @@ ALTER TABLE maintenance_tasks ADD COLUMN IF NOT EXISTS repair_type VARCHAR(50);
 -- Create index on new columns
 CREATE INDEX IF NOT EXISTS idx_maintenance_tasks_repair_type ON maintenance_tasks(repair_type);
 CREATE INDEX IF NOT EXISTS idx_maintenance_tasks_item_name ON maintenance_tasks(item_name);
+
+
+
+-- Add contact_number to maintenance_tasks
+ALTER TABLE maintenance_tasks ADD COLUMN IF NOT EXISTS contact_number VARCHAR(50);
+CREATE INDEX IF NOT EXISTS idx_maintenance_tasks_contact_number ON maintenance_tasks(contact_number);

@@ -823,3 +823,12 @@ BEGIN
         RAISE NOTICE '❌ item_name column: MISSING';
     END IF;
 END $$;
+
+
+
+
+
+
+-- Add contact_number to maintenance_tasks
+ALTER TABLE maintenance_tasks ADD COLUMN IF NOT EXISTS contact_number VARCHAR(50);
+CREATE INDEX IF NOT EXISTS idx_maintenance_tasks_contact_number ON maintenance_tasks(contact_number);

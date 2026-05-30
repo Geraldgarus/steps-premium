@@ -2635,6 +2635,7 @@ async function createMaintenanceTable() {
         id SERIAL PRIMARY KEY,
         task_number VARCHAR(50) NOT NULL UNIQUE,
         technician_name VARCHAR(100) NOT NULL,
+        contact_number VARCHAR(50),
         repair_type VARCHAR(50) NOT NULL,
         item_name VARCHAR(200),
         description TEXT NOT NULL,
@@ -2719,11 +2720,11 @@ app.get('/api/maintenance/:id', async (req, res) => {
 // POST create maintenance task
 app.post('/api/maintenance', async (req, res) => {
   const { 
-    taskNumber, technicianName, repairType, itemName, description, 
+    taskNumber, technicianName, contactNumber, repairType, itemName, description, 
     labourCost, tools, totalToolsCost, date, remarks, status 
   } = req.body;
   
-  console.log('📝 Creating maintenance task:', { technicianName, repairType, itemName, labourCost });
+  console.log('📝 Creating maintenance task:', { technicianName, contactNumber, repairType, itemName, labourCost });
   
   if (!technicianName || !repairType || !description) {
     return res.status(400).json({ error: 'Technician name, repair type, and description are required' });
@@ -2736,14 +2737,14 @@ app.post('/api/maintenance', async (req, res) => {
   try {
     const { rows } = await pool.query(`
       INSERT INTO maintenance_tasks (
-        task_number, technician_name, repair_type, item_name, description, 
+        task_number, technician_name, contact_number, repair_type, item_name, description, 
         labour_cost, tools, total_tools_cost, total_cost, 
         task_date, remarks, status, created_by
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
       RETURNING *
     `, [
-      taskNum, technicianName, repairType, itemName || null, description,
+      taskNum, technicianName, contactNumber || null, repairType, itemName || null, description,
       labourCost || 0, toolsJson, totalToolsCost || 0, totalCost,
       date, remarks || null, status || 'pending', req.body.created_by || 'system'
     ]);
@@ -2763,7 +2764,7 @@ app.post('/api/maintenance', async (req, res) => {
 app.put('/api/maintenance/:id', async (req, res) => {
   const { id } = req.params;
   const { 
-    technicianName, repairType, itemName, description, 
+    technicianName, contactNumber, repairType, itemName, description, 
     labourCost, tools, totalToolsCost, date, remarks, status 
   } = req.body;
   
@@ -2774,21 +2775,22 @@ app.put('/api/maintenance/:id', async (req, res) => {
     const { rows } = await pool.query(`
       UPDATE maintenance_tasks SET
         technician_name = COALESCE($1, technician_name),
-        repair_type = COALESCE($2, repair_type),
-        item_name = COALESCE($3, item_name),
-        description = COALESCE($4, description),
-        labour_cost = COALESCE($5, labour_cost),
-        tools = COALESCE($6, tools),
-        total_tools_cost = COALESCE($7, total_tools_cost),
-        total_cost = COALESCE($8, total_cost),
-        task_date = COALESCE($9, task_date),
-        remarks = COALESCE($10, remarks),
-        status = COALESCE($11, status),
+        contact_number = COALESCE($2, contact_number),
+        repair_type = COALESCE($3, repair_type),
+        item_name = COALESCE($4, item_name),
+        description = COALESCE($5, description),
+        labour_cost = COALESCE($6, labour_cost),
+        tools = COALESCE($7, tools),
+        total_tools_cost = COALESCE($8, total_tools_cost),
+        total_cost = COALESCE($9, total_cost),
+        task_date = COALESCE($10, task_date),
+        remarks = COALESCE($11, remarks),
+        status = COALESCE($12, status),
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = $12
+      WHERE id = $13
       RETURNING *
     `, [
-      technicianName, repairType, itemName, description, 
+      technicianName, contactNumber, repairType, itemName, description, 
       labourCost, toolsJson, totalToolsCost, totalCost, 
       date, remarks, status, id
     ]);
@@ -2834,7 +2836,6 @@ app.delete('/api/maintenance/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 
 // ============================================================

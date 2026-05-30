@@ -179,7 +179,23 @@
           <input type="date" id="filter-to">
         </div>
         <div class="filter-row">
-          <select id="filter-item-type"><option value="">All Repair Types</option><option value="Electrical">⚡ Electrical</option><option value="Plumbing">🚰 Plumbing</option><option value="HVAC">❄️ HVAC</option><option value="Furniture">🪑 Furniture</option><option value="Appliance">📺 Appliance</option><option value="Building">🏗️ Building</option><option value="Other">🔧 Other</option></select>
+          <select id="filter-item-type">
+            <option value="">All Repair Types</option>
+            <option value="Electrical">⚡ Electrical</option>
+            <option value="Plumbing">🚰 Plumbing</option>
+            <option value="HVAC">❄️ HVAC</option>
+            <option value="Carpenter">🪚 Carpenter</option>
+            <option value="Painter">🎨 Painter</option>
+            <option value="Welder">🔥 Welder</option>
+            <option value="Electrician">⚡ Electrician</option>
+            <option value="Plumber">🚰 Plumber</option>
+            <option value="Masonry">🧱 Masonry</option>
+            <option value="Gardening">🌿 Gardening</option>
+            <option value="Furniture">🪑 Furniture</option>
+            <option value="Appliance">📺 Appliance</option>
+            <option value="Building">🏗️ Building</option>
+            <option value="Other">🔧 Other</option>
+          </select>
           <select id="filter-status"><option value="">All Status</option><option value="pending">⏳ Pending</option><option value="completed">✅ Completed</option></select>
         </div>
         <div class="filter-actions"><button class="btn btn-outline btn-sm" onclick="applyFilters()">Apply Filters</button><button class="btn btn-outline btn-sm" onclick="resetFilters()">Reset</button></div>
@@ -198,12 +214,20 @@
             <div class="form-group"><label>📅 Date</label><input type="date" id="task-date" class="form-control" required></div>
           </div>
           <div class="form-group-row">
+            <div class="form-group"><label>📞 Contact / Phone Number</label><input type="tel" id="contact-number" class="form-control" placeholder="e.g., 0712345678"></div>
             <div class="form-group"><label>🔧 Repair Type</label>
               <select id="item-type" class="form-control" required>
                 <option value="">Select Repair Type</option>
                 <option value="Electrical">⚡ Electrical</option>
                 <option value="Plumbing">🚰 Plumbing</option>
                 <option value="HVAC">❄️ HVAC</option>
+                <option value="Carpenter">🪚 Carpenter</option>
+                <option value="Painter">🎨 Painter</option>
+                <option value="Welder">🔥 Welder</option>
+                <option value="Electrician">⚡ Electrician</option>
+                <option value="Plumber">🚰 Plumber</option>
+                <option value="Masonry">🧱 Masonry</option>
+                <option value="Gardening">🌿 Gardening</option>
                 <option value="Furniture">🪑 Furniture</option>
                 <option value="Appliance">📺 Appliance</option>
                 <option value="Building">🏗️ Building</option>
@@ -285,6 +309,7 @@ function showForm() {
   document.getElementById('task-date').value = new Date().toISOString().split('T')[0];
   document.getElementById('task-number').value = 'MT-' + Date.now();
   document.getElementById('technician-name').value = '';
+  document.getElementById('contact-number').value = '';
   document.getElementById('item-type').value = '';
   document.getElementById('item-name').value = '';
   document.getElementById('description').value = '';
@@ -308,6 +333,7 @@ document.getElementById('maintenance-form')?.addEventListener('submit', async fu
   let taskData = {
     taskNumber: document.getElementById('task-number').value,
     technicianName: document.getElementById('technician-name').value,
+    contactNumber: document.getElementById('contact-number').value,
     repairType: document.getElementById('item-type').value,
     itemName: document.getElementById('item-name').value,
     description: document.getElementById('description').value,
@@ -368,6 +394,7 @@ async function viewTaskDetails(id) {
     let grand = task.total_cost || (labour + toolsTotal);
     let repairType = task.repair_type || task.repairType || task.item_type || 'Other';
     let itemName = task.item_name || task.itemName || 'N/A';
+    let contactNumber = task.contact_number || task.contactNumber || 'N/A';
     let toolsHtml = '<div class="tools-section">No additional tools recorded</div>';
     if (task.tools && task.tools.length > 0) {
       toolsHtml = `<div class="tools-section"><strong>🔧 Tools & Parts Used:</strong><ul>${task.tools.map(t => `<li>${escapeHtml(t.name)} - ${fmtTSH(t.cost || 0)}</li>`).join('')}</ul><div class="total-cost-box"><span>Tools Total:</span><span>${fmtTSH(toolsTotal)}</span></div></div>`;
@@ -378,6 +405,7 @@ async function viewTaskDetails(id) {
         <p><strong>Task Number:</strong> #${escapeHtml(task.task_number || task.taskNumber)}</p>
         <p><strong>Status:</strong> <select id="task-status-select" style="padding:5px 10px;border-radius:20px;border:1px solid #e2e8f0;" onchange="updateTaskStatus(${task.id}, this.value)"><option value="pending" ${task.status==='pending'?'selected':''}>⏳ Pending</option><option value="completed" ${task.status==='completed'?'selected':''}>✅ Completed</option></select></p>
         <p><strong>Technician:</strong> ${escapeHtml(task.technician_name || task.technicianName)}</p>
+        <p><strong>Contact:</strong> ${escapeHtml(contactNumber)}</p>
         <p><strong>Repair Type:</strong> ${escapeHtml(repairType)}</p>
         <p><strong>Item Name:</strong> ${escapeHtml(itemName)}</p>
         <p><strong>Date:</strong> ${task.task_date ? new Date(task.task_date).toLocaleDateString() : 'N/A'}</p>
@@ -401,6 +429,7 @@ async function openEditTask(id) {
     currentEditId = id;
     document.getElementById('task-number').value = task.task_number || task.taskNumber || '';
     document.getElementById('technician-name').value = task.technician_name || task.technicianName || '';
+    document.getElementById('contact-number').value = task.contact_number || task.contactNumber || '';
     document.getElementById('item-type').value = task.repair_type || task.repairType || task.item_type || '';
     document.getElementById('item-name').value = task.item_name || task.itemName || '';
     document.getElementById('description').value = task.description || '';
@@ -425,111 +454,6 @@ function logout() { sessionStorage.removeItem('pms_user'); window.location.href 
 function openChangePasswordModal() { document.getElementById('changePwOverlay').classList.add('show'); document.getElementById('changePwModal').classList.add('show'); document.body.style.overflow = 'hidden'; if (dropdownMenu) dropdownMenu.classList.remove('show'); if (userPill) userPill.classList.remove('active'); }
 function closeChangePasswordModal() { document.getElementById('changePwOverlay').classList.remove('show'); document.getElementById('changePwModal').classList.remove('show'); document.body.style.overflow = ''; document.getElementById('change-password-form').reset(); }
 
-// ============================================================
-// NOTIFICATION SYSTEM FOR MAINTENANCE PAGE
-// ============================================================
-
-let maintenanceNotifications = [];
-
-async function loadMaintenanceNotifications() {
-  try {
-    maintenanceNotifications = [];
-    const pendingTasks = tasks.filter(t => t.status === 'pending');
-    if (pendingTasks.length > 0) {
-      maintenanceNotifications.push({
-        id: 'pending_tasks',
-        message: `${pendingTasks.length} maintenance task(s) pending completion`,
-        time: new Date().toLocaleTimeString(),
-        read: false,
-        icon: '🔧'
-      });
-    }
-    renderMaintenanceNotifications();
-    updateMaintenanceNotificationBadge();
-  } catch(err) { console.error('Failed to load notifications:', err); }
-}
-
-function renderMaintenanceNotifications() {
-  const container = document.getElementById('notification-list');
-  if (!container) return;
-  if (maintenanceNotifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
-    return;
-  }
-  container.innerHTML = maintenanceNotifications.map(notif => `
-    <div class="notification-item ${notif.read ? 'read' : 'unread'}">
-      <div class="notification-message">
-        <span class="notification-icon">${notif.icon}</span>
-        ${escapeHtml(notif.message)}
-      </div>
-      <div class="notification-time">🕐 ${notif.time}</div>
-    </div>
-  `).join('');
-}
-
-function updateMaintenanceNotificationBadge() {
-  const badge = document.getElementById('notif-badge');
-  if (!badge) return;
-  const unreadCount = maintenanceNotifications.filter(n => !n.read).length;
-  badge.textContent = unreadCount;
-  badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
-}
-
-function toggleMaintenanceNotificationPanel() {
-  const panel = document.getElementById('notification-panel');
-  if (panel) panel.classList.toggle('show');
-}
-
-function closeMaintenanceNotificationPanel() {
-  const panel = document.getElementById('notification-panel');
-  if (panel) panel.classList.remove('show');
-}
-
-function markAllMaintenanceNotificationsRead() {
-  maintenanceNotifications.forEach(n => n.read = true);
-  renderMaintenanceNotifications();
-  updateMaintenanceNotificationBadge();
-  showToast('All notifications marked as read', 'success');
-}
-
-const originalLoadTasks = loadTasks;
-loadTasks = async function() {
-  await originalLoadTasks();
-  setTimeout(() => loadMaintenanceNotifications(), 500);
-};
-
-const maintenanceNotifBtn = document.getElementById('notif-btn');
-if (maintenanceNotifBtn) {
-  maintenanceNotifBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleMaintenanceNotificationPanel();
-  });
-}
-
-document.addEventListener('click', function(e) {
-  const panel = document.getElementById('notification-panel');
-  const btn = document.getElementById('notif-btn');
-  if (panel && btn && !btn.contains(e.target) && !panel.contains(e.target)) {
-    panel.classList.remove('show');
-  }
-});
-
-const maintenanceMarkAllBtn = document.getElementById('mark-all-read-btn');
-if (maintenanceMarkAllBtn) {
-  maintenanceMarkAllBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    markAllMaintenanceNotificationsRead();
-  });
-}
-
-const maintenanceCloseNotifBtn = document.getElementById('close-notif-panel');
-if (maintenanceCloseNotifBtn) {
-  maintenanceCloseNotifBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    closeMaintenanceNotificationPanel();
-  });
-}
-
 document.addEventListener('DOMContentLoaded', function() {
   let user = getCurrentUser();
   if (!user) { window.location.href = '/'; return; }
@@ -537,8 +461,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('userRole').innerText = user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User';
   document.getElementById('userAvatar').innerText = (user.fullName || user.username || 'U').charAt(0).toUpperCase();
   loadTasks();
-  loadMaintenanceNotifications();
-  setInterval(() => { loadTasks(); loadMaintenanceNotifications(); }, 60000);
+  setInterval(() => loadTasks(), 60000);
   document.getElementById('openChangePwBtn')?.addEventListener('click', openChangePasswordModal);
   document.getElementById('closeChangePwBtn')?.addEventListener('click', closeChangePasswordModal);
   document.getElementById('cancelChangePwBtn')?.addEventListener('click', closeChangePasswordModal);
