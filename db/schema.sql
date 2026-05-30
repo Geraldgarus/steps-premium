@@ -596,3 +596,51 @@ ALTER TABLE maintenance_tasks ADD COLUMN IF NOT EXISTS contact_number VARCHAR(50
 
 -- Create index for faster searches
 CREATE INDEX IF NOT EXISTS idx_maintenance_tasks_contact_number ON maintenance_tasks(contact_number);
+
+
+
+-- ============================================================
+-- MAINTENANCE RECORDS TABLE (New table with all fields)
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS maintenance_records (
+  id SERIAL PRIMARY KEY,
+  task_number VARCHAR(50) NOT NULL UNIQUE,
+  technician_name VARCHAR(100) NOT NULL,
+  contact_number VARCHAR(50),
+  repair_type VARCHAR(50) NOT NULL,
+  item_name VARCHAR(200),
+  description TEXT NOT NULL,
+  labour_cost INT DEFAULT 0,
+  tools JSONB DEFAULT '[]'::jsonb,
+  total_tools_cost INT DEFAULT 0,
+  total_cost INT DEFAULT 0,
+  task_date DATE NOT NULL,
+  remarks TEXT,
+  status VARCHAR(20) DEFAULT 'pending',
+  created_by VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create indexes
+CREATE INDEX IF NOT EXISTS idx_maintenance_records_date ON maintenance_records(task_date);
+CREATE INDEX IF NOT EXISTS idx_maintenance_records_status ON maintenance_records(status);
+CREATE INDEX IF NOT EXISTS idx_maintenance_records_repair_type ON maintenance_records(repair_type);
+CREATE INDEX IF NOT EXISTS idx_maintenance_records_technician ON maintenance_records(technician_name);
+CREATE INDEX IF NOT EXISTS idx_maintenance_records_contact_number ON maintenance_records(contact_number);
+
+-- Trigger for updated_at
+CREATE OR REPLACE FUNCTION update_maintenance_records_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = CURRENT_TIMESTAMP;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trigger_maintenance_records_updated_at ON maintenance_records;
+CREATE TRIGGER trigger_maintenance_records_updated_at
+  BEFORE UPDATE ON maintenance_records
+  FOR EACH ROW
+  EXECUTE FUNCTION update_maintenance_records_updated_at();

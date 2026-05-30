@@ -2627,11 +2627,11 @@ app.use(compression());
 // MAINTENANCE MANAGEMENT API
 // ============================================================
 
-// Create maintenance table
+// Create maintenance records table
 async function createMaintenanceTable() {
   try {
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS maintenance_tasks (
+      CREATE TABLE IF NOT EXISTS maintenance_records (
         id SERIAL PRIMARY KEY,
         task_number VARCHAR(50) NOT NULL UNIQUE,
         technician_name VARCHAR(100) NOT NULL,
@@ -2651,19 +2651,19 @@ async function createMaintenanceTable() {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
-    console.log('✅ Maintenance table ready');
+    console.log('✅ Maintenance records table ready');
   } catch (err) {
-    console.log('Maintenance table note:', err.message);
+    console.log('Maintenance records table note:', err.message);
   }
 }
 
 // Call this after database connection
 createMaintenanceTable();
 
-// GET all maintenance tasks (with filters)
+// GET all maintenance records (with filters)
 app.get('/api/maintenance', async (req, res) => {
   const { from, to, repairType, status } = req.query;
-  let query = 'SELECT * FROM maintenance_tasks WHERE 1=1';
+  let query = 'SELECT * FROM maintenance_records WHERE 1=1';
   const params = [];
   let paramCount = 1;
   
@@ -2700,10 +2700,10 @@ app.get('/api/maintenance', async (req, res) => {
   }
 });
 
-// GET single maintenance task
+// GET single maintenance record
 app.get('/api/maintenance/:id', async (req, res) => {
   try {
-    const { rows } = await pool.query('SELECT * FROM maintenance_tasks WHERE id = $1', [req.params.id]);
+    const { rows } = await pool.query('SELECT * FROM maintenance_records WHERE id = $1', [req.params.id]);
     if (rows.length === 0) return res.status(404).json({ error: 'Task not found' });
     
     const task = rows[0];
@@ -2717,14 +2717,14 @@ app.get('/api/maintenance/:id', async (req, res) => {
   }
 });
 
-// POST create maintenance task
+// POST create maintenance record
 app.post('/api/maintenance', async (req, res) => {
   const { 
     taskNumber, technicianName, contactNumber, repairType, itemName, description, 
     labourCost, tools, totalToolsCost, date, remarks, status 
   } = req.body;
   
-  console.log('📝 Creating maintenance task:', { technicianName, contactNumber, repairType, itemName, labourCost });
+  console.log('📝 Creating maintenance record:', { technicianName, contactNumber, repairType, itemName, labourCost });
   
   if (!technicianName || !repairType || !description) {
     return res.status(400).json({ error: 'Technician name, repair type, and description are required' });
@@ -2736,7 +2736,7 @@ app.post('/api/maintenance', async (req, res) => {
   
   try {
     const { rows } = await pool.query(`
-      INSERT INTO maintenance_tasks (
+      INSERT INTO maintenance_records (
         task_number, technician_name, contact_number, repair_type, item_name, description, 
         labour_cost, tools, total_tools_cost, total_cost, 
         task_date, remarks, status, created_by
@@ -2752,15 +2752,15 @@ app.post('/api/maintenance', async (req, res) => {
     const newTask = rows[0];
     newTask.tools = typeof newTask.tools === 'string' ? JSON.parse(newTask.tools) : (newTask.tools || []);
     
-    console.log('✅ Task created:', newTask.id);
+    console.log('✅ Record created:', newTask.id);
     res.status(201).json(newTask);
   } catch (err) {
-    console.error('Create task error:', err);
+    console.error('Create record error:', err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// PUT update maintenance task
+// PUT update maintenance record
 app.put('/api/maintenance/:id', async (req, res) => {
   const { id } = req.params;
   const { 
@@ -2773,7 +2773,7 @@ app.put('/api/maintenance/:id', async (req, res) => {
   
   try {
     const { rows } = await pool.query(`
-      UPDATE maintenance_tasks SET
+      UPDATE maintenance_records SET
         technician_name = COALESCE($1, technician_name),
         contact_number = COALESCE($2, contact_number),
         repair_type = COALESCE($3, repair_type),
@@ -2802,7 +2802,7 @@ app.put('/api/maintenance/:id', async (req, res) => {
     
     res.json(updatedTask);
   } catch (err) {
-    console.error('Update task error:', err);
+    console.error('Update record error:', err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -2814,7 +2814,7 @@ app.put('/api/maintenance/:id/status', async (req, res) => {
   
   try {
     const { rows } = await pool.query(`
-      UPDATE maintenance_tasks SET status = $1, updated_at = CURRENT_TIMESTAMP
+      UPDATE maintenance_records SET status = $1, updated_at = CURRENT_TIMESTAMP
       WHERE id = $2 RETURNING *
     `, [status, id]);
     
@@ -2825,11 +2825,11 @@ app.put('/api/maintenance/:id/status', async (req, res) => {
   }
 });
 
-// DELETE maintenance task
+// DELETE maintenance record
 app.delete('/api/maintenance/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const { rowCount } = await pool.query('DELETE FROM maintenance_tasks WHERE id = $1', [id]);
+    const { rowCount } = await pool.query('DELETE FROM maintenance_records WHERE id = $1', [id]);
     if (rowCount === 0) return res.status(404).json({ error: 'Task not found' });
     res.json({ message: 'Task deleted successfully' });
   } catch (err) {

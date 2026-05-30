@@ -417,9 +417,16 @@
         <label>🔧 Repair Type</label>
         <select id="filter-repair-type">
           <option value="">All Types</option>
-          <option value="Electrical">⚡ Electrical</option>
-          <option value="Plumbing">🚰 Plumbing</option>
+          
+          
           <option value="HVAC">❄️ HVAC</option>
+          <option value="Carpenter">🪚 Carpenter</option>
+          <option value="Painter">🎨 Painter</option>
+          <option value="Welder">🔥 Welder</option>
+          <option value="Electrician">⚡ Electrician</option>
+          <option value="Plumber">🚰 Plumber</option>
+          <option value="Mason">🧱 Mason</option>
+          <option value="Gardener">🌿 Gardener</option>
           <option value="Furniture">🪑 Furniture</option>
           <option value="Appliance">📺 Appliance</option>
           <option value="Building">🏗️ Building</option>
@@ -451,11 +458,11 @@
     <!-- Summary Cards -->
     <div class="summary-cards">
       <div class="summary-card pending">
-        <h4>⏳ PENDING TASKS</h4>
+        <h4>⏳ PENDING RECORDS</h4>
         <div class="amount" id="pending-count">0</div>
       </div>
       <div class="summary-card completed">
-        <h4>✅ COMPLETED TASKS</h4>
+        <h4>✅ COMPLETED RECORDS</h4>
         <div class="amount" id="completed-count">0</div>
       </div>
       <div class="summary-card cost">
@@ -463,24 +470,25 @@
         <div class="amount" id="total-cost">TSh 0</div>
       </div>
       <div class="summary-card count">
-        <h4>📊 TOTAL TASKS</h4>
+        <h4>📊 TOTAL RECORDS</h4>
         <div class="amount" id="total-tasks">0</div>
       </div>
     </div>
 
-    <!-- Maintenance Tasks Table -->
+    <!-- Maintenance Records Table -->
     <div class="report-table">
-      <h3><i class="fas fa-tools"></i> Maintenance Tasks Report</h3>
+      <h3><i class="fas fa-tools"></i> Maintenance Records Report</h3>
       <div style="overflow-x: auto;">
         <table id="tasks-table">
           <thead>
             <tr>
-              <th>Task #</th>
+              <th>Record #</th>
               <th>Date</th>
               <th>Repair Type</th>
               <th>Item Name</th>
               <th>Description</th>
               <th>Technician</th>
+              <th>Contact</th>
               <th>Labour Cost</th>
               <th>Tools Cost</th>
               <th>Total Cost</th>
@@ -488,11 +496,11 @@
             </tr>
           </thead>
           <tbody id="tasks-body">
-            <tr><td colspan="10" style="text-align: center;">Loading...</td</tr>
+            <tr><td colspan="11" style="text-align: center;">Loading...</td</tr>
           </tbody>
           <tfoot id="tasks-footer" style="display: none;">
             <tr class="total-row">
-              <td colspan="7"><strong>GRAND TOTAL</strong></td>
+              <td colspan="8"><strong>GRAND TOTAL</strong></td>
               <td id="footer-tools-cost">TSh 0</td>
               <td id="footer-total-cost">TSh 0</td>
               <td></td>
@@ -580,7 +588,7 @@ async function loadReport() {
     loadNotifications();
   } catch(err) {
     console.error('Failed to load report:', err);
-    document.getElementById('tasks-body').innerHTML = '</tr><td colspan="10" style="text-align: center; color: #ef4444;">Error loading tasks</td></tr>';
+    document.getElementById('tasks-body').innerHTML = '<tr><td colspan="11" style="text-align: center; color: #ef4444;">Error loading records</td></tr>';
     showToast('Failed to load report: ' + err.message, 'error');
   }
 }
@@ -590,7 +598,7 @@ function renderReport() {
   const footer = document.getElementById('tasks-footer');
   
   if (!tasks.length) {
-    tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">No maintenance tasks found</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="11" style="text-align: center;">No maintenance records found</td></tr>';
     footer.style.display = 'none';
     return;
   }
@@ -607,10 +615,11 @@ function renderReport() {
     const totalCost = task.total_cost || (labourCost + toolsCost);
     const statusClass = task.status === 'completed' ? 'status-completed' : 'status-pending';
     const statusText = task.status === 'completed' ? 'Completed' : 'Pending';
-    const repairType = task.repair_type || task.repairType || task.item_type || 'Other';
+    const repairType = task.repair_type || task.repairType || 'Other';
     const itemName = task.item_name || task.itemName || '—';
     const description = task.description ? (task.description.length > 40 ? task.description.substring(0, 40) + '...' : task.description) : 'N/A';
     const technician = task.technician_name || task.technicianName || 'N/A';
+    const contactNumber = task.contact_number || task.contactNumber || 'N/A';
     const taskNumber = task.task_number || task.taskNumber || 'MT-' + task.id;
     
     totalLabour += labourCost;
@@ -625,6 +634,7 @@ function renderReport() {
         <td><strong>${escapeHtml(itemName)}</strong></td>
         <td>${escapeHtml(description)}</td>
         <td>${escapeHtml(technician)}</td>
+        <td>📞 ${escapeHtml(contactNumber)}</td>
         <td>${fmtTSH(labourCost)}</td>
         <td>${fmtTSH(toolsCost)}</td>
         <td style="font-weight:600;color:#c9933a;">${fmtTSH(totalCost)}</td>
@@ -681,7 +691,7 @@ async function loadNotifications() {
     if (pendingTasks.length > 0) {
       notifications.push({
         id: 'pending_tasks',
-        message: `${pendingTasks.length} maintenance task(s) pending completion`,
+        message: `${pendingTasks.length} maintenance record(s) pending completion`,
         time: new Date().toLocaleTimeString(),
         read: false,
         icon: '🔧'

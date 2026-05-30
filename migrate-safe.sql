@@ -856,3 +856,83 @@ BEGIN
         RAISE NOTICE '✅ contact_number column is ready for use';
     END IF;
 END $$;
+
+
+
+-- ============================================================
+-- CREATE MAINTENANCE RECORDS TABLE (Safe - No conflicts)
+-- ============================================================
+
+-- Drop old table if you want to replace it (optional - comment out if you want to keep old data)
+-- DROP TABLE IF EXISTS maintenance_tasks CASCADE;
+
+-- Create new maintenance_records table
+CREATE TABLE IF NOT EXISTS maintenance_records (
+  id SERIAL PRIMARY KEY,
+  task_number VARCHAR(50) NOT NULL UNIQUE,
+  technician_name VARCHAR(100) NOT NULL,
+  contact_number VARCHAR(50),
+  repair_type VARCHAR(50) NOT NULL,
+  item_name VARCHAR(200),
+  description TEXT NOT NULL,
+  labour_cost INT DEFAULT 0,
+  tools JSONB DEFAULT '[]'::jsonb,
+  total_tools_cost INT DEFAULT 0,
+  total_cost INT DEFAULT 0,
+  task_date DATE NOT NULL,
+  remarks TEXT,
+  status VARCHAR(20) DEFAULT 'pending',
+  created_by VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create indexes
+CREATE INDEX IF NOT EXISTS idx_maintenance_records_date ON maintenance_records(task_date);
+CREATE INDEX IF NOT EXISTS idx_maintenance_records_status ON maintenance_records(status);
+CREATE INDEX IF NOT EXISTS idx_maintenance_records_repair_type ON maintenance_records(repair_type);
+CREATE INDEX IF NOT EXISTS idx_maintenance_records_technician ON maintenance_records(technician_name);
+CREATE INDEX IF NOT EXISTS idx_maintenance_records_contact_number ON maintenance_records(contact_number);
+
+-- Create trigger
+CREATE OR REPLACE FUNCTION update_maintenance_records_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = CURRENT_TIMESTAMP;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trigger_maintenance_records_updated_at ON maintenance_records;
+CREATE TRIGGER trigger_maintenance_records_updated_at
+  BEFORE UPDATE ON maintenance_records
+  FOR EACH ROW
+  EXECUTE FUNCTION update_maintenance_records_updated_at();
+
+-- Copy data from old table if it exists and has data
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'maintenance_tasks') THEN
+        INSERT INTO maintenance_records (
+            task_number, technician_name, repair_type, item_name, description,
+            labour_cost, tools, total_tools_cost, total_cost, task_date, remarks, status, created_by, created_at, updated_at
+        )
+        SELECT 
+            task_number, technician_name, 
+            COALESCE(repair_type, item_type, 'Other') as repair_type,
+            item_name, description,
+            labour_cost, tools, total_tools_cost, total_cost, task_date, remarks, status, created_by, created_at, updated_at
+        FROM maintenance_tasks
+        WHERE task_number IS NOT NULL
+        ON CONFLICT (task_number) DO NOTHING;
+        RAISE NOTICE '✅ Copied data from maintenance_tasks to maintenance_records';
+    END IF;
+END $$;
+
+-- Verification
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'maintenance_records') THEN
+        RAISE NOTICE '✅ maintenance_records table created successfully';
+    END IF;
+END $$;
