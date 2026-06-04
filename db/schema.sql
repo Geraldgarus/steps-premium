@@ -644,3 +644,18 @@ CREATE TRIGGER trigger_maintenance_records_updated_at
   BEFORE UPDATE ON maintenance_records
   FOR EACH ROW
   EXECUTE FUNCTION update_maintenance_records_updated_at();
+
+
+
+-- ============================================================
+-- ADD PAYMENT COLUMNS TO RESERVATIONS TABLE
+-- ============================================================
+
+ALTER TABLE reservations ADD COLUMN IF NOT EXISTS payment_status VARCHAR(20) DEFAULT 'unpaid';
+ALTER TABLE reservations ADD COLUMN IF NOT EXISTS payment_method VARCHAR(50);
+ALTER TABLE reservations ADD COLUMN IF NOT EXISTS payment_date TIMESTAMP;
+ALTER TABLE reservations ADD COLUMN IF NOT EXISTS amount_paid INT DEFAULT 0;
+ALTER TABLE reservations ADD COLUMN IF NOT EXISTS balance INT DEFAULT 0;
+
+CREATE INDEX IF NOT EXISTS idx_reservations_payment_status ON reservations(payment_status);
+CREATE INDEX IF NOT EXISTS idx_reservations_payment_method ON reservations(payment_method);

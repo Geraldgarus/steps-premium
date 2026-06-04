@@ -596,7 +596,7 @@
     <a href="/reports" class="nav-icon-btn" title="Reports">
       <i class="fas fa-chart-line"></i>
     </a>
-    <button class="btn-add-reservation" onclick="openReservationModal()">＋ Add Reservation</button>
+    <button class="" onclick="openReservationModal()"></button>
     <button class="notif-btn" id="notif-btn">
   🔔<span class="badge" id="notif-badge">0</span>
 </button>
@@ -627,7 +627,7 @@
       <h2 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--navy)">Apartments</h2>
       <p style="color:var(--gray-400);font-size:13px;margin-top:4px">Overview of all 6 apartments and their status</p>
     </div>
-    <button class="btn btn-gold" onclick="openReservationModal()">＋ New Reservation</button>
+    <button class="" onclick=""></button>
   </div>
   <div class="rooms-grid" id="rooms-grid"></div>
   <!-- Notification Panel -->
@@ -691,7 +691,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>🧒 Children</label>
+          <label> Children</label>
           <div class="stepper">
             <button type="button" onclick="modalStepperChange('modal-f-children', -1)">−</button>
             <input type="number" id="modal-f-children" value="0" min="0" max="6" />
@@ -923,7 +923,7 @@
   <div class="detail-panel-body" id="detail-body"></div>
   <div class="detail-panel-footer">
     <button class="btn btn-outline" style="flex:1" onclick="closeDetailPanel()">Close</button>
-    <button class="btn btn-gold" onclick="openEditFromDetail()">✏️ Edit</button>
+    
     <button class="btn btn-danger" onclick="deleteSelectedReservation()">🗑 Delete</button>
   </div>
 </div>

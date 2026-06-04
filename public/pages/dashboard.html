@@ -818,29 +818,64 @@
       </div>
       <div class="form-group-row" style="grid-template-columns:1fr 1fr 1.2fr">
         <div class="form-group"><label>👤 Adults</label><div class="stepper"><button type="button" onclick="modalStepperChange('modal-f-adults', -1)">−</button><input type="number" id="modal-f-adults" value="1" min="1" max="6" /><button type="button" onclick="modalStepperChange('modal-f-adults', 1)">+</button></div></div>
-        <div class="form-group"><label>🧒 Children</label><div class="stepper"><button type="button" onclick="modalStepperChange('modal-f-children', -1)">−</button><input type="number" id="modal-f-children" value="0" min="0" max="6" /><button type="button" onclick="modalStepperChange('modal-f-children', 1)">+</button></div></div>
+        <div class="form-group"><label> 👤Children</label><div class="stepper"><button type="button" onclick="modalStepperChange('modal-f-children', -1)">−</button><input type="number" id="modal-f-children" value="0" min="0" max="6" /><button type="button" onclick="modalStepperChange('modal-f-children', 1)">+</button></div></div>
         <div class="form-group">
-  <label>💰 Total Rate</label>
-  <div id="modal-total-container">
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <div class="rate-display" id="modal-f-total" style="flex: 1;">—</div>
-      <i class="fas fa-pencil-alt custom-rate-edit-icon" onclick="enableCustomTotal('modal')" title="Set custom total"></i>
-    </div>
-    <div id="modal-custom-area" style="display: none; margin-top: 8px;"></div>
-  </div>
-  <input type="hidden" id="modal-f-total-hidden" value="0">
-  <input type="hidden" id="modal-use-custom-total" value="0">
-  
-<input type="hidden" id="modal-f-identification-hidden" value="">
-<input type="hidden" id="modal-f-id-type-hidden" value="">
-</div>
+          <label>💰 Total Rate</label>
+          <div id="modal-total-container">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="rate-display" id="modal-f-total" style="flex: 1;">—</div>
+              <i class="fas fa-pencil-alt custom-rate-edit-icon" onclick="enableCustomTotal('modal')" title="Set custom total"></i>
+            </div>
+            <div id="modal-custom-area" style="display: none; margin-top: 8px;"></div>
+          </div>
+          <input type="hidden" id="modal-f-total-hidden" value="0">
+          <input type="hidden" id="modal-use-custom-total" value="0">
+          <input type="hidden" id="modal-f-identification-hidden" value="">
+          <input type="hidden" id="modal-f-id-type-hidden" value="">
+        </div>
+      </div>  <!-- This closes the Adults/Children/Total Rate row -->
+
+      <!-- PAYMENT SECTION -->
+      <hr class="divider" />
+      <div class="form-group-row cols-2">
+        <div class="form-group">
+          <label>💰 Payment Status</label>
+          <select id="modal-f-payment-status" class="form-control">
+            <option value="unpaid">❌ Unpaid</option>
+            <option value="partial">🟡 Partial Payment</option>
+            <option value="paid">✅ Paid in Full</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>💳 Payment Method</label>
+          <select id="modal-f-payment-method" class="form-control">
+            <option value="">Select Payment Method</option>
+            <option value="cash">💵 Cash</option>
+            <option value="card">💳 Card (Visa/Mastercard)</option>
+            <option value="bank_transfer">🏦 Bank Transfer</option>
+            <option value="mobile_money">📱 Mobile Money (M-Pesa/Tigo Pesa)</option>
+            <option value="cheque">📝 Cheque</option>
+            <option value="other">🔄 Other</option>
+          </select>
+        </div>
       </div>
+      <div class="form-group-row cols-2">
+        <div class="form-group">
+          <label>💰 Amount Paid (TSH)</label>
+          <input type="number" id="modal-f-amount-paid" class="form-control" value="0" min="0" step="1000" />
+        </div>
+        <div class="form-group">
+          <label>💵 Balance Due</label>
+          <div class="balance-display" id="modal-f-balance" style="padding: 10px; background: #f1f5f9; border-radius: 12px; font-weight: 600;">—</div>
+        </div>
+      </div>
+
       <hr class="divider" />
       <div class="form-group-row cols-3">
-  <div class="form-group"><label>👤 Guest Name</label><input type="text" id="modal-f-guest" class="form-control" placeholder="Full name" required /></div>
-  <div class="form-group"><label>📧 Email</label><input type="email" id="modal-f-email" class="form-control" placeholder="Email address" required /></div>
-  <div class="form-group"><label>📱 Mobile</label><input type="tel" id="modal-f-mobile" class="form-control" placeholder="+255 XXX XXX" required /></div>
-</div>
+        <div class="form-group"><label>👤 Guest Name</label><input type="text" id="modal-f-guest" class="form-control" placeholder="Full name" required /></div>
+        <div class="form-group"><label>📧 Email</label><input type="email" id="modal-f-email" class="form-control" placeholder="Email address" required /></div>
+        <div class="form-group"><label>📱 Mobile</label><input type="tel" id="modal-f-mobile" class="form-control" placeholder="+255 XXX XXX" required /></div>
+      </div>
 
 <!-- NEW ROW: National ID / Passport ID -->
 <div class="form-group-row cols-2">
@@ -910,26 +945,61 @@
       </div>
       <div class="form-group-row" style="grid-template-columns:1fr 1fr 1.2fr">
         <div class="form-group"><label>👤 Adults</label><div class="stepper"><button type="button" onclick="editStepperChange('edit-f-adults', -1)">−</button><input type="number" id="edit-f-adults" value="1" min="1" max="6" /><button type="button" onclick="editStepperChange('edit-f-adults', 1)">+</button></div></div>
-        <div class="form-group"><label>👤Children</label><div class="stepper"><button type="button" onclick="editStepperChange('edit-f-children', -1)">−</button><input type="number" id="edit-f-children" value="0" min="0" max="6" /><button type="button" onclick="editStepperChange('edit-f-children', 1)">+</button></div></div>
-        <div <div class="form-group">
-  <label>💰 Total Rate</label>
-  <div id="edit-total-container">
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <div class="rate-display" id="edit-f-total" style="flex: 1;">—</div>
-      <i class="fas fa-pencil-alt custom-rate-edit-icon" onclick="enableCustomTotal('edit')" title="Set custom total"></i>
-    </div>
-    <div id="edit-custom-area" style="display: none; margin-top: 8px;"></div>
-  </div>
-  <input type="hidden" id="edit-f-total-hidden" value="0">
-  <input type="hidden" id="edit-use-custom-total" value="0">
-</div>
+        <div class="form-group"><label>👤 Children</label><div class="stepper"><button type="button" onclick="editStepperChange('edit-f-children', -1)">−</button><input type="number" id="edit-f-children" value="0" min="0" max="6" /><button type="button" onclick="editStepperChange('edit-f-children', 1)">+</button></div></div>
+        <div class="form-group">
+          <label>💰 Total Rate</label>
+          <div id="edit-total-container">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="rate-display" id="edit-f-total" style="flex: 1;">—</div>
+              <i class="fas fa-pencil-alt custom-rate-edit-icon" onclick="enableCustomTotal('edit')" title="Set custom total"></i>
+            </div>
+            <div id="edit-custom-area" style="display: none; margin-top: 8px;"></div>
+          </div>
+          <input type="hidden" id="edit-f-total-hidden" value="0">
+          <input type="hidden" id="edit-use-custom-total" value="0">
+        </div>
+      </div>  <!-- This closes the Adults/Children/Total Rate row -->
+
+      <!-- PAYMENT SECTION FOR EDIT MODAL -->
+      <hr class="divider" />
+      <div class="form-group-row cols-2">
+        <div class="form-group">
+          <label>💰 Payment Status</label>
+          <select id="edit-f-payment-status" class="form-control">
+            <option value="unpaid">❌ Unpaid</option>
+            <option value="partial">🟡 Partial Payment</option>
+            <option value="paid">✅ Paid in Full</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>💳 Payment Method</label>
+          <select id="edit-f-payment-method" class="form-control">
+            <option value="">Select Payment Method</option>
+            <option value="cash">💵 Cash</option>
+            <option value="card">💳 Card</option>
+            <option value="bank_transfer">🏦 Bank Transfer</option>
+            <option value="mobile_money">📱 Mobile Money</option>
+            <option value="cheque">📝 Cheque</option>
+          </select>
+        </div>
       </div>
+      <div class="form-group-row cols-2">
+        <div class="form-group">
+          <label>💰 Amount Paid (TSH)</label>
+          <input type="number" id="edit-f-amount-paid" class="form-control" value="0" min="0" step="1000" />
+        </div>
+        <div class="form-group">
+          <label>💵 Balance Due</label>
+          <div class="balance-display" id="edit-f-balance" style="padding: 10px; background: #f1f5f9; border-radius: 12px; font-weight: 600;">—</div>
+        </div>
+      </div>
+
       <hr class="divider" />
       <div class="form-group-row cols-3">
-  <div class="form-group"><label>👤 Guest Name</label><input type="text" id="edit-f-guest" class="form-control" placeholder="Full name" required /></div>
-  <div class="form-group"><label>📧 Email</label><input type="email" id="edit-f-email" class="form-control" placeholder="Email address" required /></div>
-  <div class="form-group"><label>📱 Mobile</label><input type="tel" id="edit-f-mobile" class="form-control" placeholder="+255 XXX XXX" required /></div>
-</div>
+        <div class="form-group"><label>👤 Guest Name</label><input type="text" id="edit-f-guest" class="form-control" placeholder="Full name" required /></div>
+        <div class="form-group"><label>📧 Email</label><input type="email" id="edit-f-email" class="form-control" placeholder="Email address" required /></div>
+        <div class="form-group"><label>📱 Mobile</label><input type="tel" id="edit-f-mobile" class="form-control" placeholder="+255 XXX XXX" required /></div>
+      </div>
 
 <!-- NEW ROW: National ID / Passport ID -->
 <div class="form-group-row cols-2">
@@ -1045,6 +1115,84 @@
 <script src="../js/utils.js"></script>
 <script src="../js/dashboard.js"></script>
 <script>
+// ============================================================
+// PAYMENT HANDLING FUNCTIONS - ADD THIS ENTIRE BLOCK
+// ============================================================
+
+function updateBalance(type) {
+  const totalField = document.getElementById(`${type}-f-total-hidden`);
+  const amountPaidField = document.getElementById(`${type}-f-amount-paid`);
+  const balanceDisplay = document.getElementById(`${type}-f-balance`);
+  const paymentStatusSelect = document.getElementById(`${type}-f-payment-status`);
+  
+  if (!totalField || !amountPaidField || !balanceDisplay) return;
+  
+  const total = parseFloat(totalField.value) || 0;
+  let amountPaid = parseFloat(amountPaidField.value) || 0;
+  
+  // Don't allow amount paid to exceed total
+  if (amountPaid > total) {
+    amountPaid = total;
+    amountPaidField.value = total;
+  }
+  
+  const balance = total - amountPaid;
+  balanceDisplay.innerHTML = fmtTSH(balance);
+  
+  if (paymentStatusSelect) {
+    if (balance <= 0) {
+      paymentStatusSelect.value = 'paid';
+    } else if (amountPaid > 0) {
+      paymentStatusSelect.value = 'partial';
+    } else {
+      paymentStatusSelect.value = 'unpaid';
+    }
+  }
+  
+  console.log(`💰 ${type} balance updated: Total=${total}, Paid=${amountPaid}, Balance=${balance}, Status=${paymentStatusSelect?.value}`);
+}
+
+function initPaymentListeners(type) {
+  const amountPaidField = document.getElementById(`${type}-f-amount-paid`);
+  const paymentStatusSelect = document.getElementById(`${type}-f-payment-status`);
+  
+  if (amountPaidField) {
+    amountPaidField.removeEventListener('input', () => updateBalance(type));
+    amountPaidField.addEventListener('input', () => updateBalance(type));
+  }
+  
+  if (paymentStatusSelect) {
+    paymentStatusSelect.removeEventListener('change', () => {});
+    paymentStatusSelect.addEventListener('change', () => {
+      if (paymentStatusSelect.value === 'paid') {
+        const total = parseFloat(document.getElementById(`${type}-f-total-hidden`).value) || 0;
+        if (amountPaidField) amountPaidField.value = total;
+        updateBalance(type);
+      } else if (paymentStatusSelect.value === 'unpaid') {
+        if (amountPaidField) amountPaidField.value = 0;
+        updateBalance(type);
+      }
+    });
+  }
+}
+
+// Override modalUpdateRate to update balance
+const originalModalUpdateRate = modalUpdateRate;
+modalUpdateRate = function() {
+  originalModalUpdateRate();
+  setTimeout(() => updateBalance('modal'), 100);
+};
+
+// Override editUpdateRate to update balance
+const originalEditUpdateRate = editUpdateRate;
+editUpdateRate = function() {
+  originalEditUpdateRate();
+  setTimeout(() => updateBalance('edit'), 100);
+};
+
+
+
+
 // ============================================================
 // CUSTOM TOTAL RATE FUNCTIONALITY
 // ============================================================
@@ -2019,10 +2167,18 @@ async function initModalForm() {
       return;
     }
   }
+  
+  // Initialize payment fields - MOVED OUTSIDE the if block
+  document.getElementById('modal-f-amount-paid').value = 0;
+  document.getElementById('modal-f-payment-status').value = 'unpaid';
+  document.getElementById('modal-f-payment-method').value = '';
+  updateBalance('modal');
+  initPaymentListeners('modal');
 
   // Reset identification fields
   document.getElementById('modal-f-identification').value = '';
   document.getElementById('modal-f-id-type').value = 'NIDA';
+  
   
   const sel = document.getElementById('modal-f-apt');
   sel.innerHTML = '<option value="">Select Apartment</option>';
@@ -2122,6 +2278,15 @@ async function initEditForm(reservationId) {
     const reservation = await apiGet(`/reservations/${reservationId}`);
     currentEditReservation = reservation;
     
+    console.log('📋 Reservation data loaded:', {
+      id: reservation.id,
+      total: reservation.total,
+      amountPaid: reservation.amountPaid,
+      paymentStatus: reservation.paymentStatus,
+      paymentMethod: reservation.paymentMethod,
+      balance: reservation.balance
+    });
+    
     if (!editAPARTMENTS.length) {
       try { 
         editAPARTMENTS = await apiGet('/apartments'); 
@@ -2145,7 +2310,6 @@ async function initEditForm(reservationId) {
       sel.appendChild(opt);
     });
     
-    // Load countries for edit modal
     await loadEditCountries();
     initEditCountryDropdown();
     
@@ -2154,7 +2318,6 @@ async function initEditForm(reservationId) {
     document.getElementById('edit-f-email').value = reservation.email;
     document.getElementById('edit-f-mobile').value = reservation.mobile || '';
     
-    // Set country value for custom dropdown
     const countryValue = reservation.country || '';
     if (countryValue) {
       document.getElementById('edit-selected-country-text').textContent = countryValue;
@@ -2171,9 +2334,36 @@ async function initEditForm(reservationId) {
     document.getElementById('edit-f-children').value = reservation.children;
     document.getElementById('edit-f-ratetype').value = reservation.rateType;
     
-    editUpdateRate();
+    // CRITICAL: Set total from database - DO NOT RECALCULATE
+    const savedTotal = reservation.total || 0;
+    document.getElementById('edit-f-total-hidden').value = savedTotal;
+    document.getElementById('edit-f-total').innerHTML = fmtTSH(savedTotal);
+    
+    // Set payment fields from database
+    const savedAmountPaid = reservation.amountPaid || 0;
+    const savedPaymentStatus = reservation.paymentStatus || 'unpaid';
+    const savedPaymentMethod = reservation.paymentMethod || '';
+    
+    document.getElementById('edit-f-amount-paid').value = savedAmountPaid;
+    document.getElementById('edit-f-payment-status').value = savedPaymentStatus;
+    document.getElementById('edit-f-payment-method').value = savedPaymentMethod;
+    
+    // Calculate and display balance
+    const balance = savedTotal - savedAmountPaid;
+    const balanceDisplay = document.getElementById('edit-f-balance');
+    if (balanceDisplay) balanceDisplay.innerHTML = fmtTSH(balance);
+    
+    console.log('💰 Edit form populated:', { 
+      total: savedTotal, 
+      amountPaid: savedAmountPaid, 
+      balance, 
+      paymentStatus: savedPaymentStatus 
+    });
+    
+    // DO NOT call editUpdateRate() - it will recalculate and change the total!
     
   } catch (err) {
+    console.error('InitEditForm error:', err);
     showToast('Failed to load reservation data: ' + err.message, '❌');
   }
 }
@@ -2188,12 +2378,33 @@ function editUpdateRate() {
   const rateType = document.getElementById('edit-f-ratetype')?.value;
   const checkin = document.getElementById('edit-f-checkin')?.value;
   const checkout = document.getElementById('edit-f-checkout')?.value;
-  if(!aptId||!checkin||!checkout) { document.getElementById('edit-f-total').textContent='—'; return; }
-  const apt = editAPARTMENTS.find(a=>a.id===aptId);
+  
+  if(!aptId || !checkin || !checkout) { 
+    document.getElementById('edit-f-total').textContent='—';
+    document.getElementById('edit-f-total-hidden').value = 0;
+    return; 
+  }
+  
+  const apt = editAPARTMENTS.find(a => a.id === aptId);
   const nights = Math.max(0, daysBetween(checkin, checkout));
-  const total = apt ? Math.round(apt.ratePerNight * nights * (rateType==='Partial'?0.6:1)) : 0;
-  document.getElementById('edit-f-total').innerHTML = total>0?fmtTSH(total):'—';
+  const total = apt ? Math.round(apt.ratePerNight * nights * (rateType === 'Partial' ? 0.6 : 1)) : 0;
+  
+  document.getElementById('edit-f-total').innerHTML = total > 0 ? fmtTSH(total) : '—';
   document.getElementById('edit-f-total-hidden').value = total;
+  
+  // Update balance when total changes (but preserve amount paid)
+  const amountPaid = parseFloat(document.getElementById('edit-f-amount-paid')?.value) || 0;
+  const balance = total - amountPaid;
+  const balanceDisplay = document.getElementById('edit-f-balance');
+  if (balanceDisplay) balanceDisplay.innerHTML = fmtTSH(balance);
+  
+  // Update payment status based on new balance
+  const paymentStatusField = document.getElementById('edit-f-payment-status');
+  if (paymentStatusField) {
+    if (balance <= 0) paymentStatusField.value = 'paid';
+    else if (amountPaid > 0) paymentStatusField.value = 'partial';
+    else paymentStatusField.value = 'unpaid';
+  }
 }
 
 async function openEditModal(reservationId) {
@@ -2217,6 +2428,8 @@ function openEditFromDetail() {
   else showToast('No reservation selected', '⚠️');
 }
 
+
+
 document.getElementById('edit-form-modal')?.addEventListener('submit', async function(e) {
   e.preventDefault();
   
@@ -2232,7 +2445,6 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     return; 
   }
 
-   // ✅ ADD ID VALIDATION HERE
   const idType = document.getElementById('edit-f-id-type').value;
   const idNumber = document.getElementById('edit-f-identification').value;
   
@@ -2250,10 +2462,24 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     finalTotal = parseFloat(document.getElementById('edit-f-total-hidden').value) || 0;
   }
   
+  // If finalTotal is still 0, use the hidden field value
+  if (finalTotal <= 0) {
+    finalTotal = parseFloat(document.getElementById('edit-f-total-hidden').value) || 0;
+  }
+  
   if (finalTotal <= 0) {
     showToast('Please ensure total amount is calculated correctly', '⚠️');
     return;
   }
+  
+  // Calculate payment status based on amount paid vs total
+  const amountPaid = parseFloat(document.getElementById('edit-f-amount-paid').value) || 0;
+  let paymentStatus = document.getElementById('edit-f-payment-status').value;
+  const balance = finalTotal - amountPaid;
+  
+  if (balance <= 0) paymentStatus = 'paid';
+  else if (amountPaid > 0) paymentStatus = 'partial';
+  else paymentStatus = 'unpaid';
 
   const payload = {
     aptId: parseInt(document.getElementById('edit-f-apt').value),
@@ -2269,10 +2495,14 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     total: finalTotal,
     userId: currentUser.id,
     username: currentUser.fullName || currentUser.username,
-      // ✅ ADD THESE TWO LINES
     identification: document.getElementById('edit-f-identification').value,
-    idType: document.getElementById('edit-f-id-type').value
+    idType: document.getElementById('edit-f-id-type').value,
+    amountPaid: amountPaid,
+    paymentMethod: document.getElementById('edit-f-payment-method').value,
+    paymentStatus: paymentStatus
   };
+
+  console.log('📤 Submitting edit with:', { total: finalTotal, amountPaid, paymentStatus });
 
   try {
     const submitBtn = e.target.querySelector('button[type="submit"]');
@@ -2294,7 +2524,6 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     showToast('Update failed: ' + err.message, '⚠️');
   }
 });
-
 // ============================================================
 // ID VALIDATION FUNCTIONS
 // ============================================================
@@ -2379,27 +2608,38 @@ function forceManualCalculationEdit() {
   const checkout = document.getElementById('edit-f-checkout')?.value;
   
   const useCustomTotal = document.getElementById('edit-use-custom-total')?.value;
+  const currentTotal = parseFloat(document.getElementById('edit-f-total-hidden').value) || 0;
   
+  // If custom total was applied, KEEP IT
   if (useCustomTotal === '1') {
-    console.log('Custom total active, keeping custom value');
-    return parseFloat(document.getElementById('edit-f-total-hidden').value) || 0;
+    console.log('Custom total active, keeping custom value:', currentTotal);
+    return currentTotal;
   }
   
-  if (!aptId || !checkin || !checkout) return 0;
+  // If the current total doesn't match what auto-calculation would produce, preserve it
+  if (!aptId || !checkin || !checkout) {
+    return currentTotal;
+  }
   
   const apt = editAPARTMENTS.find(a => a.id === aptId);
-  if (!apt) return 0;
+  if (!apt) return currentTotal;
   
   const nights = daysBetween(checkin, checkout);
-  if (nights <= 0) return 0;
+  if (nights <= 0) return currentTotal;
   
   const multiplier = rateType === 'Partial' ? 0.6 : 1;
-  const total = Math.round(apt.ratePerNight * nights * multiplier);
+  const autoTotal = Math.round(apt.ratePerNight * nights * multiplier);
   
-  document.getElementById('edit-f-total-hidden').value = total;
-  document.getElementById('edit-f-total').innerHTML = fmtTSH(total);
+  // If current total is different from auto-calculated, keep the current total
+  if (currentTotal !== autoTotal && currentTotal > 0) {
+    console.log('Preserving manually entered total:', currentTotal, '(auto would be:', autoTotal, ')');
+    return currentTotal;
+  }
   
-  return total;
+  document.getElementById('edit-f-total-hidden').value = autoTotal;
+  document.getElementById('edit-f-total').innerHTML = fmtTSH(autoTotal);
+  
+  return autoTotal;
 }
 
 
@@ -2459,7 +2699,10 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
     total: finalTotal,
     // ✅ ADD THESE TWO LINES
     identification: document.getElementById('modal-f-identification').value,
-    idType: document.getElementById('modal-f-id-type').value
+    idType: document.getElementById('modal-f-id-type').value,
+    amountPaid: parseFloat(document.getElementById('modal-f-amount-paid').value) || 0,
+    paymentMethod: document.getElementById('modal-f-payment-method').value,
+    paymentStatus: document.getElementById('modal-f-payment-status').value
   };
 
   try {

@@ -41,15 +41,16 @@
   }
   
   /* Set fixed column widths */
-  .data-table th:nth-child(1) { width: 18%; }  /* Guest */
-  .data-table th:nth-child(2) { width: 12%; }  /* Apartment */
-  .data-table th:nth-child(3) { width: 10%; }  /* Check-in */
-  .data-table th:nth-child(4) { width: 15%; }  /* Check-out */
-  .data-table th:nth-child(5) { width: 8%; }   /* Nights */
+  .data-table th:nth-child(1) { width: 15%; }  /* Guest */
+  .data-table th:nth-child(2) { width: 10%; }  /* Apartment */
+  .data-table th:nth-child(3) { width: 8%; }   /* Check-in */
+  .data-table th:nth-child(4) { width: 8%; }   /* Check-out */
+  .data-table th:nth-child(5) { width: 6%; }   /* Nights */
   .data-table th:nth-child(6) { width: 8%; }   /* Guests */
-  .data-table th:nth-child(7) { width: 12%; }  /* Total */
-  .data-table th:nth-child(8) { width: 10%; }  /* Status */
-  .data-table th:nth-child(9) { width: 7%; }   /* Actions */
+  .data-table th:nth-child(7) { width: 10%; }  /* Total */
+  .data-table th:nth-child(8) { width: 10%; }  /* Payment */
+  .data-table th:nth-child(9) { width: 8%; }   /* Status */
+  .data-table th:nth-child(10) { width: 7%; }  /* Actions */
   
   /* Guest cell with stacked content */
   .guest-cell {
@@ -74,7 +75,8 @@
   .data-table td:nth-child(6),
   .data-table td:nth-child(7),
   .data-table td:nth-child(8),
-  .data-table td:nth-child(9) {
+  .data-table td:nth-child(9),
+  .data-table td:nth-child(10) {
     white-space: nowrap;
   }
   
@@ -99,6 +101,36 @@
   .chip-gray {
     background: #f1f5f9;
     color: #475569;
+  }
+  
+  .payment-badge-paid {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+  }
+  
+  .payment-badge-partial {
+    background: #fef3c7;
+    color: #d97706;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+  }
+  
+  .payment-badge-unpaid {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
   }
 
   /* Searchable select styles */
@@ -164,9 +196,6 @@
   background: #fef3c7;
   color: #c9933a;
 }
-
-
-
 
 /* Notification Styles */
 .notif-btn {
@@ -512,7 +541,10 @@
   }
 }
 
-
+.balance-display {
+  font-size: 14px;
+  font-weight: 600;
+}
 
 </style>
 </head>
@@ -521,7 +553,6 @@
 <!-- Overlay for Sidebar -->
 <div class="overlay" id="overlay-main"></div>
 
-<!-- Sidebar -->
 <!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-top">
@@ -536,45 +567,27 @@
   </div>
   
   <nav class="sidebar-nav">
-    <!-- ============================================================ -->
-    <!-- CORE OPERATIONS -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Core Operations</div>
     <a href="/dashboard" class="nav-item">📊 Stay View</a>
     <a href="/reservations" class="nav-item active">📅 Reservations</a>
     <a href="/housekeeping" class="nav-item">🧹 Housekeeping</a>
     
-    <!-- ============================================================ -->
-    <!-- PROPERTY -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Property</div>
     <a href="/apartments" class="nav-item">🏠 Apartments View</a>
     <a href="/apartments-list" class="nav-item">📋 Apartments List</a>
     
-    <!-- ============================================================ -->
-    <!-- STORE & PROCUREMENT -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Store & Procurement</div>
     <a href="/store-main" class="nav-item">🏬 Main Store</a>
     <a href="/store-outlets" class="nav-item">🏪 Outlets Store</a>
     <a href="/purchase-orders" class="nav-item">📦 Purchase Orders</a>
     <a href="/goods-receipt" class="nav-item">✅ Goods Receipt</a>
     
-    <!-- ============================================================ -->
-    <!-- MAINTENANCE -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Maintenance</div>
     <a href="/maintenance" class="nav-item">🔧 Maintenance</a>
     
-    <!-- ============================================================ -->
-    <!-- STAFF ACTIVITIES -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Staff Activities</div>
     <a href="/staff-activities" class="nav-item">📋 Staff Activities</a>
     
-    <!-- ============================================================ -->
-    <!-- REPORTS (ALL REPORTS GROUPED TOGETHER) -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Reports</div>
     <a href="/reports" class="nav-item">📊 Reservations Report</a>
     <a href="/maintenance-report" class="nav-item">🔧 Maintenance Report</a>
@@ -584,21 +597,12 @@
     <a href="/store-inventory-reports" class="nav-item">📦 Store Inventory Report</a>
     <a href="/financial-report" class="nav-item">💰 Financial Report</a>
     
-    <!-- ============================================================ -->
-    <!-- FINANCIAL -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Financial</div>
     <a href="/expenditures" class="nav-item">💸 Expenditures</a>
     
-    <!-- ============================================================ -->
-    <!-- GUEST MANAGEMENT -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Guest Management</div>
     <a href="/guest-database" class="nav-item">👥 Guest Database</a>
     
-    <!-- ============================================================ -->
-    <!-- ADMINISTRATION -->
-    <!-- ============================================================ -->
     <div class="nav-section-label">Administration</div>
     <a href="/users" class="nav-item">👥 User Management</a>
   </nav>
@@ -608,8 +612,6 @@
   </div>
 </aside>
 
-
-<!-- Navbar -->
 <!-- Navbar -->
 <nav class="navbar">
   <div class="navbar-left">
@@ -622,36 +624,37 @@
     </div>
   </div>
   <div class="navbar-right">
-      <div class="nav-icons">
-    <a href="/reservations" class="nav-icon-btn" title="Reservations">
-      <i class="fas fa-calendar-alt"></i>
-    </a>
-    <a href="/reports" class="nav-icon-btn" title="Reports">
-      <i class="fas fa-chart-line"></i>
-    </a>
-    <button class="btn-add-reservation" onclick="openReservationModal()">＋ Add Reservation</button>
-    <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
-</button>
-    
-    <!-- User Dropdown -->
-    <div class="user-dropdown">
-      <div class="user-pill" id="userPill">
-        <div class="user-avatar" id="userAvatar">U</div>
-        <div class="user-info">
-          <span id="userName">Loading...</span>
-          <span id="userRole">Loading...</span>
+    <div class="nav-icons">
+      <a href="/reservations" class="nav-icon-btn" title="Reservations">
+        <i class="fas fa-calendar-alt"></i>
+      </a>
+      <a href="/reports" class="nav-icon-btn" title="Reports">
+        <i class="fas fa-chart-line"></i>
+      </a>
+      <button class="btn-add-reservation" onclick="openReservationModal()">＋ Add Reservation</button>
+      <button class="notif-btn" id="notif-btn">
+        🔔<span class="badge" id="notif-badge">0</span>
+      </button>
+      
+      <div class="user-dropdown">
+        <div class="user-pill" id="userPill">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <div class="user-info">
+            <span id="userName">Loading...</span>
+            <span id="userRole">Loading...</span>
+          </div>
+          <i class="fas fa-chevron-down"></i>
         </div>
-        <i class="fas fa-chevron-down"></i>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <button onclick="openChangePasswordModal()"><i class="fas fa-key"></i> Change Password</button>
+          <a href="/users" class="dropdown-item"><i class="fas fa-users"></i> User Management</a>
+          <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
       </div>
-      <div class="dropdown-menu" id="dropdownMenu">
-    <button onclick="openChangePasswordModal()"><i class="fas fa-key"></i> Change Password</button>
-    <a href="/users" class="dropdown-item"><i class="fas fa-users"></i> User Management</a>
-    <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-  </div>
     </div>
   </div>
 </nav>
+
 <main class="main-content">
   <div class="card">
     <div class="card-header">
@@ -659,7 +662,6 @@
       <button class="btn btn-gold" onclick="openReservationModal()">＋ New</button>
     </div>
     
-    <!-- Compact stats overview (Active, Upcoming, Check-outs today) -->
     <div class="reservation-stats">
       <div class="stat-badge">
         <span class="stat-dot active"></span>
@@ -686,31 +688,31 @@
             <th>Nights</th>
             <th>Guests</th>
             <th>Total (TSH)</th>
+            <th>Payment</th>
             <th>Status</th>
             <th></th>
           </tr>
         </thead>
         <tbody id="res-table-body"></tbody>
-      </table>
+       </table>
     </div>
   </div>
 
-  <!-- Notification Panel -->
-<div class="notification-panel" id="notification-panel">
-  <div class="notification-header">
-    <span>📢 Notifications</span>
-    <div>
-      <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+  <div class="notification-panel" id="notification-panel">
+    <div class="notification-header">
+      <span>📢 Notifications</span>
+      <div>
+        <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
+        <button id="close-notif-panel">✕</button>
+      </div>
+    </div>
+    <div class="notification-list" id="notification-list">
+      <div class="empty-notifications">📭 No new notifications</div>
     </div>
   </div>
-  <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
-  </div>
-</div>
 </main>
 
-<!-- Reservation Modal (Right Side Panel) -->
+<!-- Add Reservation Modal -->
 <div class="reservation-modal-overlay" id="reservation-modal-overlay" onclick="closeReservationModal()"></div>
 <div class="reservation-modal" id="reservation-modal">
   <div class="reservation-modal-header">
@@ -764,19 +766,51 @@
           </div>
         </div>
         <div class="form-group">
-  <label>💰 Total Rate</label>
-  <div id="modal-total-container">
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <div class="rate-display" id="modal-f-total" style="flex: 1;">—</div>
-      <i class="fas fa-pencil-alt custom-rate-edit-icon" onclick="enableCustomTotal('modal')" title="Set custom total"></i>
-    </div>
-    <div id="modal-custom-area" style="display: none; margin-top: 8px;"></div>
-  </div>
-  <input type="hidden" id="modal-f-total-hidden" value="0">
-  <input type="hidden" id="modal-use-custom-total" value="0">
-  <input type="hidden" id="modal-f-identification-hidden" value="">
-  <input type="hidden" id="modal-f-id-type-hidden" value="">
-</div>
+          <label>💰 Total Rate</label>
+          <div id="modal-total-container">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="rate-display" id="modal-f-total" style="flex: 1;">—</div>
+              <i class="fas fa-pencil-alt custom-rate-edit-icon" onclick="enableCustomTotal('modal')" title="Set custom total"></i>
+            </div>
+            <div id="modal-custom-area" style="display: none; margin-top: 8px;"></div>
+          </div>
+          <input type="hidden" id="modal-f-total-hidden" value="0">
+          <input type="hidden" id="modal-use-custom-total" value="0">
+        </div>
+      </div>
+      
+      <!-- PAYMENT SECTION FOR ADD MODAL -->
+      <hr class="divider" />
+      <div class="form-group-row cols-2">
+        <div class="form-group">
+          <label>💰 Payment Status</label>
+          <select id="modal-f-payment-status" class="form-control">
+            <option value="unpaid">❌ Unpaid</option>
+            <option value="partial">🟡 Partial Payment</option>
+            <option value="paid">✅ Paid in Full</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>💳 Payment Method</label>
+          <select id="modal-f-payment-method" class="form-control">
+            <option value="">Select Payment Method</option>
+            <option value="cash">💵 Cash</option>
+            <option value="card">💳 Card</option>
+            <option value="bank_transfer">🏦 Bank Transfer</option>
+            <option value="mobile_money">📱 Mobile Money</option>
+            <option value="cheque">📝 Cheque</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group-row cols-2">
+        <div class="form-group">
+          <label>💰 Amount Paid (TSH)</label>
+          <input type="number" id="modal-f-amount-paid" class="form-control" value="0" min="0" step="1000" />
+        </div>
+        <div class="form-group">
+          <label>💵 Balance Due</label>
+          <div class="balance-display" id="modal-f-balance" style="padding: 10px; background: #f1f5f9; border-radius: 12px; font-weight: 600;">—</div>
+        </div>
       </div>
       
       <hr class="divider" />
@@ -795,50 +829,50 @@
           <input type="tel" id="modal-f-mobile" class="form-control" placeholder="+255 XXX XXX" required />
         </div>
       </div>
-      <!-- NEW ROW: National ID / ID Type -->
-<div class="form-group-row cols-2">
-  <div class="form-group">
-    <label>🪪 NIDA / Passport Number</label>
-    <input type="text" id="modal-f-identification" class="form-control" placeholder="NIDA Number or Passport ID" />
-  </div>
-  <div class="form-group">
-    <label>📋 ID Type</label>
-    <select id="modal-f-id-type" class="form-control">
-      <option value="NIDA">NIDA (National ID)</option>
-      <option value="Passport">Passport</option>
-      <option value="Driving License">Driving License</option>
-      <option value="Voter ID">Voter ID</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
-</div>
+      
       <div class="form-group-row cols-2">
-  <div class="form-group">
-    <label>🌍 Country</label>
-    <div class="select-wrapper" id="modal-country-wrapper">
-      <div class="searchable-select" id="modal-country-select-btn">
-        <span id="modal-selected-country-text">Select Country</span>
-        <i class="fas fa-chevron-down"></i>
-      </div>
-      <div class="select-dropdown" id="modal-country-dropdown">
-        <div class="select-search">
-          <input type="text" id="modal-country-search" placeholder="🔍 Search country..." autocomplete="off">
+        <div class="form-group">
+          <label>🪪 NIDA / Passport Number</label>
+          <input type="text" id="modal-f-identification" class="form-control" placeholder="NIDA Number or Passport ID" />
         </div>
-        <div id="modal-country-options">
-          <div style="padding: 20px; text-align: center; color: #94a3b8;">Loading countries...</div>
+        <div class="form-group">
+          <label>📋 ID Type</label>
+          <select id="modal-f-id-type" class="form-control">
+            <option value="NIDA">NIDA (National ID)</option>
+            <option value="Passport">Passport</option>
+            <option value="Driving License">Driving License</option>
+            <option value="Voter ID">Voter ID</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
       </div>
-    </div>
-    <input type="hidden" id="modal-f-country" value="">
-  </div>
-  <div class="form-group">
-    <label>🏙️ City</label>
-    <input type="text" id="modal-f-city" class="form-control" placeholder="City" />
-  </div>
-</div>
+      
+      <div class="form-group-row cols-2">
+        <div class="form-group">
+          <label>🌍 Country</label>
+          <div class="select-wrapper" id="modal-country-wrapper">
+            <div class="searchable-select" id="modal-country-select-btn">
+              <span id="modal-selected-country-text">Select Country</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="select-dropdown" id="modal-country-dropdown">
+              <div class="select-search">
+                <input type="text" id="modal-country-search" placeholder="🔍 Search country..." autocomplete="off">
+              </div>
+              <div id="modal-country-options">
+                <div style="padding: 20px; text-align: center; color: #94a3b8;">Loading countries...</div>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" id="modal-f-country" value="">
+        </div>
+        <div class="form-group">
+          <label>🏙️ City</label>
+          <input type="text" id="modal-f-city" class="form-control" placeholder="City" />
+        </div>
+      </div>
       
       <hr class="divider" />
-      
       <button type="submit" class="btn btn-success">✅ Confirm Reservation</button>
       <button type="button" class="btn btn-outline" style="margin-top: 10px; width: 100%;" onclick="closeReservationModal()">Cancel</button>
     </form>
@@ -901,17 +935,51 @@
           </div>
         </div>
         <div class="form-group">
-  <label>💰 Total Rate</label>
-  <div id="edit-total-container">
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <div class="rate-display" id="edit-f-total" style="flex: 1;">—</div>
-      <i class="fas fa-pencil-alt custom-rate-edit-icon" onclick="enableCustomTotal('edit')" title="Set custom total"></i>
-    </div>
-    <div id="edit-custom-area" style="display: none; margin-top: 8px;"></div>
-  </div>
-  <input type="hidden" id="edit-f-total-hidden" value="0">
-  <input type="hidden" id="edit-use-custom-total" value="0">
-</div>
+          <label>💰 Total Rate</label>
+          <div id="edit-total-container">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="rate-display" id="edit-f-total" style="flex: 1;">—</div>
+              <i class="fas fa-pencil-alt custom-rate-edit-icon" onclick="enableCustomTotal('edit')" title="Set custom total"></i>
+            </div>
+            <div id="edit-custom-area" style="display: none; margin-top: 8px;"></div>
+          </div>
+          <input type="hidden" id="edit-f-total-hidden" value="0">
+          <input type="hidden" id="edit-use-custom-total" value="0">
+        </div>
+      </div>
+      
+      <!-- PAYMENT SECTION FOR EDIT MODAL -->
+      <hr class="divider" />
+      <div class="form-group-row cols-2">
+        <div class="form-group">
+          <label>💰 Payment Status</label>
+          <select id="edit-f-payment-status" class="form-control">
+            <option value="unpaid">❌ Unpaid</option>
+            <option value="partial">🟡 Partial Payment</option>
+            <option value="paid">✅ Paid in Full</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>💳 Payment Method</label>
+          <select id="edit-f-payment-method" class="form-control">
+            <option value="">Select Payment Method</option>
+            <option value="cash">💵 Cash</option>
+            <option value="card">💳 Card</option>
+            <option value="bank_transfer">🏦 Bank Transfer</option>
+            <option value="mobile_money">📱 Mobile Money</option>
+            <option value="cheque">📝 Cheque</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group-row cols-2">
+        <div class="form-group">
+          <label>💰 Amount Paid (TSH)</label>
+          <input type="number" id="edit-f-amount-paid" class="form-control" value="0" min="0" step="1000" />
+        </div>
+        <div class="form-group">
+          <label>💵 Balance Due</label>
+          <div class="balance-display" id="edit-f-balance" style="padding: 10px; background: #f1f5f9; border-radius: 12px; font-weight: 600;">—</div>
+        </div>
       </div>
       
       <hr class="divider" />
@@ -930,56 +998,56 @@
           <input type="tel" id="edit-f-mobile" class="form-control" placeholder="+255 XXX XXX" required />
         </div>
       </div>
-      <!-- NEW ROW: National ID / ID Type -->
-<div class="form-group-row cols-2">
-  <div class="form-group">
-    <label>🪪 NIDA / Passport Number</label>
-    <input type="text" id="edit-f-identification" class="form-control" placeholder="NIDA Number or Passport ID" />
-  </div>
-  <div class="form-group">
-    <label>📋 ID Type</label>
-    <select id="edit-f-id-type" class="form-control">
-      <option value="NIDA">NIDA (National ID)</option>
-      <option value="Passport">Passport</option>
-      <option value="Driving License">Driving License</option>
-      <option value="Voter ID">Voter ID</option>
-      <option value="Other">Other</option>
-    </select>
-  </div>
-</div>
-      <div class="form-group-row cols-2">
-  <div class="form-group">
-    <label>🌍 Country</label>
-    <div class="select-wrapper" id="edit-country-wrapper">
-      <div class="searchable-select" id="edit-country-select-btn">
-        <span id="edit-selected-country-text">Select Country</span>
-        <i class="fas fa-chevron-down"></i>
-      </div>
-      <div class="select-dropdown" id="edit-country-dropdown">
-        <div class="select-search">
-          <input type="text" id="edit-country-search" placeholder="🔍 Search country..." autocomplete="off">
-        </div>
-        <div id="edit-country-options">
-          <div style="padding: 20px; text-align: center; color: #94a3b8;">Loading countries...</div>
-        </div>
-      </div>
-    </div>
-    <input type="hidden" id="edit-f-country" value="">
-  </div>
-  <div class="form-group">
-    <label>🏙️ City</label>
-    <input type="text" id="edit-f-city" class="form-control" placeholder="City" />
-  </div>
-</div>
-      <hr class="divider" />
       
+      <div class="form-group-row cols-2">
+        <div class="form-group">
+          <label>🪪 NIDA / Passport Number</label>
+          <input type="text" id="edit-f-identification" class="form-control" placeholder="NIDA Number or Passport ID" />
+        </div>
+        <div class="form-group">
+          <label>📋 ID Type</label>
+          <select id="edit-f-id-type" class="form-control">
+            <option value="NIDA">NIDA (National ID)</option>
+            <option value="Passport">Passport</option>
+            <option value="Driving License">Driving License</option>
+            <option value="Voter ID">Voter ID</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-group-row cols-2">
+        <div class="form-group">
+          <label>🌍 Country</label>
+          <div class="select-wrapper" id="edit-country-wrapper">
+            <div class="searchable-select" id="edit-country-select-btn">
+              <span id="edit-selected-country-text">Select Country</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="select-dropdown" id="edit-country-dropdown">
+              <div class="select-search">
+                <input type="text" id="edit-country-search" placeholder="🔍 Search country..." autocomplete="off">
+              </div>
+              <div id="edit-country-options">
+                <div style="padding: 20px; text-align: center; color: #94a3b8;">Loading countries...</div>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" id="edit-f-country" value="">
+        </div>
+        <div class="form-group">
+          <label>🏙️ City</label>
+          <input type="text" id="edit-f-city" class="form-control" placeholder="City" />
+        </div>
+      </div>
+      
+      <hr class="divider" />
       <button type="submit" class="btn btn-gold">💾 Update Reservation</button>
       <button type="button" class="btn btn-outline" style="margin-top: 10px; width: 100%;" onclick="closeEditModal()">Cancel</button>
     </form>
   </div>
 </div>
 
-<!-- Detail Panel -->
 <!-- Detail Panel -->
 <div class="overlay" id="panel-overlay"></div>
 <div class="detail-panel" id="detail-panel">
@@ -1005,11 +1073,10 @@
 <script>
 
 // ============================================================
-// PRINT RESERVATION FUNCTION - FIXED
+// PRINT RESERVATION FUNCTION
 // ============================================================
 
 function printReservation() {
-  // Get the selected reservation from the global variable
   const res = window.selectedReservation || selectedReservation;
   
   if (!res) {
@@ -1017,285 +1084,67 @@ function printReservation() {
     return;
   }
   
-  // Get apartment name safely
   let aptName = res.aptName || '—';
   
-  // Try to find apartment in modalAPARTMENTS if available
   if (typeof modalAPARTMENTS !== 'undefined' && modalAPARTMENTS && modalAPARTMENTS.length > 0) {
     const apt = modalAPARTMENTS.find(a => a.id === res.aptId);
     if (apt && apt.name) aptName = apt.name;
   }
   
-  // Calculate nights safely
   let nights = 0;
   if (res.checkin && res.checkout) {
     nights = daysBetween(res.checkin, res.checkout);
   }
   
-  // Helper function to safely format date
   function formatDateForPrint(dateStr) {
     if (!dateStr) return '—';
     const d = new Date(dateStr);
     return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
   }
   
-  // Helper function to safely escape HTML
   function safeEscape(str) {
     if (!str) return '—';
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
   
-  // Create print window
   const printWindow = window.open('', '_blank', 'width=800,height=600');
   if (!printWindow) {
     showToast('Please allow popups to print', 'error');
     return;
   }
   
-  // Create print-friendly HTML
- printWindow.document.write(`
+  printWindow.document.write(`
     <!DOCTYPE html>
     <html>
     <head>
       <title>Reservation #${res.id} - ${safeEscape(res.guest)}</title>
       <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
       <style>
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        
-        body {
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-          padding: 30px;
-          background: #f1f5f9;
-          color: #1e293b;
-        }
-        
-        .print-container {
-          max-width: 800px;
-          margin: 0 auto;
-          background: white;
-          border-radius: 20px;
-          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-          overflow: hidden;
-        }
-        
-        /* Header */
-        .header {
-          text-align: center;
-          padding: 30px;
-          background: #1e2a3e;
-          color: white;
-        }
-        
-        .header h1 {
-          font-family: 'Playfair Display', serif;
-          font-size: 26px;
-          font-weight: 700;
-          margin-bottom: 5px;
-        }
-        
-        .header p {
-          font-size: 12px;
-          opacity: 0.8;
-        }
-        
-        /* Content */
-        .content {
-          padding: 30px;
-        }
-        
-        /* Info Grid */
-        .info-grid {
-          display: flex;
-          gap: 20px;
-          margin-bottom: 25px;
-          background: #f8fafc;
-          padding: 20px;
-          border-radius: 12px;
-        }
-        
-        .info-item {
-          flex: 1;
-        }
-        
-        .info-label {
-          font-size: 10px;
-          font-weight: 600;
-          text-transform: uppercase;
-          color: #64748b;
-          margin-bottom: 5px;
-        }
-        
-        .info-value {
-          font-size: 15px;
-          font-weight: 600;
-          color: #1e293b;
-        }
-        
-        /* Guest Section */
-        .guest-section, .stay-section {
-          margin-bottom: 25px;
-          border: 1px solid #e2e8f0;
-          border-radius: 12px;
-          overflow: hidden;
-        }
-        
-        .section-header {
-          background: #f8fafc;
-          padding: 14px 20px;
-          border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .section-title {
-          font-size: 16px;
-          font-weight: 700;
-          color: #1e2a3e;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        
-        .guest-details {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 15px;
-          padding: 20px;
-        }
-        
-        .guest-item {
-          display: flex;
-          gap: 10px;
-        }
-        
-        .guest-icon {
-          width: 32px;
-          height: 32px;
-          background: #f1f5f9;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 14px;
-        }
-        
-        .guest-label {
-          font-size: 10px;
-          font-weight: 600;
-          text-transform: uppercase;
-          color: #64748b;
-        }
-        
-        .guest-value {
-          font-size: 13px;
-          font-weight: 600;
-          color: #1e293b;
-        }
-        
-        /* Stay Details */
-        .stay-details {
-          padding: 20px;
-        }
-        
-        .stay-row {
-          display: flex;
-          justify-content: space-between;
-          padding: 10px 0;
-          border-bottom: 1px solid #f1f5f9;
-        }
-        
-        .stay-row:last-child {
-          border-bottom: none;
-        }
-        
-        .stay-label {
-          font-weight: 500;
-          color: #64748b;
-        }
-        
-        .stay-value {
-          font-weight: 600;
-          color: #1e293b;
-        }
-        
-        /* Total Section */
-        .total-section {
-          background: #fef3c7;
-          border-radius: 12px;
-          padding: 15px 20px;
-          margin-top: 15px;
-        }
-        
-        .total-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-        
-        .total-label {
-          font-weight: 700;
-          color: #92400e;
-        }
-        
-        .total-amount {
-          font-size: 22px;
-          font-weight: 800;
-          color: #c9933a;
-        }
-        
-        /* Footer */
-        .footer {
-          background: #f8fafc;
-          padding: 20px;
-          text-align: center;
-          border-top: 1px solid #e2e8f0;
-        }
-        
-        .footer p {
-          font-size: 11px;
-          color: #64748b;
-          margin: 3px 0;
-        }
-        
-        /* Print Styles */
-        @media print {
-          body {
-            background: white;
-            padding: 0;
-          }
-          
-          .print-container {
-            box-shadow: none;
-            border-radius: 0;
-          }
-          
-          .header, .total-section, .info-grid {
-            print-color-adjust: exact;
-            -webkit-print-color-adjust: exact;
-          }
-        }
-        
-        /* Mobile */
-        @media (max-width: 600px) {
-          body {
-            padding: 15px;
-          }
-          
-          .content {
-            padding: 20px;
-          }
-          
-          .info-grid {
-            flex-direction: column;
-            gap: 12px;
-          }
-          
-          .guest-details {
-            grid-template-columns: 1fr;
-          }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; padding: 30px; background: #f1f5f9; color: #1e293b; }
+        .print-container { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; }
+        .header { text-align: center; padding: 30px; background: #1e2a3e; color: white; }
+        .header h1 { font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 5px; }
+        .content { padding: 30px; }
+        .info-grid { display: flex; gap: 20px; margin-bottom: 25px; background: #f8fafc; padding: 20px; border-radius: 12px; }
+        .info-item { flex: 1; }
+        .info-label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: #64748b; }
+        .info-value { font-size: 15px; font-weight: 600; }
+        .guest-details { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 20px; }
+        .guest-item { display: flex; gap: 10px; }
+        .guest-icon { width: 32px; height: 32px; background: #f1f5f9; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .guest-label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: #64748b; }
+        .guest-value { font-size: 13px; font-weight: 600; }
+        .stay-section { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+        .section-header { background: #f8fafc; padding: 14px 20px; border-bottom: 1px solid #e2e8f0; }
+        .section-title { font-size: 16px; font-weight: 700; }
+        .stay-details { padding: 20px; }
+        .stay-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+        .total-section { background: #fef3c7; border-radius: 12px; padding: 15px 20px; }
+        .total-row { display: flex; justify-content: space-between; align-items: center; }
+        .total-amount { font-size: 22px; font-weight: 800; color: #c9933a; }
+        .footer { background: #f8fafc; padding: 20px; text-align: center; border-top: 1px solid #e2e8f0; }
+        @media print { body { background: white; padding: 0; } .header, .total-section { print-color-adjust: exact; } }
       </style>
     </head>
     <body>
@@ -1304,127 +1153,47 @@ function printReservation() {
           <h1>🏨 Steps Premium Suite</h1>
           <p>Reservation Confirmation</p>
         </div>
-        
         <div class="content">
           <div class="info-grid">
-            <div class="info-item">
-              <div class="info-label">Reservation ID</div>
-              <div class="info-value">#${res.id}</div>
-            </div>
-            <div class="info-item">
-              <div class="info-label">Rate Type</div>
-              <div class="info-value">${safeEscape(res.rateType || 'Full')}</div>
-            </div>
-            <div class="info-item">
-              <div class="info-label">Booking Date</div>
-              <div class="info-value">${formatDateForPrint(res.created_at || new Date())}</div>
-            </div>
+            <div class="info-item"><div class="info-label">Reservation ID</div><div class="info-value">#${res.id}</div></div>
+            <div class="info-item"><div class="info-label">Rate Type</div><div class="info-value">${safeEscape(res.rateType || 'Full')}</div></div>
+            <div class="info-item"><div class="info-label">Booking Date</div><div class="info-value">${formatDateForPrint(res.created_at || new Date())}</div></div>
           </div>
           
-        <div class="guest-details">
-  <div class="guest-item">
-    <div class="guest-icon">👤</div>
-    <div>
-      <div class="guest-label">Full Name</div>
-      <div class="guest-value">${safeEscape(res.guest)}</div>
-    </div>
-  </div>
-  <div class="guest-item">
-    <div class="guest-icon">📧</div>
-    <div>
-      <div class="guest-label">Email</div>
-      <div class="guest-value">${safeEscape(res.email)}</div>
-    </div>
-  </div>
-  <div class="guest-item">
-    <div class="guest-icon">📱</div>
-    <div>
-      <div class="guest-label">Mobile</div>
-      <div class="guest-value">${safeEscape(res.mobile || '—')}</div>
-    </div>
-  </div>
-  <div class="guest-item">
-    <div class="guest-icon">🪪</div>
-    <div>
-      <div class="guest-label">ID Type</div>
-      <div class="guest-value">${safeEscape(res.idType || '—')}</div>
-    </div>
-  </div>
-  <div class="guest-item">
-    <div class="guest-icon">📋</div>
-    <div>
-      <div class="guest-label">ID Number</div>
-      <div class="guest-value">${safeEscape(res.identification || '—')}</div>
-    </div>
-  </div>
-  <div class="guest-item">
-    <div class="guest-icon">🌍</div>
-    <div>
-      <div class="guest-label">Country / City</div>
-      <div class="guest-value">${safeEscape(res.country || '—')} / ${safeEscape(res.city || '—')}</div>
-    </div>
-  </div>
-</div>
+          <div class="guest-details">
+            <div class="guest-item"><div class="guest-icon">👤</div><div><div class="guest-label">Full Name</div><div class="guest-value">${safeEscape(res.guest)}</div></div></div>
+            <div class="guest-item"><div class="guest-icon">📧</div><div><div class="guest-label">Email</div><div class="guest-value">${safeEscape(res.email)}</div></div></div>
+            <div class="guest-item"><div class="guest-icon">📱</div><div><div class="guest-label">Mobile</div><div class="guest-value">${safeEscape(res.mobile || '—')}</div></div></div>
+            <div class="guest-item"><div class="guest-icon">🪪</div><div><div class="guest-label">ID Type</div><div class="guest-value">${safeEscape(res.idType || '—')}</div></div></div>
+            <div class="guest-item"><div class="guest-icon">📋</div><div><div class="guest-label">ID Number</div><div class="guest-value">${safeEscape(res.identification || '—')}</div></div></div>
+            <div class="guest-item"><div class="guest-icon">🌍</div><div><div class="guest-label">Country / City</div><div class="guest-value">${safeEscape(res.country || '—')} / ${safeEscape(res.city || '—')}</div></div></div>
+          </div>
           
           <div class="stay-section">
-            <div class="section-header">
-              <div class="section-title">🏠 Stay Details</div>
-            </div>
+            <div class="section-header"><div class="section-title">🏠 Stay Details</div></div>
             <div class="stay-details">
-              <div class="stay-row">
-                <span class="stay-label">Apartment</span>
-                <span class="stay-value">${safeEscape(aptName)}</span>
-              </div>
-              <div class="stay-row">
-                <span class="stay-label">Check-in Date</span>
-                <span class="stay-value">${formatDateForPrint(res.checkin)}</span>
-              </div>
-              <div class="stay-row">
-                <span class="stay-label">Check-out Date</span>
-                <span class="stay-value">${formatDateForPrint(res.checkout)}</span>
-              </div>
-              <div class="stay-row">
-                <span class="stay-label">Nights</span>
-                <span class="stay-value">${nights} night${nights !== 1 ? 's' : ''}</span>
-              </div>
-              <div class="stay-row">
-                <span class="stay-label">Guests</span>
-                <span class="stay-value">${res.adults || 1} Adult(s), ${res.children || 0} Child(ren)</span>
-              </div>
+              <div class="stay-row"><span class="stay-label">Apartment</span><span class="stay-value">${safeEscape(aptName)}</span></div>
+              <div class="stay-row"><span class="stay-label">Check-in Date</span><span class="stay-value">${formatDateForPrint(res.checkin)}</span></div>
+              <div class="stay-row"><span class="stay-label">Check-out Date</span><span class="stay-value">${formatDateForPrint(res.checkout)}</span></div>
+              <div class="stay-row"><span class="stay-label">Nights</span><span class="stay-value">${nights} night${nights !== 1 ? 's' : ''}</span></div>
+              <div class="stay-row"><span class="stay-label">Guests</span><span class="stay-value">${res.adults || 1} Adult(s), ${res.children || 0} Child(ren)</span></div>
             </div>
-            
-            <div class="total-section">
-              <div class="total-row">
-                <span class="total-label">Total Amount</span>
-                <span class="total-amount">${res.total ? 'TSh ' + res.total.toLocaleString() : 'TSh 0'}</span>
-              </div>
-            </div>
+            <div class="total-section"><div class="total-row"><span class="total-label">Total Amount</span><span class="total-amount">TSh ${(res.total || 0).toLocaleString()}</span></div></div>
           </div>
         </div>
-        
         <div class="footer">
           <p>Thank you for choosing Steps Premium Suite</p>
           <p>Dar es Salaam, Tanzania | +255 655 860 808</p>
           <p>Printed: ${new Date().toLocaleString()}</p>
         </div>
       </div>
-      <script>
-        window.onload = function() {
-          setTimeout(function() {
-            window.print();
-          }, 100);
-        };
-      <\/script>
+      <script>window.onload = function() { setTimeout(function() { window.print(); }, 100); };<\/script>
     </body>
     </html>
   `);
   printWindow.document.close();
 }
 
-
-
-
-  
 // ============================================================
 // CUSTOM TOTAL RATE FUNCTIONALITY
 // ============================================================
@@ -1442,7 +1211,6 @@ function enableCustomTotal(type) {
     </div>
   `;
   
-  // Focus the input
   setTimeout(() => {
     const input = document.getElementById(`${type}-custom-input`);
     if (input) input.focus();
@@ -1464,7 +1232,6 @@ function applyCustomTotal(type) {
     return;
   }
   
-  // Get check-in and check-out dates
   const checkin = document.getElementById(`${type}-f-checkin`).value;
   const checkout = document.getElementById(`${type}-f-checkout`).value;
   
@@ -1473,7 +1240,6 @@ function applyCustomTotal(type) {
     return;
   }
   
-  // Calculate nights
   const nights = daysBetween(checkin, checkout);
   
   if (nights <= 0) {
@@ -1481,24 +1247,72 @@ function applyCustomTotal(type) {
     return;
   }
   
-  // Calculate nightly rate based on custom total
   const nightlyRate = Math.round(customTotal / nights);
   
-  // Store the custom total
   document.getElementById(`${type}-f-total-hidden`).value = customTotal;
   document.getElementById(`${type}-f-total`).innerHTML = fmtTSH(customTotal);
   document.getElementById(`${type}-use-custom-total`).value = '1';
   
-  // Hide the custom area
   const customArea = document.getElementById(`${type}-custom-area`);
   customArea.style.display = 'none';
   customArea.innerHTML = '';
   
   showToast(`✅ Custom total applied! Nightly rate: ${fmtTSH(nightlyRate)}`, 'success');
-  console.log(`Custom Total: ${fmtTSH(customTotal)} | Nights: ${nights} | Nightly Rate: ${fmtTSH(nightlyRate)}`);
 }
 
-// OVERRIDE modalUpdateRate to respect custom total
+// ============================================================
+// PAYMENT HANDLING FUNCTIONS
+// ============================================================
+
+function updateBalance(type) {
+  const totalField = document.getElementById(`${type}-f-total-hidden`);
+  const amountPaidField = document.getElementById(`${type}-f-amount-paid`);
+  const balanceDisplay = document.getElementById(`${type}-f-balance`);
+  const paymentStatusSelect = document.getElementById(`${type}-f-payment-status`);
+  
+  if (!totalField || !amountPaidField || !balanceDisplay) return;
+  
+  const total = parseFloat(totalField.value) || 0;
+  let amountPaid = parseFloat(amountPaidField.value) || 0;
+  
+  if (amountPaid > total) {
+    amountPaid = total;
+    amountPaidField.value = total;
+  }
+  
+  const balance = total - amountPaid;
+  balanceDisplay.innerHTML = fmtTSH(balance);
+  
+  if (paymentStatusSelect) {
+    if (balance <= 0) paymentStatusSelect.value = 'paid';
+    else if (amountPaid > 0) paymentStatusSelect.value = 'partial';
+    else paymentStatusSelect.value = 'unpaid';
+  }
+}
+
+function initPaymentListeners(type) {
+  const amountPaidField = document.getElementById(`${type}-f-amount-paid`);
+  const paymentStatusSelect = document.getElementById(`${type}-f-payment-status`);
+  
+  if (amountPaidField) {
+    amountPaidField.addEventListener('input', () => updateBalance(type));
+  }
+  
+  if (paymentStatusSelect) {
+    paymentStatusSelect.addEventListener('change', () => {
+      if (paymentStatusSelect.value === 'paid') {
+        const total = parseFloat(document.getElementById(`${type}-f-total-hidden`).value) || 0;
+        if (amountPaidField) amountPaidField.value = total;
+        updateBalance(type);
+      } else if (paymentStatusSelect.value === 'unpaid') {
+        if (amountPaidField) amountPaidField.value = 0;
+        updateBalance(type);
+      }
+    });
+  }
+}
+
+// Override modalUpdateRate to update balance
 const originalModalUpdate = modalUpdateRate;
 modalUpdateRate = function() {
   const useCustom = document.getElementById('modal-use-custom-total')?.value;
@@ -1507,9 +1321,10 @@ modalUpdateRate = function() {
     return;
   }
   originalModalUpdate();
+  setTimeout(() => updateBalance('modal'), 100);
 };
 
-// OVERRIDE editUpdateRate to respect custom total
+// Override editUpdateRate to update balance
 const originalEditUpdate = editUpdateRate;
 editUpdateRate = function() {
   const useCustom = document.getElementById('edit-use-custom-total')?.value;
@@ -1518,9 +1333,9 @@ editUpdateRate = function() {
     return;
   }
   originalEditUpdate();
+  setTimeout(() => updateBalance('edit'), 100);
 };
 
-// Reset custom total when dates or apartment change
 function resetCustomTotal(type) {
   const useCustom = document.getElementById(`${type}-use-custom-total`);
   if (useCustom && useCustom.value === '1') {
@@ -1529,7 +1344,6 @@ function resetCustomTotal(type) {
   }
 }
 
-// Add reset listeners
 function addResetListeners(type) {
   const elements = [`${type}-f-checkin`, `${type}-f-checkout`, `${type}-f-apt`, `${type}-f-ratetype`];
   elements.forEach(id => {
@@ -1540,7 +1354,6 @@ function addResetListeners(type) {
   });
 }
 
-// Call after initModalForm and initEditForm
 setTimeout(() => {
   addResetListeners('modal');
   addResetListeners('edit');
@@ -1554,28 +1367,22 @@ function daysBetween(date1, date2) {
   return diffDays;
 }
 
-
-
-
-  // ============================================================
+// ============================================================
 // NOTIFICATION SYSTEM
 // ============================================================
+
 let notifications = [];
 let notificationCheckInterval = null;
 
 async function loadNotifications() {
   try {
-    // Get today's date
     const today = new Date();
     const todayStr = today.toISOString().split('T')[0];
     
-    // Get reservations
     const reservations = await apiGet('/reservations');
     
-    // Clear existing notifications
     notifications = [];
     
-    // Check for checkouts today
     const checkoutsToday = reservations.filter(r => r.checkout === todayStr);
     checkoutsToday.forEach(r => {
       notifications.push({
@@ -1589,7 +1396,6 @@ async function loadNotifications() {
       });
     });
     
-    // Check for upcoming check-ins (next 7 days)
     const nextWeek = new Date();
     nextWeek.setDate(today.getDate() + 7);
     const upcomingCheckins = reservations.filter(r => {
@@ -1609,7 +1415,6 @@ async function loadNotifications() {
       });
     });
     
-    // Check for low stock items (if on store page)
     try {
       const storeItems = await apiGet('/store/items');
       const lowStock = storeItems.filter(i => parseFloat(i.quantity) < 5);
@@ -1623,19 +1428,13 @@ async function loadNotifications() {
           icon: '⚠️'
         });
       });
-    } catch(e) {
-      // Store API might not be accessible, ignore
-    }
+    } catch(e) {}
     
-    // Sort by time (newest first) and limit to 20
     notifications.sort((a, b) => new Date(b.time) - new Date(a.time));
     notifications = notifications.slice(0, 20);
     
-    // Update UI
     renderNotifications();
     updateNotificationBadge();
-    
-    console.log(`📢 Loaded ${notifications.length} notifications`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
   }
@@ -1644,8 +1443,6 @@ async function loadNotifications() {
 function renderNotifications() {
   const container = document.getElementById('notification-list');
   if (!container) return;
-  
-  const unreadCount = notifications.filter(n => !n.read).length;
   
   if (notifications.length === 0) {
     container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
@@ -1664,7 +1461,6 @@ function renderNotifications() {
     </div>
   `).join('');
   
-  // Add click handlers to notification items
   document.querySelectorAll('.notification-item').forEach(item => {
     item.addEventListener('click', () => {
       const notifId = item.getAttribute('data-id');
@@ -1674,10 +1470,7 @@ function renderNotifications() {
         renderNotifications();
         updateNotificationBadge();
         
-        // Handle click action based on type
-        if (notif.type === 'checkout' && notif.reservationId) {
-          openDetail(notif.reservationId);
-        } else if (notif.type === 'upcoming' && notif.reservationId) {
+        if ((notif.type === 'checkout' || notif.type === 'upcoming') && notif.reservationId) {
           openDetail(notif.reservationId);
         } else if (notif.type === 'stock') {
           window.location.href = '/store-main';
@@ -1699,16 +1492,12 @@ function updateNotificationBadge() {
 
 function toggleNotificationPanel() {
   const panel = document.getElementById('notification-panel');
-  if (panel) {
-    panel.classList.toggle('show');
-  }
+  if (panel) panel.classList.toggle('show');
 }
 
 function closeNotificationPanel() {
   const panel = document.getElementById('notification-panel');
-  if (panel) {
-    panel.classList.remove('show');
-  }
+  if (panel) panel.classList.remove('show');
 }
 
 function markAllNotificationsRead() {
@@ -1718,7 +1507,6 @@ function markAllNotificationsRead() {
   showToast('All notifications marked as read', 'success');
 }
 
-// Initialize notification button
 const notifBtn = document.getElementById('notif-btn');
 if (notifBtn) {
   notifBtn.addEventListener('click', (e) => {
@@ -1727,7 +1515,6 @@ if (notifBtn) {
   });
 }
 
-// Close panel when clicking outside
 document.addEventListener('click', function(e) {
   const panel = document.getElementById('notification-panel');
   const btn = document.getElementById('notif-btn');
@@ -1736,7 +1523,6 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Mark all read button
 const markAllBtn = document.getElementById('mark-all-read-btn');
 if (markAllBtn) {
   markAllBtn.addEventListener('click', (e) => {
@@ -1745,7 +1531,6 @@ if (markAllBtn) {
   });
 }
 
-// Close button
 const closeNotifBtn = document.getElementById('close-notif-panel');
 if (closeNotifBtn) {
   closeNotifBtn.addEventListener('click', (e) => {
@@ -1754,10 +1539,8 @@ if (closeNotifBtn) {
   });
 }
 
-// Load notifications on page load
 document.addEventListener('DOMContentLoaded', function() {
   loadNotifications();
-  // Refresh every 5 minutes
   if (notificationCheckInterval) clearInterval(notificationCheckInterval);
   notificationCheckInterval = setInterval(loadNotifications, 300000);
 });
@@ -1771,52 +1554,26 @@ function escapeHtml(str) {
     return m;
   });
 }
-// Global variables
+
+// ============================================================
+// MODAL FUNCTIONS
+// ============================================================
+
 let modalAPARTMENTS = [];
 let editAPARTMENTS = [];
 let currentEditReservation = null;
-
-// ========== RESERVATION MODAL FUNCTIONS ==========
-// ============================================================
-// MODAL COUNTRY DROPDOWN FUNCTIONS (Add Modal)
-// ============================================================
 let modalCountriesList = [];
+let editCountriesList = [];
 
 async function loadModalCountries() {
   try {
-    console.log('🌍 Loading countries for add modal...');
     const countries = await apiGet('/countries');
     modalCountriesList = countries;
-    console.log(`✅ Loaded ${countries.length} countries`);
-    
-    // Pre-render the options so they're ready when dropdown opens
     renderModalCountryOptions('');
     return true;
   } catch (err) {
     console.error('Error loading countries:', err);
-    const optionsContainer = document.getElementById('modal-country-options');
-    if (optionsContainer) {
-      optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #ef4444;">Failed to load countries. Please refresh.</div>';
-    }
     return false;
-  }
-}
-
-function checkCountryDropdown() {
-  const wrapper = document.getElementById('modal-country-wrapper');
-  const selectBtn = document.getElementById('modal-country-select-btn');
-  const dropdown = document.getElementById('modal-country-dropdown');
-  const countriesCount = modalCountriesList.length;
-  
-  console.log('Country Dropdown Debug:');
-  console.log('- Wrapper exists:', !!wrapper);
-  console.log('- Select button exists:', !!selectBtn);
-  console.log('- Dropdown exists:', !!dropdown);
-  console.log('- Countries loaded:', countriesCount);
-  
-  if (countriesCount === 0) {
-    console.log('⚠️ No countries loaded! Refreshing...');
-    loadModalCountries();
   }
 }
 
@@ -1825,7 +1582,7 @@ function renderModalCountryOptions(searchTerm = '') {
   if (!optionsContainer) return;
   
   if (!modalCountriesList || modalCountriesList.length === 0) {
-    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8;">No countries available</div>';
+    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center;">No countries available</div>';
     return;
   }
   
@@ -1834,7 +1591,7 @@ function renderModalCountryOptions(searchTerm = '') {
   );
   
   if (filtered.length === 0) {
-    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8;">No countries found</div>';
+    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center;">No countries found</div>';
     return;
   }
   
@@ -1855,26 +1612,19 @@ function renderModalCountryOptions(searchTerm = '') {
 }
 
 function initModalCountryDropdown() {
-  const wrapper = document.getElementById('modal-country-wrapper');
   const selectBtn = document.getElementById('modal-country-select-btn');
   const dropdown = document.getElementById('modal-country-dropdown');
   const searchInput = document.getElementById('modal-country-search');
   
-  if (!wrapper || !selectBtn || !dropdown) {
-    console.log('Country dropdown elements not found');
-    return;
-  }
+  if (!selectBtn || !dropdown) return;
   
-  // Remove any existing listeners to prevent duplicates
   const newSelectBtn = selectBtn.cloneNode(true);
   selectBtn.parentNode.replaceChild(newSelectBtn, selectBtn);
   
-  // Re-get the elements after replacement
   const finalSelectBtn = document.getElementById('modal-country-select-btn');
   const finalDropdown = document.getElementById('modal-country-dropdown');
   const finalSearchInput = document.getElementById('modal-country-search');
   
-  // Close dropdown when clicking outside
   function closeDropdownOnOutsideClick(e) {
     const wrapper = document.getElementById('modal-country-wrapper');
     if (wrapper && !wrapper.contains(e.target)) {
@@ -1883,12 +1633,10 @@ function initModalCountryDropdown() {
     }
   }
   
-  // Open/Close dropdown
   finalSelectBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     e.preventDefault();
     
-    // Close any other open dropdowns first
     document.querySelectorAll('.select-dropdown.show').forEach(d => {
       if (d !== finalDropdown) d.classList.remove('show');
     });
@@ -1901,7 +1649,6 @@ function initModalCountryDropdown() {
         finalSearchInput.focus();
         renderModalCountryOptions('');
       }
-      // Add outside click listener
       setTimeout(() => {
         document.addEventListener('click', closeDropdownOnOutsideClick);
       }, 100);
@@ -1910,41 +1657,23 @@ function initModalCountryDropdown() {
     }
   });
   
-  // Search functionality
   if (finalSearchInput) {
     finalSearchInput.addEventListener('input', (e) => {
       e.stopPropagation();
       renderModalCountryOptions(e.target.value);
     });
-    
-    finalSearchInput.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
   }
   
-  // Prevent dropdown click from closing
-  finalDropdown.addEventListener('click', (e) => {
-    e.stopPropagation();
-  });
+  finalDropdown.addEventListener('click', (e) => e.stopPropagation());
 }
-
-// ============================================================
-// EDIT MODAL COUNTRY DROPDOWN FUNCTIONS
-// ============================================================
-let editCountriesList = [];
 
 async function loadEditCountries() {
   try {
-    console.log('🌍 Loading countries for edit modal...');
     const countries = await apiGet('/countries');
     editCountriesList = countries;
     renderEditCountryOptions('');
   } catch (err) {
     console.error('Error loading countries:', err);
-    const optionsContainer = document.getElementById('edit-country-options');
-    if (optionsContainer) {
-      optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #ef4444;">Failed to load countries</div>';
-    }
   }
 }
 
@@ -1953,7 +1682,7 @@ function renderEditCountryOptions(searchTerm = '') {
   if (!optionsContainer) return;
   
   if (!editCountriesList || editCountriesList.length === 0) {
-    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8;">No countries available</div>';
+    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center;">No countries available</div>';
     return;
   }
   
@@ -1962,7 +1691,7 @@ function renderEditCountryOptions(searchTerm = '') {
   );
   
   if (filtered.length === 0) {
-    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #94a3b8;">No countries found</div>';
+    optionsContainer.innerHTML = '<div style="padding: 20px; text-align: center;">No countries found</div>';
     return;
   }
   
@@ -1983,21 +1712,15 @@ function renderEditCountryOptions(searchTerm = '') {
 }
 
 function initEditCountryDropdown() {
-  const wrapper = document.getElementById('edit-country-wrapper');
   const selectBtn = document.getElementById('edit-country-select-btn');
   const dropdown = document.getElementById('edit-country-dropdown');
   const searchInput = document.getElementById('edit-country-search');
   
-  if (!wrapper || !selectBtn || !dropdown) {
-    console.log('Edit country dropdown elements not found');
-    return;
-  }
+  if (!selectBtn || !dropdown) return;
   
-  // Remove any existing listeners to prevent duplicates
   const newSelectBtn = selectBtn.cloneNode(true);
   selectBtn.parentNode.replaceChild(newSelectBtn, selectBtn);
   
-  // Re-get the elements after replacement
   const finalSelectBtn = document.getElementById('edit-country-select-btn');
   const finalDropdown = document.getElementById('edit-country-dropdown');
   const finalSearchInput = document.getElementById('edit-country-search');
@@ -2039,20 +1762,10 @@ function initEditCountryDropdown() {
       e.stopPropagation();
       renderEditCountryOptions(e.target.value);
     });
-    
-    finalSearchInput.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
   }
   
-  finalDropdown.addEventListener('click', (e) => {
-    e.stopPropagation();
-  });
+  finalDropdown.addEventListener('click', (e) => e.stopPropagation());
 }
-
-
-
-
 
 async function initModalForm() {
   if (!modalAPARTMENTS.length) {
@@ -2063,9 +1776,17 @@ async function initModalForm() {
       return;
     }
   }
-  // Reset identification fields
-document.getElementById('modal-f-identification').value = '';
-document.getElementById('modal-f-id-type').value = 'NIDA';
+  
+  // Initialize payment fields
+  document.getElementById('modal-f-amount-paid').value = 0;
+  document.getElementById('modal-f-payment-status').value = 'unpaid';
+  document.getElementById('modal-f-payment-method').value = '';
+  updateBalance('modal');
+  initPaymentListeners('modal');
+  
+  document.getElementById('modal-f-identification').value = '';
+  document.getElementById('modal-f-id-type').value = 'NIDA';
+  
   const sel = document.getElementById('modal-f-apt');
   sel.innerHTML = '<option value="">Select Apartment</option>';
   modalAPARTMENTS.forEach(apt => {
@@ -2075,7 +1796,6 @@ document.getElementById('modal-f-id-type').value = 'NIDA';
     sel.appendChild(opt);
   });
   
-  // Load countries from database for add modal
   await loadModalCountries();
   initModalCountryDropdown();
   
@@ -2104,8 +1824,6 @@ function modalStepperChange(id, delta) {
 }
 
 function modalUpdateRate() {
-  console.log('🔄 Updating rate...');
-  
   const aptId = parseInt(document.getElementById('modal-f-apt')?.value);
   const rateType = document.getElementById('modal-f-ratetype')?.value;
   const checkin = document.getElementById('modal-f-checkin')?.value;
@@ -2114,15 +1832,11 @@ function modalUpdateRate() {
   if (!aptId || !checkin || !checkout) { 
     document.getElementById('modal-f-total').innerHTML = '—';
     document.getElementById('modal-f-total-hidden').value = 0;
-    console.log('Missing fields');
     return; 
   }
   
   const apt = modalAPARTMENTS.find(a => a.id === aptId);
-  if (!apt) {
-    console.log('Apartment not found');
-    return;
-  }
+  if (!apt) return;
   
   const nights = daysBetween(checkin, checkout);
   const multiplier = rateType === 'Partial' ? 0.6 : 1;
@@ -2130,17 +1844,13 @@ function modalUpdateRate() {
   
   document.getElementById('modal-f-total').innerHTML = total > 0 ? fmtTSH(total) : '—';
   document.getElementById('modal-f-total-hidden').value = total;
-  
-  console.log(`✅ ${nights} nights × ${apt.ratePerNight} × ${multiplier} = ${total}`);
-}
-// Force recalculation when dates lose focus
-function forceRateUpdate() {
-  setTimeout(() => {
-    modalUpdateRate();
-  }, 100);
+  updateBalance('modal');
 }
 
-// Add these event listeners after initModalForm
+function forceRateUpdate() {
+  setTimeout(() => modalUpdateRate(), 100);
+}
+
 document.getElementById('modal-f-checkin')?.addEventListener('blur', forceRateUpdate);
 document.getElementById('modal-f-checkout')?.addEventListener('blur', forceRateUpdate);
 document.getElementById('modal-f-apt')?.addEventListener('change', forceRateUpdate);
@@ -2151,7 +1861,6 @@ function openReservationModal() {
   document.getElementById('reservation-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   initModalForm();
-  setTimeout(() => checkCountryDropdown(), 500);
 }
 
 function closeReservationModal() {
@@ -2161,7 +1870,6 @@ function closeReservationModal() {
   document.getElementById('reservation-form-modal').reset();
 }
 
-// ========== EDIT MODAL FUNCTIONS ==========
 async function initEditForm(reservationId) {
   try {
     const reservation = await apiGet(`/reservations/${reservationId}`);
@@ -2186,7 +1894,6 @@ async function initEditForm(reservationId) {
       sel.appendChild(opt);
     });
     
-    // Load countries for edit modal
     await loadEditCountries();
     initEditCountryDropdown();
     
@@ -2194,12 +1901,9 @@ async function initEditForm(reservationId) {
     document.getElementById('edit-f-guest').value = reservation.guest;
     document.getElementById('edit-f-email').value = reservation.email;
     document.getElementById('edit-f-mobile').value = reservation.mobile || '';
-    
-    // ✅ SET ID FIELDS HERE - ONCE, AFTER OTHER FIELDS
     document.getElementById('edit-f-identification').value = reservation.identification || '';
     document.getElementById('edit-f-id-type').value = reservation.idType || 'NIDA';
     
-    // Set country value for custom dropdown
     const countryValue = reservation.country || '';
     if (countryValue) {
       document.getElementById('edit-selected-country-text').textContent = countryValue;
@@ -2216,7 +1920,21 @@ async function initEditForm(reservationId) {
     document.getElementById('edit-f-children').value = reservation.children;
     document.getElementById('edit-f-ratetype').value = reservation.rateType;
     
-    editUpdateRate();
+    // Set total from database - DO NOT RECALCULATE
+    document.getElementById('edit-f-total-hidden').value = reservation.total || 0;
+    document.getElementById('edit-f-total').innerHTML = fmtTSH(reservation.total || 0);
+    
+    // Set payment fields from database
+    document.getElementById('edit-f-amount-paid').value = reservation.amountPaid || 0;
+    document.getElementById('edit-f-payment-status').value = reservation.paymentStatus || 'unpaid';
+    document.getElementById('edit-f-payment-method').value = reservation.paymentMethod || '';
+    
+    // Calculate balance
+    const balance = (reservation.total || 0) - (reservation.amountPaid || 0);
+    const balanceDisplay = document.getElementById('edit-f-balance');
+    if (balanceDisplay) balanceDisplay.innerHTML = fmtTSH(balance);
+    
+    // DO NOT call editUpdateRate() - it will recalculate!
     
   } catch (err) {
     showToast('Failed to load reservation data: ' + err.message, '❌');
@@ -2236,15 +1954,20 @@ function editUpdateRate() {
   const rateType = document.getElementById('edit-f-ratetype')?.value;
   const checkin = document.getElementById('edit-f-checkin')?.value;
   const checkout = document.getElementById('edit-f-checkout')?.value;
-  if (!aptId || !checkin || !checkout) { 
-    document.getElementById('edit-f-total').textContent = '—'; 
+  
+  if(!aptId || !checkin || !checkout) { 
+    document.getElementById('edit-f-total').textContent='—';
+    document.getElementById('edit-f-total-hidden').value = 0;
     return; 
   }
+  
   const apt = editAPARTMENTS.find(a => a.id === aptId);
   const nights = Math.max(0, daysBetween(checkin, checkout));
   const total = apt ? Math.round(apt.ratePerNight * nights * (rateType === 'Partial' ? 0.6 : 1)) : 0;
+  
   document.getElementById('edit-f-total').innerHTML = total > 0 ? fmtTSH(total) : '—';
   document.getElementById('edit-f-total-hidden').value = total;
+  updateBalance('edit');
 }
 
 async function openEditModal(reservationId) {
@@ -2253,6 +1976,8 @@ async function openEditModal(reservationId) {
   document.getElementById('edit-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   await initEditForm(reservationId);
+  initPaymentListeners('edit');
+  updateBalance('edit');
 }
 
 function closeEditModal() {
@@ -2260,6 +1985,7 @@ function closeEditModal() {
   document.getElementById('edit-modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
   currentEditReservation = null;
+  document.getElementById('edit-form-modal').reset();
 }
 
 function openEditFromDetail() {
@@ -2270,7 +1996,6 @@ function openEditFromDetail() {
   }
 }
 
-// ========== UPDATE STATS FUNCTION ==========
 function updateReservationStats() {
   const now = new Date();
   const today = new Date();
@@ -2278,7 +2003,6 @@ function updateReservationStats() {
   const checkoutTimeToday = new Date(today);
   checkoutTimeToday.setHours(11, 0, 0, 0);
   
-  // Active: checkin <= now AND checkout+time > now (11:00 AM checkout)
   const active = reservations.filter(r => {
     const rCheckin = new Date(r.checkin);
     const rCheckout = new Date(r.checkout);
@@ -2286,14 +2010,12 @@ function updateReservationStats() {
     return rCheckin <= now && rCheckout > now;
   }).length;
   
-  // Upcoming: checkin > today (future)
   const upcoming = reservations.filter(r => {
     const rCheckin = new Date(r.checkin);
     rCheckin.setHours(0, 0, 0, 0);
     return rCheckin > today;
   }).length;
   
-  // Checkouts today: checkout date is today AND current time is BEFORE 11:00 AM
   const checkoutToday = reservations.filter(r => {
     const rCheckout = new Date(r.checkout);
     const isToday = rCheckout.toDateString() === today.toDateString();
@@ -2303,81 +2025,46 @@ function updateReservationStats() {
   document.getElementById('stat-active-count').textContent = active;
   document.getElementById('stat-upcoming-count').textContent = upcoming;
   document.getElementById('stat-checkout-today-count').textContent = checkoutToday;
-  
-  console.log(`📊 Stats: Active=${active}, Checkouts Today=${checkoutToday}, Time=${now.toLocaleTimeString()}`);
 }
 
-// Override loadAndRenderReservations to also update stats
 const originalLoadAndRender = window.loadAndRenderReservations;
 window.loadAndRenderReservations = async function() {
   await originalLoadAndRender();
   updateReservationStats();
 };
 
-// Also update stats after any change that calls loadAndRenderReservations (already done)
-// We also need to make sure reservations array is available - it's updated in the original function
-
-// ========== FORM SUBMISSION HANDLERS ==========
-// New Reservation Form
-// Force manual calculation before saving
 function forceManualCalculation() {
-  console.log('🔧 Forcing manual calculation before save...');
-  
-  // Get current form values
   const aptId = parseInt(document.getElementById('modal-f-apt')?.value);
   const rateType = document.getElementById('modal-f-ratetype')?.value;
   const checkin = document.getElementById('modal-f-checkin')?.value;
   const checkout = document.getElementById('modal-f-checkout')?.value;
-  
-  // Check if custom total is active
   const useCustomTotal = document.getElementById('modal-use-custom-total')?.value;
   
   if (useCustomTotal === '1') {
-    console.log('Custom total active, keeping custom value');
     return parseFloat(document.getElementById('modal-f-total-hidden').value) || 0;
   }
   
-  // Auto-calculate if all fields are present
-  if (!aptId || !checkin || !checkout) {
-    console.log('Missing fields, cannot calculate');
-    return 0;
-  }
+  if (!aptId || !checkin || !checkout) return 0;
   
   const apt = modalAPARTMENTS.find(a => a.id === aptId);
-  if (!apt) {
-    console.log('Apartment not found');
-    return 0;
-  }
+  if (!apt) return 0;
   
   const nights = daysBetween(checkin, checkout);
-  if (nights <= 0) {
-    console.log('Invalid nights');
-    return 0;
-  }
+  if (nights <= 0) return 0;
   
   const multiplier = rateType === 'Partial' ? 0.6 : 1;
   const total = Math.round(apt.ratePerNight * nights * multiplier);
   
-  // Update the hidden field and display
   document.getElementById('modal-f-total-hidden').value = total;
   document.getElementById('modal-f-total').innerHTML = fmtTSH(total);
-  
-  console.log(`✅ Manual calculation: ${nights} nights × ${apt.ratePerNight} × ${multiplier} = ${total}`);
   
   return total;
 }
 
-
-
-
-
-
 document.getElementById('reservation-form-modal')?.addEventListener('submit', async function(e) {
   e.preventDefault();
   
-  // 🔧 FORCE MANUAL CALCULATION BEFORE SAVING
   const forcedTotal = forceManualCalculation();
-  
   const checkin = document.getElementById('modal-f-checkin').value;
   const checkout = document.getElementById('modal-f-checkout').value;
   
@@ -2386,11 +2073,9 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
     return; 
   }
   
-  // ✅ ADD ID VALIDATION HERE
   const idType = document.getElementById('modal-f-id-type').value;
   const idNumber = document.getElementById('modal-f-identification').value;
   
-  // Only validate if ID number is provided
   if (idNumber && idNumber.trim() !== '') {
     const validation = validateIdentification(idType, idNumber);
     if (!validation.valid) {
@@ -2398,29 +2083,23 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
       return;
     }
   }
-
-
-  // Get the final total (either custom or auto-calculated)
-  let finalTotal = forcedTotal;
   
-  // If custom total is active, use custom total instead
+  let finalTotal = forcedTotal;
   const useCustomTotal = document.getElementById('modal-use-custom-total')?.value;
   if (useCustomTotal === '1') {
     finalTotal = parseFloat(document.getElementById('modal-f-total-hidden').value) || 0;
   }
   
-  // Validate total is not zero
   if (finalTotal <= 0) {
     showToast('Please ensure total amount is calculated correctly', '⚠️');
     return;
   }
-
+  
   const payload = {
     aptId: parseInt(document.getElementById('modal-f-apt').value),
     guest: document.getElementById('modal-f-guest').value,
     email: document.getElementById('modal-f-email').value,
     mobile: document.getElementById('modal-f-mobile').value,
-   
     country: document.getElementById('modal-f-country').value,
     city: document.getElementById('modal-f-city').value,
     checkin, checkout,
@@ -2428,11 +2107,13 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
     children: parseInt(document.getElementById('modal-f-children').value),
     rateType: document.getElementById('modal-f-ratetype').value,
     total: finalTotal,
-     // ✅ ADD THESE TWO LINES
-  identification: document.getElementById('modal-f-identification').value,
-  idType: document.getElementById('modal-f-id-type').value
+    identification: document.getElementById('modal-f-identification').value,
+    idType: document.getElementById('modal-f-id-type').value,
+    amountPaid: parseFloat(document.getElementById('modal-f-amount-paid').value) || 0,
+    paymentMethod: document.getElementById('modal-f-payment-method').value,
+    paymentStatus: document.getElementById('modal-f-payment-status').value
   };
-
+  
   try {
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
@@ -2444,13 +2125,12 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
     closeReservationModal();
     document.getElementById('reservation-form-modal').reset();
     
-    // Reset custom total flags
     document.getElementById('modal-use-custom-total').value = '0';
     document.getElementById('modal-f-total-hidden').value = 0;
     
     setTimeout(() => {
-  loadAndRenderReservations();  // ← Changed from loadAndRenderDashboard
-}, 100);
+      loadAndRenderReservations();
+    }, 100);
     
     submitBtn.textContent = originalText;
     submitBtn.disabled = false;
@@ -2459,7 +2139,6 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
   }
 });
 
-// Force manual calculation for Edit Modal
 function forceManualCalculationEdit() {
   console.log('🔧 Forcing manual calculation for edit...');
   
@@ -2469,30 +2148,41 @@ function forceManualCalculationEdit() {
   const checkout = document.getElementById('edit-f-checkout')?.value;
   
   const useCustomTotal = document.getElementById('edit-use-custom-total')?.value;
+  const customTotalHidden = document.getElementById('edit-f-total-hidden')?.value;
   
+  // If custom total was applied, KEEP IT - don't recalculate
   if (useCustomTotal === '1') {
-    console.log('Custom total active, keeping custom value');
-    return parseFloat(document.getElementById('edit-f-total-hidden').value) || 0;
+    console.log('Custom total active, keeping custom value:', customTotalHidden);
+    return parseFloat(customTotalHidden) || 0;
   }
   
-  if (!aptId || !checkin || !checkout) return 0;
+  // Also check if the current total in the hidden field is different from auto-calculated
+  // This preserves manually entered totals even if custom flag wasn't set
+  const currentTotal = parseFloat(customTotalHidden) || 0;
+  
+  if (!aptId || !checkin || !checkout) return currentTotal;
   
   const apt = editAPARTMENTS.find(a => a.id === aptId);
-  if (!apt) return 0;
+  if (!apt) return currentTotal;
   
   const nights = daysBetween(checkin, checkout);
-  if (nights <= 0) return 0;
+  if (nights <= 0) return currentTotal;
   
   const multiplier = rateType === 'Partial' ? 0.6 : 1;
-  const total = Math.round(apt.ratePerNight * nights * multiplier);
+  const autoTotal = Math.round(apt.ratePerNight * nights * multiplier);
   
-  document.getElementById('edit-f-total-hidden').value = total;
-  document.getElementById('edit-f-total').innerHTML = fmtTSH(total);
+  // If current total is different from auto-calculated, preserve the current total
+  if (currentTotal !== autoTotal && currentTotal > 0) {
+    console.log('Preserving manually entered total:', currentTotal, '(auto would be:', autoTotal, ')');
+    return currentTotal;
+  }
   
-  return total;
+  document.getElementById('edit-f-total-hidden').value = autoTotal;
+  document.getElementById('edit-f-total').innerHTML = fmtTSH(autoTotal);
+  
+  return autoTotal;
 }
 
-// Edit Reservation Form
 document.getElementById('edit-form-modal')?.addEventListener('submit', async function(e) {
   e.preventDefault();
   
@@ -2507,7 +2197,7 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     showToast('Check-out must be after check-in', '⚠️'); 
     return; 
   }
-    // ✅ ADD ID VALIDATION HERE
+  
   const idType = document.getElementById('edit-f-id-type').value;
   const idNumber = document.getElementById('edit-f-identification').value;
   
@@ -2521,7 +2211,15 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
   
   let finalTotal = forcedTotal;
   const useCustomTotal = document.getElementById('edit-use-custom-total')?.value;
+  
+  // IMPORTANT: Keep the custom total flag for the database
+  // If custom total was active, use that total
   if (useCustomTotal === '1') {
+    finalTotal = parseFloat(document.getElementById('edit-f-total-hidden').value) || 0;
+  }
+  
+  // If finalTotal is still 0, force use the hidden value
+  if (finalTotal <= 0) {
     finalTotal = parseFloat(document.getElementById('edit-f-total-hidden').value) || 0;
   }
   
@@ -2529,6 +2227,15 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     showToast('Please ensure total amount is calculated correctly', '⚠️');
     return;
   }
+  
+  // Calculate payment status based on amount paid vs total
+  const amountPaid = parseFloat(document.getElementById('edit-f-amount-paid').value) || 0;
+  let paymentStatus = document.getElementById('edit-f-payment-status').value;
+  const balance = finalTotal - amountPaid;
+  
+  if (balance <= 0) paymentStatus = 'paid';
+  else if (amountPaid > 0) paymentStatus = 'partial';
+  else paymentStatus = 'unpaid';
 
   const payload = {
     aptId: parseInt(document.getElementById('edit-f-apt').value),
@@ -2544,10 +2251,14 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     total: finalTotal,
     userId: currentUser.id,
     username: currentUser.fullName || currentUser.username,
-    // ✅ ADD THESE TWO LINES
-  identification: document.getElementById('edit-f-identification').value,
-  idType: document.getElementById('edit-f-id-type').value
+    identification: document.getElementById('edit-f-identification').value,
+    idType: document.getElementById('edit-f-id-type').value,
+    amountPaid: amountPaid,
+    paymentMethod: document.getElementById('edit-f-payment-method').value,
+    paymentStatus: paymentStatus
   };
+  
+  console.log('📤 Submitting edit with:', { total: finalTotal, amountPaid, paymentStatus, useCustomTotal });
 
   try {
     const submitBtn = e.target.querySelector('button[type="submit"]');
@@ -2559,9 +2270,9 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     showToast('✅ Reservation updated successfully!', '📝');
     closeEditModal();
     
-   setTimeout(() => {
-  loadAndRenderReservations();  // ← Changed from loadAndRenderDashboard
-}, 100);
+    setTimeout(() => {
+      loadAndRenderReservations();
+    }, 100);
     
     submitBtn.textContent = originalText;
     submitBtn.disabled = false;
@@ -2569,18 +2280,12 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     showToast('Update failed: ' + err.message, '⚠️');
   }
 });
-
-
 // ============================================================
 // ID VALIDATION FUNCTIONS
 // ============================================================
 
 function validateNIDA(number) {
-  // NIDA format: 20 digits (Tanzania National ID)
-  // Format: YYYYMMDD followed by numbers (total 20 digits)
-  // Example: 19810101700000120001
   const nidaRegex = /^\d{20}$/;
-  
   if (!nidaRegex.test(number)) {
     return { valid: false, message: 'NIDA number must be exactly 20 digits (e.g., 19810101700000120001)' };
   }
@@ -2588,63 +2293,54 @@ function validateNIDA(number) {
 }
 
 function validatePassport(number) {
-  // Passport format: 1-2 letters followed by 6-9 digits
-  // Examples: A1234567, AB1234567, TZ123456789
   const passportRegex = /^[A-Z]{1,2}\d{6,9}$/;
-  
   if (!passportRegex.test(number.toUpperCase())) {
-    return { valid: false, message: 'Passport number must start with 1-2 letters followed by 6-9 digits (e.g., A1234567 or AB1234567)' };
+    return { valid: false, message: 'Passport number must start with 1-2 letters followed by 6-9 digits' };
   }
   return { valid: true, message: '' };
 }
 
 function validateDrivingLicense(number) {
-  // Driving license: 1-2 letters + 5-8 digits
   const licenseRegex = /^[A-Z]{1,2}\d{5,8}$/i;
-  
   if (!licenseRegex.test(number)) {
-    return { valid: false, message: 'Driving license format: 1-2 letters followed by 5-8 digits (e.g., D12345 or DL1234567)' };
+    return { valid: false, message: 'Driving license format: 1-2 letters followed by 5-8 digits' };
   }
   return { valid: true, message: '' };
 }
 
 function validateVoterID(number) {
-  // Voter ID: 8-12 digits
   const voterRegex = /^\d{8,12}$/;
-  
   if (!voterRegex.test(number)) {
-    return { valid: false, message: 'Voter ID must be 8-12 digits (e.g., 12345678)' };
+    return { valid: false, message: 'Voter ID must be 8-12 digits' };
   }
   return { valid: true, message: '' };
 }
 
 function validateIdentification(type, number) {
   if (!number || number.trim() === '') {
-    return { valid: true, message: '' }; // Optional field
+    return { valid: true, message: '' };
   }
   
   const trimmedNumber = number.trim();
   
   switch(type) {
-    case 'NIDA':
-      return validateNIDA(trimmedNumber);
-    case 'Passport':
-      return validatePassport(trimmedNumber);
-    case 'Driving License':
-      return validateDrivingLicense(trimmedNumber);
-    case 'Voter ID':
-      return validateVoterID(trimmedNumber);
+    case 'NIDA': return validateNIDA(trimmedNumber);
+    case 'Passport': return validatePassport(trimmedNumber);
+    case 'Driving License': return validateDrivingLicense(trimmedNumber);
+    case 'Voter ID': return validateVoterID(trimmedNumber);
     case 'Other':
-      // For "Other" type, just check if not empty
       if (trimmedNumber.length < 3) {
         return { valid: false, message: 'Please enter a valid identification number (min 3 characters)' };
       }
       return { valid: true, message: '' };
-    default:
-      return { valid: true, message: '' };
+    default: return { valid: true, message: '' };
   }
 }
-// ========== SIDEBAR TOGGLE ==========
+
+// ============================================================
+// SIDEBAR TOGGLE
+// ============================================================
+
 const hamburgerBtn = document.getElementById('hamburger-btn');
 const sidebar = document.getElementById('sidebar');
 const overlayMain = document.getElementById('overlay-main');
@@ -2670,7 +2366,6 @@ if (hamburgerBtn) {
 if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
 if (overlayMain) overlayMain.addEventListener('click', closeSidebar);
 
-// Close all modals on Escape key
 document.addEventListener('keydown', e => { 
   if (e.key === 'Escape') {
     closeSidebar();
@@ -2680,22 +2375,10 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// Initialize stats when page loads (reservations.js already loads data, but we need to wait)
-document.addEventListener('DOMContentLoaded', async () => {
-  // Wait for reservations to be loaded by reservations.js (it sets APARTMENTS and calls loadAndRenderReservations)
-  // We need to ensure stats update after data loads
-  // Since loadAndRenderReservations is async and calls renderReservationsTable, we will attach a MutationObserver or just rely on the override above.
-  // The override we set on loadAndRenderReservations will call updateReservationStats after the original.
-  // Also we need to initially call update after the first load; we can call it here but the data may not be ready.
-  // We'll set a short timeout to allow first load to complete.
-  setTimeout(() => {
-    if (reservations && reservations.length) updateReservationStats();
-  }, 500);
-});
+// ============================================================
+// USER SESSION MANAGEMENT
+// ============================================================
 
-
-
-// ========== USER SESSION MANAGEMENT ==========
 function getCurrentUser() {
   const userStr = sessionStorage.getItem('pms_user');
   if (!userStr) return null;
@@ -2704,25 +2387,18 @@ function getCurrentUser() {
 
 function logout() {
   sessionStorage.removeItem('pms_user');
-  window.location.href = '/';  // ← Same folder
+  window.location.href = '/';
 }
 
-function switchToBack() {
-  alert('Back office feature coming soon');
-}
-
-// Redirect if not logged in
 const currentUser = getCurrentUser();
 if (!currentUser) {
-  window.location.href = '/';  // ← Same folder
+  window.location.href = '/';
 }
 
-// Display user info
 document.getElementById('userName').innerText = currentUser.fullName || currentUser.username;
 document.getElementById('userRole').innerText = currentUser.role ? currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1) : 'User';
 document.getElementById('userAvatar').innerText = (currentUser.fullName || currentUser.username || 'U').charAt(0).toUpperCase();
 
-// Dropdown toggle
 const userPill = document.getElementById('userPill');
 const dropdownMenu = document.getElementById('dropdownMenu');
 if (userPill) {
@@ -2737,7 +2413,6 @@ if (userPill) {
   });
 }
 
-// ========== CHANGE PASSWORD MODAL ==========
 function openChangePasswordModal() {
   if (!document.getElementById('change-password-modal')) {
     const modalHTML = `
@@ -2786,18 +2461,17 @@ function openChangePasswordModal() {
       }
       
       try {
-  await apiPost('/auth/change-password', {
-    userId: currentUser.id,
-    oldPassword: currentPassword,
-    newPassword: newPassword
-  });
-  
-  showToast('Password changed successfully! Please login again.', '✅');
-  setTimeout(() => { logout(); }, 1500);
-} catch (err) {
-  showToast('Failed to change password: ' + err.message, '❌');
-}
-});
+        await apiPost('/auth/change-password', {
+          userId: currentUser.id,
+          oldPassword: currentPassword,
+          newPassword: newPassword
+        });
+        showToast('Password changed successfully! Please login again.', '✅');
+        setTimeout(() => { logout(); }, 1500);
+      } catch (err) {
+        showToast('Failed to change password: ' + err.message, '❌');
+      }
+    });
   }
   
   document.getElementById('change-password-modal').classList.add('open');
@@ -2817,13 +2491,7 @@ function closeChangePasswordModal() {
   if (form) form.reset();
 }
 
-// Make functions global
-window.logout = logout;
-window.switchToBack = switchToBack;
-window.openChangePasswordModal = openChangePasswordModal;
-window.closeChangePasswordModal = closeChangePasswordModal;
-
-// Make functions global
+// Global exports
 window.openReservationModal = openReservationModal;
 window.closeReservationModal = closeReservationModal;
 window.modalStepperChange = modalStepperChange;
@@ -2831,6 +2499,21 @@ window.openEditModal = openEditModal;
 window.closeEditModal = closeEditModal;
 window.openEditFromDetail = openEditFromDetail;
 window.editStepperChange = editStepperChange;
+window.logout = logout;
+window.openChangePasswordModal = openChangePasswordModal;
+window.closeChangePasswordModal = closeChangePasswordModal;
+window.printReservation = printReservation;
+window.enableCustomTotal = enableCustomTotal;
+window.applyCustomTotal = applyCustomTotal;
+window.cancelCustomTotal = cancelCustomTotal;
+
+// Initial load
+setTimeout(() => {
+  if (typeof loadAndRenderReservations === 'function') {
+    loadAndRenderReservations();
+  }
+}, 100);
+
 </script>
 </body>
 </html>

@@ -84,8 +84,8 @@ function renderRooms() {
         </div>
       `}
       <button class="btn btn-gold" style="width:100%;margin-top:12px;padding:12px;font-size:14px;font-weight:600" 
-        onclick="event.stopPropagation();openBookModal(${apt.id}, '${escapeHtml(apt.name)}', ${apt.ratePerNight})">
-        📅 Book Now
+
+        
       </button>
     ` : '';
 

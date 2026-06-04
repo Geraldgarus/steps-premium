@@ -210,27 +210,50 @@ async function openDetail(resId) {
     rCheckout.setHours(11, 0, 0, 0);
     const isActive = rCheckout > now;
     
+    // Get payment status badge
+    let paymentBadge = '';
+    if (res.paymentStatus === 'paid') {
+      paymentBadge = '<span style="background:#d1fae5; color:#065f46; padding:4px 12px; border-radius:20px; font-size:12px;">✅ Paid in Full</span>';
+    } else if (res.paymentStatus === 'partial') {
+      paymentBadge = `<span style="background:#fef3c7; color:#d97706; padding:4px 12px; border-radius:20px; font-size:12px;">🟡 Partial Payment (Due: ${fmtTSH(res.balance || 0)})</span>`;
+    } else {
+      paymentBadge = '<span style="background:#fee2e2; color:#dc2626; padding:4px 12px; border-radius:20px; font-size:12px;">❌ Unpaid</span>';
+    }
+    
     const checkoutBtn = document.getElementById('checkout-btn');
     if (checkoutBtn) checkoutBtn.style.display = isActive ? 'flex' : 'none';
-if (detailBody) {
-  detailBody.innerHTML = `
-    <div class="detail-row"><div class="detail-icon">👤</div><div><div class="detail-label">Guest Name</div><div class="detail-value">${escapeHtml(res.guest)}</div></div></div>
-    <div class="detail-row"><div class="detail-icon">📧</div><div><div class="detail-label">Email</div><div class="detail-value">${escapeHtml(res.email)}</div></div></div>
-    <div class="detail-row"><div class="detail-icon">📱</div><div><div class="detail-label">Mobile</div><div class="detail-value">${escapeHtml(res.mobile || '—')}</div></div></div>
-    <div class="detail-row"><div class="detail-icon">🪪</div><div><div class="detail-label">ID Type</div><div class="detail-value">${escapeHtml(res.idType || '—')}</div></div></div>
-    <div class="detail-row"><div class="detail-icon">📋</div><div><div class="detail-label">ID Number</div><div class="detail-value">${escapeHtml(res.identification || '—')}</div></div></div>
-    <div class="detail-row"><div class="detail-icon">🌍</div><div><div class="detail-label">Country</div><div class="detail-value">${escapeHtml(res.country || '—')}</div></div></div>
-    <div class="detail-row"><div class="detail-icon">🏙️</div><div><div class="detail-label">City</div><div class="detail-value">${escapeHtml(res.city || '—')}</div></div></div>
-    <div class="detail-row"><div class="detail-icon">🏠</div><div><div class="detail-label">Apartment</div><div class="detail-value">${escapeHtml(apt.name)}</div></div></div>
-    <div class="detail-row"><div class="detail-icon">💳</div><div><div class="detail-label">Rate Type</div><div class="detail-value">${escapeHtml(res.rateType)}</div></div></div>
-    <div class="detail-row"><div class="detail-icon">📅</div><div><div class="detail-label">Check-in</div><div class="detail-value">${fmtDate(res.checkin)}</div></div></div>
-    <div class="detail-row"><div class="detail-icon">📅</div><div><div class="detail-label">Check-out</div><div class="detail-value">${fmtDate(res.checkout)} at 11:00 AM</div></div></div>
-    <div class="detail-row"><div class="detail-icon">🌙</div><div><div class="detail-label">Nights</div><div class="detail-value">${nights} night${nights !== 1 ? 's' : ''}</div></div></div>
-    <div class="detail-row"><div class="detail-icon">👨‍👩‍👧</div><div><div class="detail-label">Adults / Children</div><div class="detail-value">${res.adults} Adults, ${res.children} Children</div></div></div>
-    <div class="detail-total"><span>Total Rate</span><span>${fmtTSH(res.total)}</span></div>
-    ${isActive ? `<div style="margin-top:16px;padding:12px;background:#e8f5e9;border-radius:8px;text-align:center;">🟢 Currently staying - Checkout at 11:00 AM</div>` : `<div style="margin-top:16px;padding:12px;background:#f5f5f5;border-radius:8px;text-align:center;">✅ Reservation completed</div>`}
-  `;
-}
+    
+    if (detailBody) {
+      detailBody.innerHTML = `
+        <div class="detail-row"><div class="detail-icon">👤</div><div><div class="detail-label">Guest Name</div><div class="detail-value">${escapeHtml(res.guest)}</div></div></div>
+        <div class="detail-row"><div class="detail-icon">📧</div><div><div class="detail-label">Email</div><div class="detail-value">${escapeHtml(res.email)}</div></div></div>
+        <div class="detail-row"><div class="detail-icon">📱</div><div><div class="detail-label">Mobile</div><div class="detail-value">${escapeHtml(res.mobile || '—')}</div></div></div>
+        <div class="detail-row"><div class="detail-icon">🪪</div><div><div class="detail-label">ID Type</div><div class="detail-value">${escapeHtml(res.idType || '—')}</div></div></div>
+        <div class="detail-row"><div class="detail-icon">📋</div><div><div class="detail-label">ID Number</div><div class="detail-value">${escapeHtml(res.identification || '—')}</div></div></div>
+        <div class="detail-row"><div class="detail-icon">🌍</div><div><div class="detail-label">Country</div><div class="detail-value">${escapeHtml(res.country || '—')}</div></div></div>
+        <div class="detail-row"><div class="detail-icon">🏙️</div><div><div class="detail-label">City</div><div class="detail-value">${escapeHtml(res.city || '—')}</div></div></div>
+        <div class="detail-row"><div class="detail-icon">🏠</div><div><div class="detail-label">Apartment</div><div class="detail-value">${escapeHtml(apt.name)}</div></div></div>
+        <div class="detail-row"><div class="detail-icon">💳</div><div><div class="detail-label">Rate Type</div><div class="detail-value">${escapeHtml(res.rateType)}</div></div></div>
+        <div class="detail-row"><div class="detail-icon">📅</div><div><div class="detail-label">Check-in</div><div class="detail-value">${fmtDate(res.checkin)}</div></div></div>
+        <div class="detail-row"><div class="detail-icon">📅</div><div><div class="detail-label">Check-out</div><div class="detail-value">${fmtDate(res.checkout)} at 11:00 AM</div></div></div>
+        <div class="detail-row"><div class="detail-icon">🌙</div><div><div class="detail-label">Nights</div><div class="detail-value">${nights} night${nights !== 1 ? 's' : ''}</div></div></div>
+        <div class="detail-row"><div class="detail-icon">👨‍👩‍👧</div><div><div class="detail-label">Adults / Children</div><div class="detail-value">${res.adults} Adults, ${res.children} Children</div></div></div>
+        
+        <!-- PAYMENT SECTION -->
+        <div style="margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div class="detail-label" style="font-size: 13px;">💰 Payment Status</div>
+            <div>${paymentBadge}</div>
+          </div>
+          <div class="detail-row"><div class="detail-icon">💳</div><div><div class="detail-label">Payment Method</div><div class="detail-value">${escapeHtml(res.paymentMethod || '—')}</div></div></div>
+          <div class="detail-row"><div class="detail-icon">💵</div><div><div class="detail-label">Amount Paid</div><div class="detail-value">${fmtTSH(res.amountPaid || 0)}</div></div></div>
+          <div class="detail-row"><div class="detail-icon">⚖️</div><div><div class="detail-label">Balance Due</div><div class="detail-value">${fmtTSH(res.balance || 0)}</div></div></div>
+        </div>
+        
+        <div class="detail-total"><span>Total Rate</span><span>${fmtTSH(res.total)}</span></div>
+        ${isActive ? `<div style="margin-top:16px;padding:12px;background:#e8f5e9;border-radius:8px;text-align:center;">🟢 Currently staying - Checkout at 11:00 AM</div>` : `<div style="margin-top:16px;padding:12px;background:#f5f5f5;border-radius:8px;text-align:center;">✅ Reservation completed</div>`}
+      `;
+    }
   } catch (err) {
     showToast('Could not load reservation: ' + err.message, '❌');
   }

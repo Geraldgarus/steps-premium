@@ -243,6 +243,11 @@ app.delete('/api/apartments/:id', async (req, res) => {
 // ════════════════════════════════════════════════════════════════════════════
 
 // GET /api/reservations – with checkout time info
+// ============================================================
+// RESERVATIONS API WITH PAYMENT FIELDS
+// ============================================================
+
+// GET /api/reservations – list all reservations with payment info
 app.get('/api/reservations', async (req, res) => {
   const { aptId, from, to } = req.query;
   const conditions = [];
@@ -267,6 +272,10 @@ app.get('/api/reservations', async (req, res) => {
         TO_CHAR(r.checkout_time, 'HH24:MI:SS') as checkout_time_str,
         r.identification,
         r.id_type,
+        r.payment_status,
+        r.payment_method,
+        r.amount_paid,
+        r.balance,
         CASE 
           WHEN (r.checkout + COALESCE(r.checkout_time, '11:00:00')) <= CURRENT_TIMESTAMP THEN 'checked_out'
           WHEN r.checkin <= CURRENT_DATE THEN 'active'
@@ -278,7 +287,6 @@ app.get('/api/reservations', async (req, res) => {
       ORDER BY r.checkin DESC
     `, values);
     
-    // Format dates as YYYY-MM-DD strings without timezone conversion
     const formattedRows = rows.map(row => ({
       ...row,
       checkin: row.checkin_str,
@@ -286,7 +294,11 @@ app.get('/api/reservations', async (req, res) => {
       checkoutTime: row.checkout_time_str || '11:00:00',
       currentStatus: row.current_status,
       identification: row.identification,
-      idType: row.id_type
+      idType: row.id_type,
+      paymentStatus: row.payment_status,
+      paymentMethod: row.payment_method,
+      amountPaid: row.amount_paid,
+      balance: row.balance
     }));
     
     res.json(formattedRows.map(camelRes));
@@ -295,8 +307,7 @@ app.get('/api/reservations', async (req, res) => {
   }
 });
 
-// GET /api/reservations/:id
-// ✅ CORRECT - Added comma after checkout_str
+// GET /api/reservations/:id – get single reservation with payment info
 app.get('/api/reservations/:id', async (req, res) => {
   try {
     const { rows } = await pool.query(`
@@ -309,7 +320,11 @@ app.get('/api/reservations/:id', async (req, res) => {
         TO_CHAR(r.checkin, 'YYYY-MM-DD') as checkin_str,
         TO_CHAR(r.checkout, 'YYYY-MM-DD') as checkout_str,
         r.identification,
-        r.id_type
+        r.id_type,
+        r.payment_status,
+        r.payment_method,
+        r.amount_paid,
+        r.balance
       FROM reservations r
       JOIN apartments a ON a.id = r.apt_id
       WHERE r.id = $1
@@ -323,7 +338,11 @@ app.get('/api/reservations/:id', async (req, res) => {
       checkin: row.checkin_str,
       checkout: row.checkout_str,
       identification: row.identification,
-      idType: row.id_type
+      idType: row.id_type,
+      paymentStatus: row.payment_status,
+      paymentMethod: row.payment_method,
+      amountPaid: row.amount_paid,
+      balance: row.balance
     };
     
     res.json(camelRes(formattedRow));
@@ -333,12 +352,9 @@ app.get('/api/reservations/:id', async (req, res) => {
   }
 });
 
-// POST /api/reservations – create new reservation (FIXED)
-// POST /api/reservations – create new reservation (with checkout time only)
-// POST /api/reservations – create new reservation (with checkout time and logging)
-// POST /api/reservations – create new reservation (with checkout time and logging)
+// POST /api/reservations – create new reservation with payment fields
 app.post('/api/reservations', async (req, res) => {
-  let { aptId, guest, email, mobile, country, city, checkin, checkout, adults, children, rateType, total, checkoutTime, userId, username, identification, idType } = req.body;
+  let { aptId, guest, email, mobile, country, city, checkin, checkout, adults, children, rateType, total, checkoutTime, userId, username, identification, idType, paymentMethod, paymentStatus, amountPaid } = req.body;
 
   // CRITICAL FIX: Ensure dates are pure YYYY-MM-DD strings
   if (checkin) checkin = String(checkin).split('T')[0];
@@ -347,7 +363,12 @@ app.post('/api/reservations', async (req, res) => {
   // Set default checkout time to 11:00 AM if not provided
   const finalCheckoutTime = checkoutTime || '11:00:00';
   
-  console.log('📅 Creating reservation with dates and checkout time:', { checkin, checkout, checkoutTime: finalCheckoutTime });
+  // Calculate payment fields
+  const finalAmountPaid = amountPaid || 0;
+  const balance = (total || 0) - finalAmountPaid;
+  const finalPaymentStatus = paymentStatus || (balance <= 0 ? 'paid' : (finalAmountPaid > 0 ? 'partial' : 'unpaid'));
+  
+  console.log('📅 Creating reservation:', { checkin, checkout, total, paymentStatus: finalPaymentStatus, balance });
 
   // Basic validation
   if (!aptId || !guest || !email || !checkin || !checkout) {
@@ -371,21 +392,28 @@ app.post('/api/reservations', async (req, res) => {
     }
 
     const { rows } = await pool.query(`
-  INSERT INTO reservations (apt_id, guest, email, mobile, country, city, checkin, checkout, checkout_time, adults, children, rate_type, total, identification, id_type)
-  VALUES ($1,$2,$3,$4,$5,$6,$7::date,$8::date,$9::time,$10,$11,$12,$13,$14,$15)
-  RETURNING *
-`, [aptId, guest, email, mobile || null, country || null, city || null,
-    checkin, checkout, finalCheckoutTime, adults || 1, children || 0, rateType || 'Full', total || 0, req.body.identification || null, req.body.idType || null]);
+      INSERT INTO reservations (
+        apt_id, guest, email, mobile, country, city, checkin, checkout, checkout_time, 
+        adults, children, rate_type, total, identification, id_type,
+        payment_status, payment_method, amount_paid, balance
+      )
+      VALUES ($1,$2,$3,$4,$5,$6,$7::date,$8::date,$9::time,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
+      RETURNING *
+    `, [
+      aptId, guest, email, mobile || null, country || null, city || null,
+      checkin, checkout, finalCheckoutTime, adults || 1, children || 0, 
+      rateType || 'Full', total || 0, identification || null, idType || null,
+      finalPaymentStatus, paymentMethod || null, finalAmountPaid, balance
+    ]);
 
     const result = camelRes(rows[0]);
     
-    // ========== LOG ACTIVITY - FIXED ==========
-    // Get user info from request body or use 'system' as fallback
+    // ========== LOG ACTIVITY ==========
     const loggedInUserId = userId || req.body.userId || null;
     const loggedInUsername = username || req.body.username || req.body.created_by || guest || 'system';
     await logActivity(loggedInUserId, loggedInUsername, 'CREATE', 'reservation', result.id, null, result, req);
     
-    console.log('✅ Reservation created:', result.id, result.checkin, result.checkout, 'Checkout time:', finalCheckoutTime);
+    console.log('✅ Reservation created:', result.id, 'Payment:', finalPaymentStatus, 'Balance:', balance);
     res.status(201).json(result);
   } catch (err) {
     console.error('❌ Error:', err);
@@ -393,11 +421,9 @@ app.post('/api/reservations', async (req, res) => {
   }
 });
 
-// PUT /api/reservations/:id – update a reservation (FIXED)
-// PUT /api/reservations/:id – update a reservation (with logging)
-// PUT /api/reservations/:id – update a reservation (with logging and ID fields)
+// PUT /api/reservations/:id – update reservation with payment fields
 app.put('/api/reservations/:id', async (req, res) => {
-  let { aptId, guest, email, mobile, country, city, checkin, checkout, adults, children, rateType, total, userId, username, identification, idType } = req.body;
+  let { aptId, guest, email, mobile, country, city, checkin, checkout, adults, children, rateType, total, userId, username, identification, idType, paymentMethod, paymentStatus, amountPaid } = req.body;
   
   // CRITICAL FIX: Ensure dates are pure YYYY-MM-DD strings
   if (checkin) checkin = String(checkin).split('T')[0];
@@ -410,6 +436,12 @@ app.put('/api/reservations/:id', async (req, res) => {
       return res.status(404).json({ error: 'Reservation not found' });
     }
     const oldData = oldDataResult.rows[0];
+    
+    // Calculate new payment values
+    const newTotal = total || oldData.total;
+    const newAmountPaid = amountPaid !== undefined ? amountPaid : oldData.amount_paid;
+    const newBalance = newTotal - newAmountPaid;
+    const newPaymentStatus = paymentStatus || (newBalance <= 0 ? 'paid' : (newAmountPaid > 0 ? 'partial' : 'unpaid'));
     
     // Conflict check excluding current reservation
     if (aptId && checkin && checkout) {
@@ -441,10 +473,18 @@ app.put('/api/reservations/:id', async (req, res) => {
         rate_type = COALESCE($11, rate_type),
         total     = COALESCE($12, total),
         identification = COALESCE($13, identification),
-        id_type   = COALESCE($14, id_type)
-      WHERE id = $15
+        id_type   = COALESCE($14, id_type),
+        payment_method = COALESCE($15, payment_method),
+        payment_status = COALESCE($16, payment_status),
+        amount_paid = COALESCE($17, amount_paid),
+        balance   = COALESCE($18, balance)
+      WHERE id = $19
       RETURNING *
-    `, [aptId, guest, email, mobile, country, city, checkin, checkout, adults, children, rateType, total, identification, idType, req.params.id]);
+    `, [
+      aptId, guest, email, mobile, country, city, checkin, checkout, 
+      adults, children, rateType, total, identification, idType,
+      paymentMethod, newPaymentStatus, newAmountPaid, newBalance, req.params.id
+    ]);
 
     if (!rows.length) return res.status(404).json({ error: 'Reservation not found' });
     
@@ -461,9 +501,8 @@ app.put('/api/reservations/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-// DELETE /api/reservations/:id
-// DELETE /api/reservations/:id (with logging)
-// DELETE /api/reservations/:id
+
+// DELETE /api/reservations/:id – delete reservation
 app.delete('/api/reservations/:id', async (req, res) => {
   try {
     // Get data before delete for logging
@@ -588,7 +627,12 @@ function camelRes(r) {
     aptEmoji:  r.apt_emoji ?? undefined,
     aptColor:  r.apt_color ?? undefined,
     identification: r.identification ?? null,
-    idType: r.id_type ?? null
+    idType: r.id_type ?? null,
+    // Payment fields
+    paymentStatus: r.payment_status ?? 'unpaid',
+    paymentMethod: r.payment_method ?? null,
+    amountPaid: r.amount_paid ?? 0,
+    balance: r.balance ?? 0
   };
 }
 
