@@ -958,3 +958,47 @@ UPDATE reservations SET payment_status = 'unpaid' WHERE payment_status IS NULL;
 UPDATE reservations SET amount_paid = 0 WHERE amount_paid IS NULL;
 
 SELECT '✅ Payment columns added to reservations table!' as status;
+
+
+
+
+-- ============================================================
+-- ADD PAYMENT COLUMNS TO RESERVATIONS TABLE (SAFE MIGRATION)
+-- ============================================================
+
+DO $$
+BEGIN
+    -- Add columns if they don't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reservations' AND column_name='payment_status') THEN
+        ALTER TABLE reservations ADD COLUMN payment_status VARCHAR(20) DEFAULT 'unpaid';
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reservations' AND column_name='payment_method') THEN
+        ALTER TABLE reservations ADD COLUMN payment_method VARCHAR(50);
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reservations' AND column_name='payment_date') THEN
+        ALTER TABLE reservations ADD COLUMN payment_date TIMESTAMP;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reservations' AND column_name='amount_paid') THEN
+        ALTER TABLE reservations ADD COLUMN amount_paid INT DEFAULT 0;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reservations' AND column_name='balance') THEN
+        ALTER TABLE reservations ADD COLUMN balance INT DEFAULT 0;
+    END IF;
+    
+    RAISE NOTICE '✅ Payment columns checked/added';
+END $$;
+
+-- Create indexes if they don't exist
+CREATE INDEX IF NOT EXISTS idx_reservations_payment_status ON reservations(payment_status);
+CREATE INDEX IF NOT EXISTS idx_reservations_payment_method ON reservations(payment_method);
+
+-- Initialize existing records safely
+UPDATE reservations SET balance = total WHERE balance IS NULL;
+UPDATE reservations SET payment_status = 'unpaid' WHERE payment_status IS NULL;
+UPDATE reservations SET amount_paid = 0 WHERE amount_paid IS NULL;
+
+SELECT '✅ Payment columns added to reservations table!' as status;
