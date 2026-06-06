@@ -769,7 +769,7 @@
     <div class="stat-card"><div class="stat-icon green">🟢</div><div><div class="stat-label">Available Today</div><div class="stat-value" id="stat-available">—</div><div class="stat-change">rooms free</div></div></div>
     <div class="stat-card"><div class="stat-icon gold">🏷️</div><div><div class="stat-label">Check-outs Today</div><div class="stat-value" id="stat-checkouts">—</div><div class="stat-change">departures</div></div></div>
     <div class="stat-card"><div class="stat-icon blue">📅</div><div><div class="stat-label">Upcoming</div><div class="stat-value" id="stat-upcoming">—</div><div class="stat-change">future reservations</div></div></div>
-    <div class="stat-card"><div class="stat-icon blue">💰</div><div><div class="stat-label">Total Revenue</div><div class="stat-value" id="stat-revenue" style="font-size:16px">—</div><div class="stat-change">all time</div></div></div>
+    <div class="stat-card"><div class="stat-icon blue">💵</div><div><div class="stat-label">Total Revenue</div><div class="stat-value" id="stat-revenue" style="font-size:16px">—</div><div class="stat-change">all time</div></div></div>
   </div>
 
   <div class="card full-width-card">
@@ -814,13 +814,13 @@
       </div>
       <div class="form-group-row cols-2">
         <div class="form-group"><label>🏠 Apartment</label><select id="modal-f-apt" class="form-control" required><option value="">Select Apartment</option></select></div>
-        <div class="form-group"><label>💰 Rate Type</label><select id="modal-f-ratetype" class="form-control"><option value="Full">Full (100%)</option><option value="Partial">Partial (60%)</option></select></div>
+        <div class="form-group"><label>💵 Rate Type</label><select id="modal-f-ratetype" class="form-control"><option value="Full">Full (100%)</option><option value="Partial">Partial (60%)</option></select></div>
       </div>
       <div class="form-group-row" style="grid-template-columns:1fr 1fr 1.2fr">
         <div class="form-group"><label>👤 Adults</label><div class="stepper"><button type="button" onclick="modalStepperChange('modal-f-adults', -1)">−</button><input type="number" id="modal-f-adults" value="1" min="1" max="6" /><button type="button" onclick="modalStepperChange('modal-f-adults', 1)">+</button></div></div>
         <div class="form-group"><label> 👤Children</label><div class="stepper"><button type="button" onclick="modalStepperChange('modal-f-children', -1)">−</button><input type="number" id="modal-f-children" value="0" min="0" max="6" /><button type="button" onclick="modalStepperChange('modal-f-children', 1)">+</button></div></div>
         <div class="form-group">
-          <label>💰 Total Rate</label>
+          <label>💵 Total Rate</label>
           <div id="modal-total-container">
             <div style="display: flex; align-items: center; gap: 8px;">
               <div class="rate-display" id="modal-f-total" style="flex: 1;">—</div>
@@ -839,7 +839,7 @@
       <hr class="divider" />
       <div class="form-group-row cols-2">
         <div class="form-group">
-          <label>💰 Payment Status</label>
+          <label>💵 Payment Status</label>
           <select id="modal-f-payment-status" class="form-control">
             <option value="unpaid">❌ Unpaid</option>
             <option value="partial">🟡 Partial Payment</option>
@@ -864,7 +864,7 @@
       </div>
       <div class="form-group-row cols-2">
         <div class="form-group">
-          <label>💰 Amount Paid (TSH)</label>
+          <label>💵 Amount Paid (TSH)</label>
           <input type="number" id="modal-f-amount-paid" class="form-control" value="0" min="0" step="1000" />
         </div>
         <div class="form-group">
@@ -944,13 +944,13 @@
       </div>
       <div class="form-group-row cols-2">
         <div class="form-group"><label>🏠 Apartment</label><select id="edit-f-apt" class="form-control" required><option value="">Select Apartment</option></select></div>
-        <div class="form-group"><label>💰 Rate Type</label><select id="edit-f-ratetype" class="form-control"><option value="Full">Full (100%)</option><option value="Partial">Partial (60%)</option></select></div>
+        <div class="form-group"><label>💵 Rate Type</label><select id="edit-f-ratetype" class="form-control"><option value="Full">Full (100%)</option><option value="Partial">Partial (60%)</option></select></div>
       </div>
       <div class="form-group-row" style="grid-template-columns:1fr 1fr 1.2fr">
         <div class="form-group"><label>👤 Adults</label><div class="stepper"><button type="button" onclick="editStepperChange('edit-f-adults', -1)">−</button><input type="number" id="edit-f-adults" value="1" min="1" max="6" /><button type="button" onclick="editStepperChange('edit-f-adults', 1)">+</button></div></div>
         <div class="form-group"><label>👤 Children</label><div class="stepper"><button type="button" onclick="editStepperChange('edit-f-children', -1)">−</button><input type="number" id="edit-f-children" value="0" min="0" max="6" /><button type="button" onclick="editStepperChange('edit-f-children', 1)">+</button></div></div>
         <div class="form-group">
-          <label>💰 Total Rate</label>
+          <label>💵 Total Rate</label>
           <div id="edit-total-container">
             <div style="display: flex; align-items: center; gap: 8px;">
               <div class="rate-display" id="edit-f-total" style="flex: 1;">—</div>
@@ -967,7 +967,7 @@
       <hr class="divider" />
       <div class="form-group-row cols-2">
         <div class="form-group">
-          <label>💰 Payment Status</label>
+          <label>💵 Payment Status</label>
           <select id="edit-f-payment-status" class="form-control">
             <option value="unpaid">❌ Unpaid</option>
             <option value="partial">🟡 Partial Payment</option>
@@ -991,7 +991,7 @@
       </div>
       <div class="form-group-row cols-2">
         <div class="form-group">
-          <label>💰 Amount Paid (TSH)</label>
+          <label>💵 Amount Paid (TSH)</label>
           <input type="number" id="edit-f-amount-paid" class="form-control" value="0" min="0" step="1000" />
         </div>
         <div class="form-group">
