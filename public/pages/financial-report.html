@@ -669,7 +669,7 @@ async function loadFinancialNotifications() {
     if (currentProfit < 0) {
       financialNotifications.push({
         id: 'negative_profit',
-        message: `<i class="fas fa-exclamation-triangle"></i> WARNING: Negative profit of ${fmtTSH(Math.abs(currentProfit))}! Review expenses.`,
+        message: `WARNING: Negative profit of ${fmtTSH(Math.abs(currentProfit))}! Review expenses.`,
         time: new Date().toLocaleTimeString(),
         read: false,
         icon: '<i class="fas fa-exclamation-triangle"></i>'
@@ -681,7 +681,7 @@ async function loadFinancialNotifications() {
       if (profitMargin < 20 && profitMargin >= 0) {
         financialNotifications.push({
           id: 'low_margin',
-          message: `<i class="fas fa-chart-line fa-flip-vertical"></i> Low profit margin: ${profitMargin.toFixed(1)}%. Target is above 20%.`,
+          message: `Low profit margin: ${profitMargin.toFixed(1)}%. Target is above 20%.`,
           time: new Date().toLocaleTimeString(),
           read: false,
           icon: '<i class="fas fa-chart-line fa-flip-vertical"></i>'
@@ -689,7 +689,7 @@ async function loadFinancialNotifications() {
       } else if (profitMargin >= 30) {
         financialNotifications.push({
           id: 'good_margin',
-          message: `<i class="fas fa-glass-cheers"></i> Excellent profit margin: ${profitMargin.toFixed(1)}%!`,
+          message: `Excellent profit margin: ${profitMargin.toFixed(1)}%!`,
           time: new Date().toLocaleTimeString(),
           read: false,
           icon: '<i class="fas fa-glass-cheers"></i>'

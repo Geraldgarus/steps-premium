@@ -1404,7 +1404,7 @@ async function loadNotifications() {
       notifications.push({
         id: `checkout_${r.id}`,
         type: 'checkout',
-        message: `<i class="fas fa-door-open"></i> ${r.guest} checks out TODAY at 11:00 AM`,
+        message: `${r.guest} checks out TODAY at 11:00 AM`,
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
@@ -1442,7 +1442,7 @@ async function loadNotifications() {
       notifications.push({
         id: `checkin_${r.id}`,
         type: 'upcoming',
-        message: `<i class="fas fa-calendar-alt"></i> ${r.guest} arrives ${daysText} (${formattedDate})`,
+        message: `${r.guest} arrives ${daysText} (${formattedDate})`,
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
@@ -1460,7 +1460,7 @@ async function loadNotifications() {
         notifications.push({
           id: `stock_${item.id}`,
           type: 'stock',
-          message: `<i class="fas fa-exclamation-triangle"></i> ${item.name} is low in stock (${item.quantity} left)`,
+          message: `${item.name} is low in stock (${item.quantity} left)`,
           time: new Date().toLocaleTimeString(),
           read: false,
           icon: '<i class="fas fa-exclamation-triangle"></i>'
