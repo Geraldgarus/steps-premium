@@ -9,7 +9,7 @@ async function loadAndRenderHousekeeping() {
     ]);
     renderHousekeeping();
   } catch (err) {
-    showToast('Failed to load housekeeping: ' + err.message, '❌');
+    showToast('Failed to load housekeeping: ' + err.message, '<i class="fas fa-times-circle"></i>');
   }
 }
 
@@ -32,7 +32,7 @@ function renderHousekeeping() {
       <div class="hk-card-header ${statusClass}"><span>${apt.emoji} ${apt.name}</span></div>
       <div style="padding:8px 18px;background:#f8f6f2;font-size:12px;color:var(--gray-600)">${statusLabel}</div>
       <div class="hk-card-body">
-        ${tasks.map(t => `<div class="hk-task"><div class="hk-check ${t.done ? 'done' : ''}" onclick="toggleHKTask('${t.key}')">${t.done ? '✓' : ''}</div><span style="${t.done ? 'text-decoration:line-through;color:var(--gray-300)' : ''}">${t.task}</span></div>`).join('')}
+        ${tasks.map(t => `<div class="hk-task"><div class="hk-check ${t.done ? 'done' : ''}" onclick="toggleHKTask('${t.key}')">${t.done ? '<i class="fas fa-check"></i>' : ''}</div><span style="${t.done ? 'text-decoration:line-through;color:var(--gray-300)' : ''}">${t.task}</span></div>`).join('')}
       </div>
     </div>`;
   }).join('');

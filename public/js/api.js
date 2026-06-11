@@ -57,7 +57,7 @@ async function apiPost(path, body) {
     cleanBody.checkout = `${cleanBody.checkout.getFullYear()}-${String(cleanBody.checkout.getMonth() + 1).padStart(2, '0')}-${String(cleanBody.checkout.getDate()).padStart(2, '0')}`;
   }
   
-  console.log('📤 Sending to API:', { checkin: cleanBody.checkin, checkout: cleanBody.checkout });
+  console.log('<i class="fas fa-paper-plane"></i> Sending to API:', { checkin: cleanBody.checkin, checkout: cleanBody.checkout });
   
   return apiFetch(path, { method: 'POST', body: JSON.stringify(cleanBody) }); 
 }

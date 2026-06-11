@@ -437,7 +437,7 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -452,8 +452,8 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -493,7 +493,7 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -527,7 +527,7 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
   <div class="navbar-right">
     
    <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
+  <i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span>
 </button>
     
     <div class="user-dropdown">
@@ -555,8 +555,8 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
       <span class="card-title">Main Store Management</span>
     </div>
     <div class="store-tabs">
-      <button class="tab-btn active" data-tab="inventory">📦 Inventory</button>
-      <button class="tab-btn" data-tab="requests">📋 Pending Requests</button>
+      <button class="tab-btn active" data-tab="inventory"><i class="fas fa-box"></i> Inventory</button>
+      <button class="tab-btn" data-tab="requests"><i class="fas fa-clipboard-list"></i> Pending Requests</button>
     </div>
     
     <div id="tab-inventory" class="tab-content active">
@@ -564,12 +564,12 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
       <div class="search-container">
         <div class="search-wrapper" id="inventory-search-wrapper">
           <i class="fas fa-search"></i>
-          <input type="text" id="inventory-search-input" class="search-input" placeholder="🔍 Search items by name, category..." autocomplete="off">
-          <button class="clear-search" id="clear-search-btn" aria-label="Clear search">✕</button>
+          <input type="text" id="inventory-search-input" class="search-input" placeholder="Search items by name, category..." autocomplete="off">
+          <button class="clear-search" id="clear-search-btn" aria-label="Clear search"><i class="fas fa-times"></i></button>
         </div>
         <div class="result-stats" id="search-result-stats"></div>
         <div style="display: flex; gap: 10px; justify-content: flex-end;">
-  <button class="btn btn-outline" onclick="openImportModal()">📊 Import Excel</button>
+  <button class="btn btn-outline" onclick="openImportModal()"><i class="fas fa-chart-bar"></i> Import Excel</button>
   <button class="btn btn-gold" onclick="openAddItemModal()">＋ Add New Item</button>
 </div>
       </div>
@@ -612,14 +612,14 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
   <div class="notification-header">
-    <span>📢 Notifications</span>
+    <span><i class="fas fa-bullhorn"></i> Notifications</span>
     <div>
       <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+      <button id="close-notif-panel"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
+    <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
   </div>
 </div>
 </main>
@@ -628,8 +628,8 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
 <div class="reservation-modal-overlay" id="add-item-modal-overlay" onclick="closeAddItemModal()"></div>
 <div class="reservation-modal" id="add-item-modal">
   <div class="reservation-modal-header">
-    <h3>➕ New Item</h3>
-    <button class="reservation-modal-close" onclick="closeAddItemModal()">✕</button>
+    <h3><i class="fas fa-plus"></i> New Item</h3>
+    <button class="reservation-modal-close" onclick="closeAddItemModal()"><i class="fas fa-times"></i></button>
   </div>
   <div class="reservation-modal-body">
     <form id="add-item-form">
@@ -658,7 +658,7 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
 <option value="meter">meter</option>
 <option value="bag">bag</option></select></div>
       <hr class="divider" />
-      <button type="submit" class="btn btn-success">✅ Create Item</button>
+      <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Create Item</button>
       <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeAddItemModal()">Cancel</button>
     </form>
   </div>
@@ -666,7 +666,7 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
 
 <div class="reservation-modal-overlay" id="add-stock-modal-overlay" onclick="closeAddStockModal()"></div>
 <div class="reservation-modal" id="add-stock-modal">
-  <div class="reservation-modal-header"><h3>📦 Add Stock</h3><button class="reservation-modal-close" onclick="closeAddStockModal()">✕</button></div>
+  <div class="reservation-modal-header"><h3><i class="fas fa-box"></i> Add Stock</h3><button class="reservation-modal-close" onclick="closeAddStockModal()"><i class="fas fa-times"></i></button></div>
   <div class="reservation-modal-body">
     <form id="add-stock-form">
       <input type="hidden" id="stock-item-id"><input type="hidden" id="stock-item-unit-price"><input type="hidden" id="stock-item-unit">
@@ -674,7 +674,7 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
       <div class="form-group"><label>Quantity to Add (in <span id="stock-unit-label">units</span>)</label><input type="number" id="stock-quantity" class="form-control" required step="0.01"></div>
       <div class="form-group"><label>Total Cost (TSH) - Auto Calculated</label><input type="text" id="stock-total-cost" class="form-control" readonly style="background: #f5f5f5;"></div>
       <hr class="divider" />
-      <button type="submit" class="btn btn-success">✅ Add to Stock</button>
+      <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Add to Stock</button>
       <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeAddStockModal()">Cancel</button>
     </form>
   </div>
@@ -682,7 +682,7 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
 
 <div class="reservation-modal-overlay" id="edit-item-modal-overlay" onclick="closeEditItemModal()"></div>
 <div class="reservation-modal" id="edit-item-modal">
-  <div class="reservation-modal-header"><h3>✏️ Edit Item</h3><button class="reservation-modal-close" onclick="closeEditItemModal()">✕</button></div>
+  <div class="reservation-modal-header"><h3><i class="fas fa-edit"></i> Edit Item</h3><button class="reservation-modal-close" onclick="closeEditItemModal()"><i class="fas fa-times"></i></button></div>
   <div class="reservation-modal-body">
     <form id="edit-item-form">
       <input type="hidden" id="edit-item-id">
@@ -710,7 +710,7 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
 <option value="meter">meter</option>
 <option value="bag">bag</option></select></div>
       <hr class="divider" />
-      <button type="submit" class="btn btn-gold">💾 Update Item</button>
+      <button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> Update Item</button>
       <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeEditItemModal()">Cancel</button>
     </form>
   </div>
@@ -724,8 +724,8 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
 <div class="reservation-modal-overlay" id="change-password-modal-overlay"></div>
 <div class="reservation-modal" id="change-password-modal">
   <div class="reservation-modal-header">
-    <h3>🔐 Change Password</h3>
-    <button class="reservation-modal-close" onclick="closeChangePasswordModal()">✕</button>
+    <h3><i class="fas fa-lock"></i> Change Password</h3>
+    <button class="reservation-modal-close" onclick="closeChangePasswordModal()"><i class="fas fa-times"></i></button>
   </div>
   <div class="reservation-modal-body">
     <form id="change-password-form">
@@ -742,7 +742,7 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
         <input type="password" id="confirm-password" class="form-control" required>
       </div>
       <hr class="divider" />
-      <button type="submit" class="btn btn-success">✅ Update Password</button>
+      <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeChangePasswordModal()">Cancel</button>
     </form>
   </div>
@@ -753,13 +753,13 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
 <div class="reservation-modal-overlay" id="import-modal-overlay" onclick="closeImportModal()"></div>
 <div class="reservation-modal" id="import-modal" style="max-width: 600px;">
   <div class="reservation-modal-header">
-    <h3>📊 Import Items from Excel</h3>
-    <button class="reservation-modal-close" onclick="closeImportModal()">✕</button>
+    <h3><i class="fas fa-chart-bar"></i> Import Items from Excel</h3>
+    <button class="reservation-modal-close" onclick="closeImportModal()"><i class="fas fa-times"></i></button>
   </div>
   <div class="reservation-modal-body">
     <div class="form-group">
       <label>Download Template</label>
-      <button class="btn btn-outline" onclick="downloadTemplate()" style="width: auto; padding: 8px 16px;">📥 Download Excel Template</button>
+      <button class="btn btn-outline" onclick="downloadTemplate()" style="width: auto; padding: 8px 16px;"><i class="fas fa-download"></i> Download Excel Template</button>
       <small style="display: block; margin-top: 5px; color: #64748b;">Use this template to format your data correctly</small>
     </div>
     
@@ -781,13 +781,13 @@ Here is an HTML document that adds a search placeholder to the Main Store page, 
         </table>
       </div>
       <div style="margin-top: 15px; display: flex; gap: 10px;">
-        <button class="btn btn-success" onclick="confirmImport()" style="flex: 1;">✅ Import Items</button>
+        <button class="btn btn-success" onclick="confirmImport()" style="flex: 1;"><i class="fas fa-check-circle"></i> Import Items</button>
         <button class="btn btn-outline" onclick="closeImportModal()" style="flex: 1;">Cancel</button>
       </div>
     </div>
     
     <div id="import-progress" style="display: none; text-align: center; padding: 20px;">
-      <div style="font-size: 24px; margin-bottom: 10px;">⏳</div>
+      <div style="font-size: 24px; margin-bottom: 10px;"><i class="fas fa-spinner fa-spin"></i></div>
       <div>Importing items...</div>
       <div style="width: 100%; background: #e2e8f0; border-radius: 10px; margin-top: 10px; overflow: hidden;">
         <div id="import-progress-bar" style="width: 0%; height: 8px; background: #10b981; transition: width 0.3s;"></div>
@@ -829,7 +829,7 @@ async function loadNotifications() {
           message: `${lowStockItems.length} item(s) are low in stock (less than 5 units)`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '<i class="fas fa-exclamation-triangle"></i>'
         });
         
         // Add individual low stock items
@@ -840,7 +840,7 @@ async function loadNotifications() {
             message: `${item.name}: only ${parseFloat(item.quantity)} ${item.unit || 'units'} left`,
             time: new Date().toLocaleTimeString(),
             read: false,
-            icon: '📦'
+            icon: '<i class="fas fa-box"></i>'
           });
         });
       }
@@ -854,7 +854,7 @@ async function loadNotifications() {
           message: `${zeroStockItems.length} item(s) are out of stock!`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '🚫'
+          icon: '<i class="fas fa-ban"></i>'
         });
       }
       
@@ -868,7 +868,7 @@ async function loadNotifications() {
             message: `${requests.length} pending request(s) from outlets`,
             time: new Date().toLocaleTimeString(),
             read: false,
-            icon: '📋'
+            icon: '<i class="fas fa-clipboard-list"></i>'
           });
         }
       } catch(e) {
@@ -887,7 +887,7 @@ async function loadNotifications() {
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications for store page`);
+    console.log(`<i class="fas fa-bullhorn"></i> Loaded ${notifications.length} notifications for store page`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
     renderNotifications();
@@ -900,7 +900,7 @@ function renderNotifications() {
   if (!container) return;
   
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -911,7 +911,7 @@ function renderNotifications() {
         ${escapeHtml(notif.message)}
       </div>
       <div class="notification-time">
-        <span>🕐 ${notif.time}</span>
+        <span><i class="fas fa-clock"></i> ${notif.time}</span>
       </div>
     </div>
   `).join('');
@@ -1154,23 +1154,23 @@ async function previewExcelFile() {
       const unitPrice = parseFloat(row[priceIdx]);
       const unit = row[unitIdx] ? String(row[unitIdx]).trim().toLowerCase() : 'units';
       
-      let status = '✅';
+      let status = '<i class="fas fa-check-circle"></i>';
       let statusText = 'Ready';
       let errorMsg = '';
       
       // Validate
       if (!name) {
-        status = '❌';
+        status = '<i class="fas fa-times-circle"></i>';
         statusText = 'Missing name';
         errorMsg = 'Item name is required';
         importErrors.push({ row: i + 2, error: errorMsg });
       } else if (!category) {
-        status = '❌';
+        status = '<i class="fas fa-times-circle"></i>';
         statusText = 'Missing category';
         errorMsg = 'Category is required';
         importErrors.push({ row: i + 2, error: errorMsg });
       } else if (isNaN(unitPrice) || unitPrice <= 0) {
-        status = '❌';
+        status = '<i class="fas fa-times-circle"></i>';
         statusText = 'Invalid price';
         errorMsg = 'Unit price must be a positive number';
         importErrors.push({ row: i + 2, error: errorMsg });
@@ -1181,7 +1181,7 @@ async function previewExcelFile() {
           item.category === category
         );
         if (exists) {
-          status = '⚠️';
+          status = '<i class="fas fa-exclamation-triangle"></i>';
           statusText = 'Already exists';
           errorMsg = 'Item already exists in store';
           importErrors.push({ row: i + 2, error: errorMsg, warning: true });
@@ -1201,7 +1201,7 @@ async function previewExcelFile() {
         <td>${escapeHtml(category) || '-'}</td>
         <td>${fmtTSH(unitPrice) || '-'}</td>
         <td>${escapeHtml(unit)}</td
-        <td><span class="${status === '✅' ? 'status-success' : (status === '⚠️' ? 'status-warning' : 'status-error')}">${status} ${statusText}</span></td
+        <td><span class="${status === '<i class="fas fa-check-circle"></i>' ? 'status-success' : (status === '<i class="fas fa-exclamation-triangle"></i>' ? 'status-warning' : 'status-error')}">${status} ${statusText}</span></td
       </tr>`;
     }
     
@@ -1314,7 +1314,7 @@ document.getElementById('excel-file-input')?.addEventListener('change', previewE
       var items = await apiGet('/store/items');
       storeItems = items;
       renderStoreItemsWithFilter(); // render with current search term
-    } catch (err) { showToast('Failed to load items: ' + err.message, '❌'); }
+    } catch (err) { showToast('Failed to load items: ' + err.message, '<i class="fas fa-times-circle"></i>'); }
   }
 
   // Filtered render function using currentSearchTerm
@@ -1333,9 +1333,9 @@ document.getElementById('excel-file-input')?.addEventListener('change', previewE
     const statsSpan = document.getElementById('search-result-stats');
     if (statsSpan) {
       if (searchTermLower !== "") {
-        statsSpan.innerHTML = `🔍 ${filtered.length} of ${storeItems.length} items`;
+        statsSpan.innerHTML = `<i class="fas fa-search"></i> ${filtered.length} of ${storeItems.length} items`;
       } else {
-        statsSpan.innerHTML = `📦 ${storeItems.length} total items`;
+        statsSpan.innerHTML = `<i class="fas fa-box"></i> ${storeItems.length} total items`;
       }
     }
     // Show/hide clear button based on search input value
@@ -1350,7 +1350,7 @@ document.getElementById('excel-file-input')?.addEventListener('change', previewE
     }
     
     if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" class="empty-state">🔎 No items match "${escapeHtml(currentSearchTerm)}". Try another search or add new item.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" class="empty-state"><i class="fas fa-search"></i> No items match "${escapeHtml(currentSearchTerm)}". Try another search or add new item.</td></tr>`;
       return;
     }
    var html = '';
@@ -1370,8 +1370,8 @@ for (var i = 0; i < filtered.length; i++) {
   html += '<span style="font-weight:bold;">' + escapeHtml(currentQty.toString()) + ' ' + escapeHtml(item.unit || 'units') + '</span>';
   html += '</div></td>';
   html += '<td>' + fmtTSH(totalValue) + '</td>';
-  html += '<td><button class="btn-edit" onclick="openEditItemModal(' + item.id + ')" style="background:none; border:1px solid #ccc; border-radius:4px; padding:2px 8px; margin-right:4px; cursor:pointer;">✏️</button>';
-  html += '<button class="btn-delete" onclick="deleteStoreItem(' + item.id + ')" style="background:none; border:1px solid #ccc; border-radius:4px; padding:2px 8px; cursor:pointer;">🗑</button></td>';
+  html += '<td><button class="btn-edit" onclick="openEditItemModal(' + item.id + ')" style="background:none; border:1px solid #ccc; border-radius:4px; padding:2px 8px; margin-right:4px; cursor:pointer;"><i class="fas fa-edit"></i></button>';
+  html += '<button class="btn-delete" onclick="deleteStoreItem(' + item.id + ')" style="background:none; border:1px solid #ccc; border-radius:4px; padding:2px 8px; cursor:pointer;"><i class="fas fa-trash-alt"></i></button></td>';
   html += '</tr>';
 }
     tbody.innerHTML = html;
@@ -1403,8 +1403,8 @@ for (var i = 0; i < filtered.length; i++) {
 
   async function deleteStoreItem(id) {
     if (!confirm('Delete this item? This will also remove all stock records.')) return;
-    try { await apiDelete('/store/items/' + id); showToast('Item deleted', '🗑️'); await loadStoreItems(); } 
-    catch (err) { showToast('Delete failed: ' + err.message, '❌'); }
+    try { await apiDelete('/store/items/' + id); showToast('Item deleted', '<i class="fas fa-trash-alt"></i>'); await loadStoreItems(); } 
+    catch (err) { showToast('Delete failed: ' + err.message, '<i class="fas fa-times-circle"></i>'); }
   }
 
   function openAddItemModal() {
@@ -1424,15 +1424,15 @@ for (var i = 0; i < filtered.length; i++) {
     var category = document.getElementById('item-category').value;
     var unitPrice = parseInt(document.getElementById('item-unit-price').value);
     var unit = document.getElementById('item-unit').value;
-    if (!name || !category || !unitPrice) { showToast('Please fill all fields', '⚠️'); return; }
+    if (!name || !category || !unitPrice) { showToast('Please fill all fields', '<i class="fas fa-exclamation-triangle"></i>'); return; }
     var existing = storeItems.find(function(item) { return item.name.toLowerCase() === name.toLowerCase() && item.category === category; });
-    if (existing) { showToast('Item "' + name + '" already exists in ' + category + ' category!', '⚠️'); return; }
+    if (existing) { showToast('Item "' + name + '" already exists in ' + category + ' category!', '<i class="fas fa-exclamation-triangle"></i>'); return; }
     try {
       await apiPost('/store/items', { name: name, category: category, cost: unitPrice, quantity: '0 ' + unit, unit: unit });
-      showToast('Item created successfully!', '✅');
+      showToast('Item created successfully!', '<i class="fas fa-check-circle"></i>');
       closeAddItemModal();
       await loadStoreItems();
-    } catch (err) { showToast('Failed to add item: ' + err.message, '❌'); }
+    } catch (err) { showToast('Failed to add item: ' + err.message, '<i class="fas fa-times-circle"></i>'); }
   });
 
   var currentStockItemId = null, currentStockUnitPrice = null, currentStockUnit = null;
@@ -1464,7 +1464,7 @@ for (var i = 0; i < filtered.length; i++) {
     e.preventDefault();
     var id = currentStockItemId;
     var quantityToAdd = parseFloat(document.getElementById('stock-quantity').value);
-    if (!quantityToAdd || quantityToAdd <= 0) { showToast('Please enter a valid quantity', '⚠️'); return; }
+    if (!quantityToAdd || quantityToAdd <= 0) { showToast('Please enter a valid quantity', '<i class="fas fa-exclamation-triangle"></i>'); return; }
     var item = storeItems.find(function(i) { return i.id === id; });
     if (!item) return;
     var currentQty = parseFloat(item.quantity) || 0;
@@ -1473,30 +1473,30 @@ for (var i = 0; i < filtered.length; i++) {
     var newQuantityStr = newQty + ' ' + unit;
     try {
       await apiPut('/store/items/' + id, { name: item.name, category: item.category, cost: item.cost, quantity: newQuantityStr, unit: unit });
-      showToast('Added ' + quantityToAdd + ' ' + unit + ' to stock!', '✅');
+      showToast('Added ' + quantityToAdd + ' ' + unit + ' to stock!', '<i class="fas fa-check-circle"></i>');
       closeAddStockModal();
       await loadStoreItems();
-    } catch (err) { showToast('Failed to add stock: ' + err.message, '❌'); }
+    } catch (err) { showToast('Failed to add stock: ' + err.message, '<i class="fas fa-times-circle"></i>'); }
   });
 
   async function removeStock(id, name) {
     var quantityToRemove = prompt('Enter quantity to remove from ' + name + ':', '0');
     if (!quantityToRemove) return;
     quantityToRemove = parseFloat(quantityToRemove);
-    if (isNaN(quantityToRemove) || quantityToRemove <= 0) { showToast('Please enter a valid quantity', '⚠️'); return; }
+    if (isNaN(quantityToRemove) || quantityToRemove <= 0) { showToast('Please enter a valid quantity', '<i class="fas fa-exclamation-triangle"></i>'); return; }
     var item = storeItems.find(function(i) { return i.id === id; });
     if (!item) return;
     var currentQty = parseFloat(item.quantity) || 0;
     var unit = item.unit || 'units';
-    if (quantityToRemove > currentQty) { showToast('Cannot remove more than available stock (' + currentQty + ' ' + unit + ')', '⚠️'); return; }
+    if (quantityToRemove > currentQty) { showToast('Cannot remove more than available stock (' + currentQty + ' ' + unit + ')', '<i class="fas fa-exclamation-triangle"></i>'); return; }
     var newQty = currentQty - quantityToRemove;
     var newQuantityStr = newQty + ' ' + unit;
     if (!confirm('Remove ' + quantityToRemove + ' ' + unit + ' from ' + name + '?')) return;
     try {
       await apiPut('/store/items/' + id, { name: item.name, category: item.category, cost: item.cost, quantity: newQuantityStr, unit: unit });
-      showToast('Removed ' + quantityToRemove + ' ' + unit + ' from stock', '🗑️');
+      showToast('Removed ' + quantityToRemove + ' ' + unit + ' from stock', '<i class="fas fa-trash-alt"></i>');
       await loadStoreItems();
-    } catch (err) { showToast('Failed to remove stock: ' + err.message, '❌'); }
+    } catch (err) { showToast('Failed to remove stock: ' + err.message, '<i class="fas fa-times-circle"></i>'); }
   }
 
   async function openEditItemModal(id) {
@@ -1524,29 +1524,29 @@ for (var i = 0; i < filtered.length; i++) {
     var category = document.getElementById('edit-item-category').value;
     var unitPrice = parseInt(document.getElementById('edit-item-unit-price').value);
     var unit = document.getElementById('edit-item-unit').value;
-    if (!name || !category || !unitPrice) { showToast('Please fill all fields', '⚠️'); return; }
+    if (!name || !category || !unitPrice) { showToast('Please fill all fields', '<i class="fas fa-exclamation-triangle"></i>'); return; }
     var item = storeItems.find(function(i) { return i.id === parseInt(id); });
     if (!item) return;
     var currentQty = parseFloat(item.quantity) || 0;
     var newQuantityStr = currentQty + ' ' + unit;
     try {
       await apiPut('/store/items/' + id, { name: name, category: category, cost: unitPrice, quantity: newQuantityStr, unit: unit });
-      showToast('Item updated successfully!', '📝');
+      showToast('Item updated successfully!', '<i class="fas fa-pen"></i>');
       closeEditItemModal();
       await loadStoreItems();
-    } catch (err) { showToast('Update failed: ' + err.message, '❌'); }
+    } catch (err) { showToast('Update failed: ' + err.message, '<i class="fas fa-times-circle"></i>'); }
   });
 
   async function loadRequests() {
     try { var data = await apiGet('/store/requests?status=pending'); requests = data; renderRequests(); } 
-    catch(err) { showToast('Failed to load requests: ' + err.message, '❌'); }
+    catch(err) { showToast('Failed to load requests: ' + err.message, '<i class="fas fa-times-circle"></i>'); }
   }
  function renderRequests() {
     var tbody = document.getElementById('requests-tbody'); 
     if (!tbody) return;
     
     if (requests.length === 0) { 
-        tbody.innerHTML = '<tr><td colspan="7" class="empty-state">📭 No pending requests.穷</td>'; 
+        tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><i class="fas fa-inbox"></i> No pending requests.穷</td>'; 
         return; 
     }
     
@@ -1560,17 +1560,17 @@ for (var i = 0; i < filtered.length; i++) {
         html += '<td>' + escapeHtml(req.requested_by) + '</td>';
         html += '<td>' + new Date(req.created_at).toLocaleDateString() + '</td>';
         html += '<td><span class="request-badge status-pending">pending</span></td>';
-        // Plain buttons with ✓ and ✗
+        // Plain buttons with <i class="fas fa-check"></i> and <i class="fas fa-times"></i>
         html += '<td>';
-        html += '<button onclick="approveRequest(' + req.id + ')" style="border:1px solid #aaa; background:#fff; padding:4px 12px; margin-right:5px; cursor:pointer; border-radius:4px;">✓ Approve</button>';
-        html += '<button onclick="rejectRequest(' + req.id + ')" style="border:1px solid #aaa; background:#fff; padding:4px 12px; cursor:pointer; border-radius:4px;">✗ Reject</button>';
+        html += '<button onclick="approveRequest(' + req.id + ')" style="border:1px solid #aaa; background:#fff; padding:4px 12px; margin-right:5px; cursor:pointer; border-radius:4px;"><i class="fas fa-check"></i> Approve</button>';
+        html += '<button onclick="rejectRequest(' + req.id + ')" style="border:1px solid #aaa; background:#fff; padding:4px 12px; cursor:pointer; border-radius:4px;"><i class="fas fa-times"></i> Reject</button>';
         html += '</div></td>';
         html += '</table>';
     }
     tbody.innerHTML = html;
 }
-  async function approveRequest(id) { var authorized = prompt('Enter authorized quantity to transfer (e.g., "5 kg"):'); if (!authorized) return; if (!confirm('Approve request with quantity ' + authorized + '?')) return; try { await apiPut('/store/requests/' + id + '/approve', { authorizedQuantity: authorized }); showToast('Request approved, stock deducted', '✅'); await loadRequests(); await loadStoreItems(); } catch (err) { showToast('Approve failed: ' + err.message, '❌'); } }
-  async function rejectRequest(id) { if (!confirm('Reject this request?')) return; try { await apiPut('/store/requests/' + id + '/reject', {}); showToast('Request rejected', '❌'); await loadRequests(); } catch (err) { showToast('Reject failed: ' + err.message, '❌'); } }
+  async function approveRequest(id) { var authorized = prompt('Enter authorized quantity to transfer (e.g., "5 kg"):'); if (!authorized) return; if (!confirm('Approve request with quantity ' + authorized + '?')) return; try { await apiPut('/store/requests/' + id + '/approve', { authorizedQuantity: authorized }); showToast('Request approved, stock deducted', '<i class="fas fa-check-circle"></i>'); await loadRequests(); await loadStoreItems(); } catch (err) { showToast('Approve failed: ' + err.message, '<i class="fas fa-times-circle"></i>'); } }
+  async function rejectRequest(id) { if (!confirm('Reject this request?')) return; try { await apiPut('/store/requests/' + id + '/reject', {}); showToast('Request rejected', '<i class="fas fa-times-circle"></i>'); await loadRequests(); } catch (err) { showToast('Reject failed: ' + err.message, '<i class="fas fa-times-circle"></i>'); } }
   function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -1627,7 +1627,7 @@ function openChangePasswordModal() {
     document.body.style.overflow = 'hidden';
   } else {
     console.error('Modal elements not found!');
-    showToast('Please refresh the page and try again.', '⚠️');
+    showToast('Please refresh the page and try again.', '<i class="fas fa-exclamation-triangle"></i>');
   }
   
   // Close dropdown
@@ -1659,17 +1659,17 @@ if (changePasswordForm) {
     var confirmPassword = document.getElementById('confirm-password').value;
     
     if (newPassword !== confirmPassword) {
-      showToast('New passwords do not match', '⚠️');
+      showToast('New passwords do not match', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     if (newPassword.length < 6) {
-      showToast('Password must be at least 6 characters', '⚠️');
+      showToast('Password must be at least 6 characters', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     
     var currentUserData = getCurrentUser();
     if (!currentUserData) {
-      showToast('User not found. Please login again.', '⚠️');
+      showToast('User not found. Please login again.', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     
@@ -1680,10 +1680,10 @@ if (changePasswordForm) {
     newPassword: newPassword
   });
   
-  showToast('Password changed successfully! Please login again.', '✅');
+  showToast('Password changed successfully! Please login again.', '<i class="fas fa-check-circle"></i>');
   setTimeout(() => { logout(); }, 1500);
 } catch (err) {
-  showToast('Failed to change password: ' + err.message, '❌');
+  showToast('Failed to change password: ' + err.message, '<i class="fas fa-times-circle"></i>');
 }
 });
 }

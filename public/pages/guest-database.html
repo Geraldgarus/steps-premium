@@ -407,7 +407,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -422,8 +422,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -463,7 +463,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -496,7 +496,7 @@
   </div>
   <div class="navbar-right">
     <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
+  <i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span>
 </button>
     <div class="user-dropdown" id="userDropdown">
       <div class="user-pill" id="userPill">
@@ -521,7 +521,7 @@
   <div class="card">
     <div class="card-header">
       <span class="card-title">Guest Database</span>
-      <button class="btn btn-gold" onclick="exportToCSV()">📎 Export to CSV</button>
+      <button class="btn btn-gold" onclick="exportToCSV()"><i class="fas fa-file-export"></i> Export to CSV</button>
     </div>
     
     <!-- Stats Badges (like reservations page) -->
@@ -546,7 +546,7 @@
     
     <!-- Search Box -->
     <div class="search-box">
-      <input type="text" id="search-input" placeholder="🔍 Search by guest name, email, or mobile..." oninput="filterGuests()">
+      <input type="text" id="search-input" placeholder="Search by guest name, email, or mobile..." oninput="filterGuests()">
       <button class="btn-outline" onclick="clearSearch()">Clear</button>
     </div>
     
@@ -573,14 +573,14 @@
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
   <div class="notification-header">
-    <span>📢 Notifications</span>
+    <span><i class="fas fa-bullhorn"></i> Notifications</span>
     <div>
       <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+      <button id="close-notif-panel"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
+    <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
   </div>
 </div>
 </main>
@@ -589,8 +589,8 @@
 <div class="reservation-modal-overlay" id="change-password-modal-overlay" onclick="closeChangePasswordModal()"></div>
 <div class="reservation-modal" id="change-password-modal">
   <div class="reservation-modal-header">
-    <h3>🔐 Change Password</h3>
-    <button class="reservation-modal-close" onclick="closeChangePasswordModal()">✕</button>
+    <h3><i class="fas fa-lock"></i> Change Password</h3>
+    <button class="reservation-modal-close" onclick="closeChangePasswordModal()"><i class="fas fa-times"></i></button>
   </div>
   <div class="reservation-modal-body">
     <form id="change-password-form">
@@ -598,7 +598,7 @@
       <div class="form-group"><label>New Password (min 6)</label><input type="password" id="new-password" class="form-control" required></div>
       <div class="form-group"><label>Confirm Password</label><input type="password" id="confirm-password" class="form-control" required></div>
       <hr class="divider" />
-      <button type="submit" class="btn btn-success">✅ Update Password</button>
+      <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeChangePasswordModal()">Cancel</button>
     </form>
   </div>
@@ -638,7 +638,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '🚪'
+        icon: '<i class="fas fa-door-open"></i>'
       });
     });
     
@@ -658,7 +658,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '📅'
+        icon: '<i class="fas fa-calendar-alt"></i>'
       });
     });
     
@@ -673,7 +673,7 @@ async function loadNotifications() {
           message: `${item.name} is low in stock (${item.quantity} left)`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '<i class="fas fa-exclamation-triangle"></i>'
         });
       });
     } catch(e) {
@@ -688,7 +688,7 @@ async function loadNotifications() {
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications`);
+    console.log(`<i class="fas fa-bullhorn"></i> Loaded ${notifications.length} notifications`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
   }
@@ -701,7 +701,7 @@ function renderNotifications() {
   const unreadCount = notifications.filter(n => !n.read).length;
   
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -712,7 +712,7 @@ function renderNotifications() {
         ${escapeHtml(notif.message)}
       </div>
       <div class="notification-time">
-        <span>🕐 ${notif.time}</span>
+        <span><i class="fas fa-clock"></i> ${notif.time}</span>
       </div>
     </div>
   `).join('');
@@ -887,8 +887,8 @@ document.getElementById('userAvatar').innerText = ((currentUser.fullName || curr
         <div class="reservation-modal-overlay" id="change-password-modal-overlay" onclick="closeChangePasswordModal()"></div>
         <div class="reservation-modal" id="change-password-modal">
           <div class="reservation-modal-header">
-            <h3>🔐 Change Password</h3>
-            <button class="reservation-modal-close" onclick="closeChangePasswordModal()">✕</button>
+            <h3><i class="fas fa-lock"></i> Change Password</h3>
+            <button class="reservation-modal-close" onclick="closeChangePasswordModal()"><i class="fas fa-times"></i></button>
           </div>
           <div class="reservation-modal-body">
             <form id="change-password-form">
@@ -896,7 +896,7 @@ document.getElementById('userAvatar').innerText = ((currentUser.fullName || curr
               <div class="form-group"><label>New Password (min 6)</label><input type="password" id="new-password" class="form-control" required></div>
               <div class="form-group"><label>Confirm Password</label><input type="password" id="confirm-password" class="form-control" required></div>
               <hr class="divider" />
-              <button type="submit" class="btn btn-success">✅ Update Password</button>
+              <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Update Password</button>
               <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeChangePasswordModal()">Cancel</button>
             </form>
           </div>
@@ -1014,7 +1014,7 @@ function renderGuests() {
   if (!tbody) return;
   
   if (guestsData.length === 0) {
-    tbody.innerHTML = `<td><td colspan="8" class="empty-state">👥 No guests found.</td></tr>`;
+    tbody.innerHTML = `<td><td colspan="8" class="empty-state"><i class="fas fa-users"></i> No guests found.</td></tr>`;
     return;
   }
   

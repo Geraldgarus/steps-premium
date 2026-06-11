@@ -192,7 +192,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -207,8 +207,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -248,7 +248,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -283,7 +283,7 @@
   <div class="navbar-right">
     
     <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
+  <i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span>
 </button>
     
     <!-- User Dropdown -->
@@ -313,18 +313,18 @@
     <div class="report-filter-inner">
       <div class="filter-field"><label>From Date</label><input type="date" id="rpt-from" class="form-control" /></div>
       <div class="filter-field"><label>To Date</label><input type="date" id="rpt-to" class="form-control" /></div>
-      <button class="btn btn-gold" onclick="applyReportFilter()">🔍 Apply Filter</button>
-      <button class="btn btn-outline" onclick="clearReportFilter()">✕ Clear</button>
-      <button class="btn btn-print" onclick="generatePrintReport()">🖨️ Generate Report</button>
+      <button class="btn btn-gold" onclick="applyReportFilter()"><i class="fas fa-search"></i> Apply Filter</button>
+      <button class="btn btn-outline" onclick="clearReportFilter()"><i class="fas fa-times"></i> Clear</button>
+      <button class="btn btn-print" onclick="generatePrintReport()"><i class="fas fa-print"></i> Generate Report</button>
     </div>
     <div class="filter-badge-row"><span class="rpt-filter-badge" id="rpt-filter-badge">All time</span></div>
   </div>
 
   <div class="stats-row" style="margin-bottom:24px">
-    <div class="stat-card"><div class="stat-icon blue">📋</div><div><div class="stat-label">Total Reservations</div><div class="stat-value" id="rpt-total-res">—</div></div></div>
-    <div class="stat-card"><div class="stat-icon green">💰</div><div><div class="stat-label">Total Revenue</div><div class="stat-value" id="rpt-total-rev" style="font-size:15px">—</div></div></div>
-    <div class="stat-card"><div class="stat-icon gold">🌙</div><div><div class="stat-label">Avg. Stay</div><div class="stat-value" id="rpt-avg-stay" style="font-size:18px">—</div></div></div>
-    <div class="stat-card"><div class="stat-icon red">🏠</div><div><div class="stat-label">Currently Occupied</div><div class="stat-value" id="rpt-occupied" style="font-size:20px">—</div></div></div>
+    <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-clipboard-list"></i></div><div><div class="stat-label">Total Reservations</div><div class="stat-value" id="rpt-total-res">—</div></div></div>
+    <div class="stat-card"><div class="stat-icon green"><i class="fas fa-money-bill-wave"></i></div><div><div class="stat-label">Total Revenue</div><div class="stat-value" id="rpt-total-rev" style="font-size:15px">—</div></div></div>
+    <div class="stat-card"><div class="stat-icon gold"><i class="fas fa-moon"></i></div><div><div class="stat-label">Avg. Stay</div><div class="stat-value" id="rpt-avg-stay" style="font-size:18px">—</div></div></div>
+    <div class="stat-card"><div class="stat-icon red"><i class="fas fa-home"></i></div><div><div class="stat-label">Currently Occupied</div><div class="stat-value" id="rpt-occupied" style="font-size:20px">—</div></div></div>
   </div>
 
   <div class="reports-grid">
@@ -339,14 +339,14 @@
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
   <div class="notification-header">
-    <span>📢 Notifications</span>
+    <span><i class="fas fa-bullhorn"></i> Notifications</span>
     <div>
       <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+      <button id="close-notif-panel"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
+    <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
   </div>
 </div>
 </main>
@@ -383,7 +383,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '🚪'
+        icon: '<i class="fas fa-door-open"></i>'
       });
     });
     
@@ -403,7 +403,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '📅'
+        icon: '<i class="fas fa-calendar-alt"></i>'
       });
     });
     
@@ -418,7 +418,7 @@ async function loadNotifications() {
           message: `${item.name} is low in stock (${item.quantity} left)`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '<i class="fas fa-exclamation-triangle"></i>'
         });
       });
     } catch(e) {
@@ -433,7 +433,7 @@ async function loadNotifications() {
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications`);
+    console.log(`<i class="fas fa-bullhorn"></i> Loaded ${notifications.length} notifications`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
   }
@@ -446,7 +446,7 @@ function renderNotifications() {
   const unreadCount = notifications.filter(n => !n.read).length;
   
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -457,7 +457,7 @@ function renderNotifications() {
         ${escapeHtml(notif.message)}
       </div>
       <div class="notification-time">
-        <span>🕐 ${notif.time}</span>
+        <span><i class="fas fa-clock"></i> ${notif.time}</span>
       </div>
     </div>
   `).join('');
@@ -627,8 +627,8 @@ function openChangePasswordModal() {
       <div class="reservation-modal-overlay" id="change-password-modal-overlay" onclick="closeChangePasswordModal()"></div>
       <div class="reservation-modal" id="change-password-modal">
         <div class="reservation-modal-header">
-          <h3>🔐 Change Password</h3>
-          <button class="reservation-modal-close" onclick="closeChangePasswordModal()">✕</button>
+          <h3><i class="fas fa-lock"></i> Change Password</h3>
+          <button class="reservation-modal-close" onclick="closeChangePasswordModal()"><i class="fas fa-times"></i></button>
         </div>
         <div class="reservation-modal-body">
           <form id="change-password-form">
@@ -645,7 +645,7 @@ function openChangePasswordModal() {
               <input type="password" id="confirm-password" class="form-control" required>
             </div>
             <hr class="divider" />
-            <button type="submit" class="btn btn-success">✅ Update Password</button>
+            <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Update Password</button>
             <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeChangePasswordModal()">Cancel</button>
           </form>
         </div>
@@ -660,11 +660,11 @@ function openChangePasswordModal() {
       const confirmPassword = document.getElementById('confirm-password').value;
       
       if (newPassword !== confirmPassword) {
-        showToast('New passwords do not match', '⚠️');
+        showToast('New passwords do not match', '<i class="fas fa-exclamation-triangle"></i>');
         return;
       }
       if (newPassword.length < 6) {
-        showToast('Password must be at least 6 characters', '⚠️');
+        showToast('Password must be at least 6 characters', '<i class="fas fa-exclamation-triangle"></i>');
         return;
       }
       
@@ -675,10 +675,10 @@ function openChangePasswordModal() {
     newPassword: newPassword
   });
   
-  showToast('Password changed successfully! Please login again.', '✅');
+  showToast('Password changed successfully! Please login again.', '<i class="fas fa-check-circle"></i>');
   setTimeout(() => { logout(); }, 1500);
 } catch (err) {
-  showToast('Failed to change password: ' + err.message, '❌');
+  showToast('Failed to change password: ' + err.message, '<i class="fas fa-times-circle"></i>');
 }
 });
   }

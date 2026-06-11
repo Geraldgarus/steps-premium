@@ -622,7 +622,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -637,8 +637,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -678,7 +678,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -710,7 +710,7 @@
   </div>
   <div class="navbar-right">
    <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
+  <i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span>
 </button>
     
     <div class="user-dropdown">
@@ -757,14 +757,14 @@
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
   <div class="notification-header">
-    <span>📢 Notifications</span>
+    <span><i class="fas fa-bullhorn"></i> Notifications</span>
     <div>
       <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+      <button id="close-notif-panel"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
+    <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
   </div>
 </div>
 </main>
@@ -773,8 +773,8 @@
 <div id="addOutletOverlay"></div>
 <div id="addOutletModal">
   <div class="add-outlet-header">
-    <h3>➕ Add New Outlet</h3>
-    <button id="closeAddOutletBtn">✕</button>
+    <h3><i class="fas fa-plus"></i> Add New Outlet</h3>
+    <button id="closeAddOutletBtn"><i class="fas fa-times"></i></button>
   </div>
   <div class="add-outlet-body">
     <form id="add-outlet-form">
@@ -784,7 +784,7 @@
         <small style="font-size: 11px; color: #737373;">Use lowercase letters, numbers, and underscores only</small>
       </div>
       <hr class="divider" />
-      <button type="submit" class="btn-success">✅ Create Outlet</button>
+      <button type="submit" class="btn-success"><i class="fas fa-check-circle"></i> Create Outlet</button>
       <button type="button" id="cancelAddOutletBtn" class="btn-outline" style="margin-top:10px; width:100%;">Cancel</button>
     </form>
   </div>
@@ -794,8 +794,8 @@
 <div id="changePwOverlay"></div>
 <div id="changePwModal">
   <div class="change-pw-header">
-    <h3>🔐 Change Password</h3>
-    <button id="closeChangePwBtn">✕</button>
+    <h3><i class="fas fa-lock"></i> Change Password</h3>
+    <button id="closeChangePwBtn"><i class="fas fa-times"></i></button>
   </div>
   <div class="change-pw-body">
     <form id="change-password-form">
@@ -812,7 +812,7 @@
         <input type="password" id="confirm-password" class="form-control" required>
       </div>
       <hr class="divider" />
-      <button type="submit" class="btn-pw-success">✅ Update Password</button>
+      <button type="submit" class="btn-pw-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" id="cancelChangePwBtn" style="background:transparent;border:1px solid #e2e8f0;padding:12px;border-radius:40px;width:100%;cursor:pointer;margin-top:10px;">Cancel</button>
     </form>
   </div>
@@ -846,7 +846,7 @@ async function loadNotifications() {
           message: `${outlets.length} outlet(s) configured in the system`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '🏪'
+          icon: '<i class="fas fa-store-alt"></i>'
         });
       }
       
@@ -859,7 +859,7 @@ async function loadNotifications() {
           message: `Click on any outlet to view its inventory items`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '📦'
+          icon: '<i class="fas fa-box"></i>'
         });
       }
       
@@ -877,7 +877,7 @@ async function loadNotifications() {
           message: `${requests.length} pending request(s) from outlets need approval`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '📋'
+          icon: '<i class="fas fa-clipboard-list"></i>'
         });
       }
     } catch(e) {
@@ -892,7 +892,7 @@ async function loadNotifications() {
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications for outlets page`);
+    console.log(`<i class="fas fa-bullhorn"></i> Loaded ${notifications.length} notifications for outlets page`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
     renderNotifications();
@@ -905,7 +905,7 @@ function renderNotifications() {
   if (!container) return;
   
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -916,7 +916,7 @@ function renderNotifications() {
         ${escapeHtml(notif.message)}
       </div>
       <div class="notification-time">
-        <span>🕐 ${notif.time}</span>
+        <span><i class="fas fa-clock"></i> ${notif.time}</span>
       </div>
     </div>
   `).join('');
@@ -1305,7 +1305,7 @@ function escapeHtml(str) {
     var tbody = document.getElementById('outlets-tbody');
     if (!tbody) return;
     if (outlets.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="4" class="empty-state">🏪 No outlets found. Click "Add Outlet" to create one.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" class="empty-state"><i class="fas fa-store-alt"></i> No outlets found. Click "Add Outlet" to create one.</td></tr>';
       return;
     }
     var html = '';
@@ -1316,8 +1316,8 @@ function escapeHtml(str) {
       html += '<td><strong>' + escapeHtml(outlet.name) + '</strong></td>';
       html += '<td>' + new Date(outlet.created_at).toLocaleDateString() + '</td>';
       html += '<td>';
-      html += '<a href="/outlet-store?outlet=' + outlet.name + '" class="btn-outline" style="display: inline-block; padding: 4px 12px; text-decoration: none; border-radius: 6px; font-size: 12px; margin-right: 6px;">📦 View Items</a>';
-      html += '<button class="btn-sm btn-danger" onclick="deleteOutlet(' + outlet.id + ', \'' + escapeHtml(outlet.name) + '\')">🗑 Delete</button>';
+      html += '<a href="/outlet-store?outlet=' + outlet.name + '" class="btn-outline" style="display: inline-block; padding: 4px 12px; text-decoration: none; border-radius: 6px; font-size: 12px; margin-right: 6px;"><i class="fas fa-box"></i> View Items</a>';
+      html += '<button class="btn-sm btn-danger" onclick="deleteOutlet(' + outlet.id + ', \'' + escapeHtml(outlet.name) + '\')"><i class="fas fa-trash-alt"></i> Delete</button>';
       html += '</td>';
       html += '</tr>';
     }

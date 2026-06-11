@@ -323,7 +323,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -338,8 +338,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -379,7 +379,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -405,7 +405,7 @@
     <div><div class="page-title">Staff Activities Report</div><div class="page-subtitle">Track completed tasks and activities</div></div>
   </div>
   <div class="navbar-right">
-    <button class="notif-btn" id="notif-btn">🔔<span class="badge" id="notif-badge">0</span></button>
+    <button class="notif-btn" id="notif-btn"><i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span></button>
     <div class="user-dropdown">
       <div class="user-pill" id="userPill">
         <div class="user-avatar" id="userAvatar">U</div>
@@ -426,47 +426,47 @@
     <!-- Filter Bar -->
     <div class="filter-bar">
       <div class="filter-group">
-        <label>📅 From Date</label>
+        <label><i class="fas fa-calendar-alt"></i> From Date</label>
         <input type="date" id="filter-from" value="">
       </div>
       <div class="filter-group">
-        <label>📅 To Date</label>
+        <label><i class="fas fa-calendar-alt"></i> To Date</label>
         <input type="date" id="filter-to" value="">
       </div>
       <div class="filter-group">
-        <label>👤 Prepared By</label>
+        <label><i class="fas fa-user"></i> Prepared By</label>
         <input type="text" id="filter-prepared-by" placeholder="Filter by person">
       </div>
       <div class="filter-group">
         <label>&nbsp;</label>
-        <button class="btn-gold" onclick="loadReport()" style="width: 100%;">📊 Generate Report</button>
+        <button class="btn-gold" onclick="loadReport()" style="width: 100%;"><i class="fas fa-chart-bar"></i> Generate Report</button>
       </div>
       <div class="filter-group">
         <label>&nbsp;</label>
-        <button class="btn-outline" onclick="resetFilters()" style="width: 100%;">🔄 Reset</button>
+        <button class="btn-outline" onclick="resetFilters()" style="width: 100%;"><i class="fas fa-sync-alt"></i> Reset</button>
       </div>
       <div class="filter-group">
         <label>&nbsp;</label>
-        <button class="btn-print" onclick="window.print()" style="width: 100%;">🖨️ Print Report</button>
+        <button class="btn-print" onclick="window.print()" style="width: 100%;"><i class="fas fa-print"></i> Print Report</button>
       </div>
     </div>
 
     <!-- Summary Cards -->
     <div class="summary-cards">
       <div class="summary-card activities">
-        <h4>📋 TOTAL ACTIVITIES</h4>
+        <h4><i class="fas fa-clipboard-list"></i> TOTAL ACTIVITIES</h4>
         <div class="amount" id="total-activities">0</div>
       </div>
       <div class="summary-card people">
-        <h4>👥 ACTIVE STAFF</h4>
+        <h4><i class="fas fa-users"></i> ACTIVE STAFF</h4>
         <div class="amount" id="active-staff">0</div>
       </div>
       <div class="summary-card month">
-        <h4>📅 THIS MONTH</h4>
+        <h4><i class="fas fa-calendar-alt"></i> THIS MONTH</h4>
         <div class="amount" id="month-activities">0</div>
       </div>
       <div class="summary-card" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
-        <h4>📊 TOTAL TASKS</h4>
+        <h4><i class="fas fa-chart-bar"></i> TOTAL TASKS</h4>
         <div class="amount" id="total-tasks">0</div>
       </div>
     </div>
@@ -493,21 +493,21 @@
     </div>
 
     <div class="action-buttons">
-      <button class="btn-print" onclick="window.print()">🖨️ Print Activity Report</button>
+      <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print Activity Report</button>
     </div>
   </div>
   
   <!-- Notification Panel -->
   <div class="notification-panel" id="notification-panel">
     <div class="notification-header">
-      <span>📢 Notifications</span>
+      <span><i class="fas fa-bullhorn"></i> Notifications</span>
       <div>
         <button id="mark-all-read-btn">Mark all read</button>
-        <button id="close-notif-panel">✕</button>
+        <button id="close-notif-panel"><i class="fas fa-times"></i></button>
       </div>
     </div>
     <div class="notification-list" id="notification-list">
-      <div class="empty-notifications">📭 No new notifications</div>
+      <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
     </div>
   </div>
 </main>
@@ -518,8 +518,8 @@
 <div id="changePwOverlay"></div>
 <div id="changePwModal">
   <div class="change-pw-header">
-    <h3>🔐 Change Password</h3>
-    <button id="closeChangePwBtn">✕</button>
+    <h3><i class="fas fa-lock"></i> Change Password</h3>
+    <button id="closeChangePwBtn"><i class="fas fa-times"></i></button>
   </div>
   <div class="change-pw-body">
     <form id="change-password-form">
@@ -536,7 +536,7 @@
         <input type="password" id="confirm-password" class="form-control" required>
       </div>
       <hr class="divider" />
-      <button type="submit" class="btn-pw-success">✅ Update Password</button>
+      <button type="submit" class="btn-pw-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" id="cancelChangePwBtn" style="background:transparent;border:1px solid #e2e8f0;padding:12px;border-radius:40px;width:100%;margin-top:10px;">Cancel</button>
     </form>
   </div>
@@ -553,7 +553,7 @@ function formatTasks(tasks) {
   
   let html = '<ul class="task-list" style="margin:0; padding-left:20px;">';
   for (let task of tasks) {
-    const statusIcon = task.completed ? '✅' : '⏳';
+    const statusIcon = task.completed ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-spinner fa-spin"></i>';
     html += `<li style="margin-bottom:5px;">${statusIcon} ${escapeHtml(task.description)}</li>`;
   }
   html += '</ul>';
@@ -625,7 +625,7 @@ function renderActivitiesTable() {
       <tr>
         <td style="vertical-align: top;"><strong>${dateStr}</strong></td>
         <td style="vertical-align: top;">${tasksHtml}</td>
-        <td style="vertical-align: top;">👤 ${escapeHtml(preparedBy)}</td>
+        <td style="vertical-align: top;"><i class="fas fa-user"></i> ${escapeHtml(preparedBy)}</td>
         <td style="vertical-align: top;">${escapeHtml(remarks)}</td>
         <td style="vertical-align: top;">${recordedAt}</td>
       </tr>
@@ -679,7 +679,7 @@ async function loadNotifications() {
         message: `${activities.length} activity record(s) with ${totalTasks} task(s) completed`,
         time: new Date().toLocaleTimeString(),
         read: false,
-        icon: '📋'
+        icon: '<i class="fas fa-clipboard-list"></i>'
       });
     }
     renderNotifications();
@@ -691,7 +691,7 @@ function renderNotifications() {
   const container = document.getElementById('notification-list');
   if (!container) return;
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   container.innerHTML = notifications.map(notif => `
@@ -700,7 +700,7 @@ function renderNotifications() {
         <span class="notification-icon">${notif.icon}</span>
         ${escapeHtml(notif.message)}
       </div>
-      <div class="notification-time">🕐 ${notif.time}</div>
+      <div class="notification-time"><i class="fas fa-clock"></i> ${notif.time}</div>
     </div>
   `).join('');
 }

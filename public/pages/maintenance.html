@@ -99,7 +99,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -114,8 +114,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item active"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item active"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -155,7 +155,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -181,7 +181,7 @@
     <div><div class="page-title">Maintenance Management</div><div class="page-subtitle">Track repairs and maintenance tasks</div></div>
   </div>
   <div class="navbar-right">
-    <button class="notif-btn" id="notif-btn">🔔<span class="badge" id="notif-badge">0</span></button>
+    <button class="notif-btn" id="notif-btn"><i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span></button>
     <div class="user-dropdown">
       <div class="user-pill" id="userPill">
         <div class="user-avatar" id="userAvatar">U</div>
@@ -201,7 +201,7 @@
   <div class="maintenance-container">
     <div class="maintenance-left">
       <div class="filter-section">
-        <h4>🔍 Filter Tasks</h4>
+        <h4><i class="fas fa-search"></i> Filter Tasks</h4>
         <div class="filter-row">
           <input type="date" id="filter-from">
           <input type="date" id="filter-to">
@@ -211,95 +211,95 @@
             <option value="">All Repair Types</option>
             
             
-            <option value="HVAC">❄️ HVAC</option>
-            <option value="Carpenter">🪚 Carpenter</option>
-            <option value="Painter">🎨 Painter</option>
-            <option value="Welder">🔥 Welder</option>
-            <option value="Electrician">⚡ Electrician</option>
-            <option value="Plumber">🚰 Plumber</option>
-            <option value="Mason">🧱 Mason</option>
-            <option value="Gardener">🌿 Gardener</option>
-            <option value="Furniture">🪑 Furniture</option>
-            <option value="Appliance">📺 Appliance</option>
-            <option value="Building">🏗️ Building</option>
-            <option value="Other">🔧 Other</option>
+            <option value="HVAC">HVAC</option>
+            <option value="Carpenter">Carpenter</option>
+            <option value="Painter">Painter</option>
+            <option value="Welder">Welder</option>
+            <option value="Electrician">Electrician</option>
+            <option value="Plumber">Plumber</option>
+            <option value="Mason">Mason</option>
+            <option value="Gardener">Gardener</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Appliance">Appliance</option>
+            <option value="Building">Building</option>
+            <option value="Other">Other</option>
           </select>
-          <select id="filter-status"><option value="">All Status</option><option value="pending">⏳ Pending</option><option value="completed">✅ Completed</option></select>
+          <select id="filter-status"><option value="">All Status</option><option value="pending">Pending</option><option value="completed">Completed</option></select>
         </div>
         <div class="filter-actions"><button class="btn btn-outline btn-sm" onclick="applyFilters()">Apply Filters</button><button class="btn btn-outline btn-sm" onclick="resetFilters()">Reset</button></div>
       </div>
-      <div style="margin-bottom: 15px; display: flex; justify-content: space-between;"><strong>Maintenance Records</strong><button class="btn btn-outline btn-sm" onclick="loadTasks()">🔄 Refresh</button></div>
+      <div style="margin-bottom: 15px; display: flex; justify-content: space-between;"><strong>Maintenance Records</strong><button class="btn btn-outline btn-sm" onclick="loadTasks()"><i class="fas fa-sync-alt"></i> Refresh</button></div>
       <div id="tasks-list" class="tasks-list"><div style="text-align: center; padding: 20px;">Loading tasks...</div></div>
     </div>
 
     <div class="maintenance-right">
       <div id="form-section" class="form-section">
-        <div class="form-header"><h3>➕ New Maintenance Record</h3><button class="btn btn-outline btn-sm" onclick="cancelForm()">Cancel</button></div>
+        <div class="form-header"><h3><i class="fas fa-plus"></i> New Maintenance Record</h3><button class="btn btn-outline btn-sm" onclick="cancelForm()">Cancel</button></div>
         <form id="maintenance-form">
           <div class="form-group-row">
-            <div class="form-group"><label>🔢 Record Number</label><input type="text" id="task-number" class="form-control" readonly></div>
-            <div class="form-group"><label>👨‍🔧 Technician Name</label><input type="text" id="technician-name" class="form-control" required></div>
-            <div class="form-group"><label>📅 Date</label><input type="date" id="task-date" class="form-control" required></div>
+            <div class="form-group"><label><i class="fas fa-hashtag"></i> Record Number</label><input type="text" id="task-number" class="form-control" readonly></div>
+            <div class="form-group"><label><i class="fas fa-user-cog"></i> Technician Name</label><input type="text" id="technician-name" class="form-control" required></div>
+            <div class="form-group"><label><i class="fas fa-calendar-alt"></i> Date</label><input type="date" id="task-date" class="form-control" required></div>
           </div>
           <div class="form-group-row">
-            <div class="form-group"><label>📞 Contact / Phone Number</label><input type="tel" id="contact-number" class="form-control" placeholder="e.g., 0712345678"></div>
-            <div class="form-group"><label>🔧 Repair Type</label>
+            <div class="form-group"><label><i class="fas fa-phone"></i> Contact / Phone Number</label><input type="tel" id="contact-number" class="form-control" placeholder="e.g., 0712345678"></div>
+            <div class="form-group"><label><i class="fas fa-wrench"></i> Repair Type</label>
               <select id="item-type" class="form-control" required>
                 <option value="">Select Repair Type</option>
                 
                 
-                <option value="HVAC">❄️ HVAC</option>
-                <option value="Carpenter">🪚 Carpenter</option>
-                <option value="Painter">🎨 Painter</option>
-                <option value="Welder">🔥 Welder</option>
-                <option value="Electrician">⚡ Electrician</option>
-                <option value="Plumber">🚰 Plumber</option>
-                <option value="Mason">🧱 Mason</option>
-                <option value="Gardener">🌿 Gardener</option>
-                <option value="Furniture">🪑 Furniture</option>
-                <option value="Appliance">📺 Appliance</option>
-                <option value="Building">🏗️ Building</option>
-                <option value="Other">🔧 Other</option>
+                <option value="HVAC">HVAC</option>
+                <option value="Carpenter">Carpenter</option>
+                <option value="Painter">Painter</option>
+                <option value="Welder">Welder</option>
+                <option value="Electrician">Electrician</option>
+                <option value="Plumber">Plumber</option>
+                <option value="Mason">Mason</option>
+                <option value="Gardener">Gardener</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Appliance">Appliance</option>
+                <option value="Building">Building</option>
+                <option value="Other">Other</option>
               </select>
             </div>
-            <div class="form-group"><label>🏷️ Item Name</label><input type="text" id="item-name" class="form-control" placeholder="e.g., Air Conditioner, Refrigerator, Toilet" required></div>
+            <div class="form-group"><label><i class="fas fa-tag"></i> Item Name</label><input type="text" id="item-name" class="form-control" placeholder="e.g., Air Conditioner, Refrigerator, Toilet" required></div>
           </div>
-          <div class="form-group"><label>📝 Description of Repair</label><textarea id="description" class="form-control" rows="2" required></textarea></div>
-          <div class="form-group"><label>💰 Labour Cost (TSh)</label><input type="number" id="labour-cost" class="form-control" value="0" min="0" oninput="updateGrandTotal()"></div>
+          <div class="form-group"><label><i class="fas fa-pen"></i> Description of Repair</label><textarea id="description" class="form-control" rows="2" required></textarea></div>
+          <div class="form-group"><label><i class="fas fa-money-bill-wave"></i> Labour Cost (TSh)</label><input type="number" id="labour-cost" class="form-control" value="0" min="0" oninput="updateGrandTotal()"></div>
           <div class="tools-section">
-            <div class="tools-header"><strong>🔧 Additional Tools & Parts</strong><button type="button" class="btn-add-tool" onclick="addToolField()">+ Add Tool</button></div>
+            <div class="tools-header"><strong><i class="fas fa-wrench"></i> Additional Tools & Parts</strong><button type="button" class="btn-add-tool" onclick="addToolField()">+ Add Tool</button></div>
             <div id="tools-list"></div>
-            <div class="total-cost-box"><span>💰 Total Tools Cost:</span><span id="total-tools-cost">TSh 0</span></div>
+            <div class="total-cost-box"><span><i class="fas fa-money-bill-wave"></i> Total Tools Cost:</span><span id="total-tools-cost">TSh 0</span></div>
           </div>
-          <div class="grand-total-box"><span>💵 GRAND TOTAL (Labour + Tools):</span><span id="grand-total">TSh 0</span></div>
-          <div class="form-group"><label>📝 Remarks / Notes</label><textarea id="remarks" class="form-control" rows="2"></textarea></div>
+          <div class="grand-total-box"><span><i class="fas fa-dollar-sign"></i> GRAND TOTAL (Labour + Tools):</span><span id="grand-total">TSh 0</span></div>
+          <div class="form-group"><label><i class="fas fa-pen"></i> Remarks / Notes</label><textarea id="remarks" class="form-control" rows="2"></textarea></div>
           <hr class="divider">
-          <div style="display: flex; gap: 10px;"><button type="submit" class="btn btn-success" style="flex:1">💾 Save Record</button><button type="button" class="btn btn-outline" onclick="cancelForm()" style="flex:1">Cancel</button></div>
+          <div style="display: flex; gap: 10px;"><button type="submit" class="btn btn-success" style="flex:1"><i class="fas fa-save"></i> Save Record</button><button type="button" class="btn btn-outline" onclick="cancelForm()" style="flex:1">Cancel</button></div>
         </form>
       </div>
       
-      <div id="empty-state"><div style="text-align: center; padding: 60px 20px;"><div style="font-size: 64px;">🔧</div><h3>No Record Selected</h3><p>Click "New Maintenance Record" to create a record</p><button class="btn btn-gold" onclick="showForm()">➕ New Maintenance Record</button></div></div>
+      <div id="empty-state"><div style="text-align: center; padding: 60px 20px;"><div style="font-size: 64px;"><i class="fas fa-wrench"></i></div><h3>No Record Selected</h3><p>Click "New Maintenance Record" to create a record</p><button class="btn btn-gold" onclick="showForm()"><i class="fas fa-plus"></i> New Maintenance Record</button></div></div>
       
       <div id="task-details-view" style="display: none;"><div id="task-details-content"></div></div>
     </div>
   </div>
   
   <div class="notification-panel" id="notification-panel">
-    <div class="notification-header"><span>📢 Notifications</span><div><button id="mark-all-read-btn">Mark all read</button><button id="close-notif-panel">✕</button></div></div>
-    <div class="notification-list" id="notification-list"><div class="empty-notifications">📭 No new notifications</div></div>
+    <div class="notification-header"><span><i class="fas fa-bullhorn"></i> Notifications</span><div><button id="mark-all-read-btn">Mark all read</button><button id="close-notif-panel"><i class="fas fa-times"></i></button></div></div>
+    <div class="notification-list" id="notification-list"><div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div></div>
   </div>
 </main>
 
 <div class="toast-container" id="toast-container"></div>
 <div id="changePwOverlay"></div>
 <div id="changePwModal">
-  <div class="change-pw-header"><h3>🔐 Change Password</h3><button id="closeChangePwBtn">✕</button></div>
+  <div class="change-pw-header"><h3><i class="fas fa-lock"></i> Change Password</h3><button id="closeChangePwBtn"><i class="fas fa-times"></i></button></div>
   <div class="change-pw-body">
     <form id="change-password-form">
       <div class="form-group"><label>Current Password</label><input type="password" id="current-password" class="form-control" required></div>
       <div class="form-group"><label>New Password (min 6 characters)</label><input type="password" id="new-password" class="form-control" required></div>
       <div class="form-group"><label>Confirm New Password</label><input type="password" id="confirm-password" class="form-control" required></div>
-      <hr class="divider"><button type="submit" class="btn-pw-success">✅ Update Password</button>
+      <hr class="divider"><button type="submit" class="btn-pw-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" id="cancelChangePwBtn" style="background:transparent;border:1px solid #e2e8f0;padding:12px;border-radius:40px;width:100%;margin-top:10px;">Cancel</button>
     </form>
   </div>
@@ -323,7 +323,7 @@ function renderToolsList() {
   let container = document.getElementById('tools-list');
   if (!container) return;
   if (toolsList.length === 0) { container.innerHTML = '<div style="text-align:center;padding:10px;color:#94a3b8;">No additional tools added.</div>'; updateTotalToolsCost(); return; }
-  container.innerHTML = toolsList.map(tool => `<div class="tool-item"><input type="text" placeholder="Tool/Part name" value="${escapeHtml(tool.name)}" onchange="updateToolName(${tool.id}, this.value)" style="flex:2"><input type="number" placeholder="Cost" value="${tool.cost}" onchange="updateToolCost(${tool.id}, this.value)" class="tool-cost"><button onclick="removeTool(${tool.id})">🗑</button></div>`).join('');
+  container.innerHTML = toolsList.map(tool => `<div class="tool-item"><input type="text" placeholder="Tool/Part name" value="${escapeHtml(tool.name)}" onchange="updateToolName(${tool.id}, this.value)" style="flex:2"><input type="number" placeholder="Cost" value="${tool.cost}" onchange="updateToolCost(${tool.id}, this.value)" class="tool-cost"><button onclick="removeTool(${tool.id})"><i class="fas fa-trash-alt"></i></button></div>`).join('');
   updateTotalToolsCost();
 }
 
@@ -344,7 +344,7 @@ function showForm() {
   document.getElementById('labour-cost').value = '0';
   document.getElementById('remarks').value = '';
   updateGrandTotal();
-  document.querySelector('#form-section .form-header h3').textContent = '➕ New Maintenance Record';
+  document.querySelector('#form-section .form-header h3').textContent = '<i class="fas fa-plus"></i> New Maintenance Record';
 }
 function cancelForm() {
   document.getElementById('form-section').classList.remove('active');
@@ -398,7 +398,7 @@ function resetFilters() { document.getElementById('filter-from').value = ''; doc
 function renderTasksList() {
   let container = document.getElementById('tasks-list');
   if (!container) return;
-  if (tasks.length === 0) { container.innerHTML = '<div style="text-align:center;padding:20px;">📭 No maintenance records found</div>'; return; }
+  if (tasks.length === 0) { container.innerHTML = '<div style="text-align:center;padding:20px;"><i class="fas fa-inbox"></i> No maintenance records found</div>'; return; }
   let html = '';
   for (let task of tasks) {
     let statusClass = task.status === 'completed' ? 'completed' : 'pending';
@@ -408,7 +408,7 @@ function renderTasksList() {
     let repairType = task.repair_type || task.repairType || 'Other';
     let itemName = task.item_name || task.itemName || '';
     let taskNumber = task.task_number || task.taskNumber || 'MT-' + task.id;
-    html += `<div class="task-item ${statusClass}" onclick="viewTaskDetails(${task.id})"><div class="task-number">#${escapeHtml(taskNumber)}</div><div class="task-type">🔧 ${escapeHtml(repairType)}</div><div class="task-type">🛠️ ${escapeHtml(itemName)}</div><div class="task-status-badge ${statusColor}">${statusText}</div><div class="task-date">📅 ${dateStr}</div></div>`;
+    html += `<div class="task-item ${statusClass}" onclick="viewTaskDetails(${task.id})"><div class="task-number">#${escapeHtml(taskNumber)}</div><div class="task-type"><i class="fas fa-wrench"></i> ${escapeHtml(repairType)}</div><div class="task-type"><i class="fas fa-tools"></i> ${escapeHtml(itemName)}</div><div class="task-status-badge ${statusColor}">${statusText}</div><div class="task-date"><i class="fas fa-calendar-alt"></i> ${dateStr}</div></div>`;
   }
   container.innerHTML = html;
 }
@@ -425,13 +425,13 @@ async function viewTaskDetails(id) {
     let contactNumber = task.contact_number || task.contactNumber || 'N/A';
     let toolsHtml = '<div class="tools-section">No additional tools recorded</div>';
     if (task.tools && task.tools.length > 0) {
-      toolsHtml = `<div class="tools-section"><strong>🔧 Tools & Parts Used:</strong><ul>${task.tools.map(t => `<li>${escapeHtml(t.name)} - ${fmtTSH(t.cost || 0)}</li>`).join('')}</ul><div class="total-cost-box"><span>Tools Total:</span><span>${fmtTSH(toolsTotal)}</span></div></div>`;
+      toolsHtml = `<div class="tools-section"><strong><i class="fas fa-wrench"></i> Tools & Parts Used:</strong><ul>${task.tools.map(t => `<li>${escapeHtml(t.name)} - ${fmtTSH(t.cost || 0)}</li>`).join('')}</ul><div class="total-cost-box"><span>Tools Total:</span><span>${fmtTSH(toolsTotal)}</span></div></div>`;
     }
     document.getElementById('task-details-content').innerHTML = `
-      <div class="form-header"><h3>🔧 Maintenance Record Details</h3><button class="btn btn-outline btn-sm" onclick="closeTaskDetails()">✕ Close</button></div>
+      <div class="form-header"><h3><i class="fas fa-toolbox"></i> Maintenance Record Details</h3><button class="btn btn-outline btn-sm" onclick="closeTaskDetails()"><i class="fas fa-times"></i> Close</button></div>
       <div style="background:#f5f5f5;padding:15px;border-radius:12px;">
         <p><strong>Record Number:</strong> #${escapeHtml(task.task_number || task.taskNumber)}</p>
-        <p><strong>Status:</strong> <select id="task-status-select" style="padding:5px 10px;border-radius:20px;border:1px solid #e2e8f0;" onchange="updateTaskStatus(${task.id}, this.value)"><option value="pending" ${task.status==='pending'?'selected':''}>⏳ Pending</option><option value="completed" ${task.status==='completed'?'selected':''}>✅ Completed</option></select></p>
+        <p><strong>Status:</strong> <select id="task-status-select" style="padding:5px 10px;border-radius:20px;border:1px solid #e2e8f0;" onchange="updateTaskStatus(${task.id}, this.value)"><option value="pending" ${task.status==='pending'?'selected':''}>Pending</option><option value="completed" ${task.status==='completed'?'selected':''}>Completed</option></select></p>
         <p><strong>Technician:</strong> ${escapeHtml(task.technician_name || task.technicianName)}</p>
         <p><strong>Contact:</strong> ${escapeHtml(contactNumber)}</p>
         <p><strong>Repair Type:</strong> ${escapeHtml(repairType)}</p>
@@ -443,7 +443,7 @@ async function viewTaskDetails(id) {
         <p><strong>Remarks:</strong> ${escapeHtml(task.remarks) || 'No remarks'}</p>
         <div class="grand-total-box"><span><strong>GRAND TOTAL:</strong></span><span><strong>${fmtTSH(grand)}</strong></span></div>
       </div>
-      <div style="display:flex;gap:10px;margin-top:20px;"><button class="btn btn-gold" onclick="openEditTask(${task.id})" style="flex:1">✏️ Edit</button><button class="btn btn-danger" onclick="deleteTask(${task.id})" style="flex:1">🗑 Delete</button><button class="btn btn-outline" onclick="closeTaskDetails()" style="flex:1">Close</button></div>
+      <div style="display:flex;gap:10px;margin-top:20px;"><button class="btn btn-gold" onclick="openEditTask(${task.id})" style="flex:1"><i class="fas fa-edit"></i> Edit</button><button class="btn btn-danger" onclick="deleteTask(${task.id})" style="flex:1"><i class="fas fa-trash-alt"></i> Delete</button><button class="btn btn-outline" onclick="closeTaskDetails()" style="flex:1">Close</button></div>
     `;
     document.getElementById('form-section').classList.remove('active');
     document.getElementById('empty-state').style.display = 'none';
@@ -471,7 +471,7 @@ async function openEditTask(id) {
     document.getElementById('form-section').classList.add('active');
     document.getElementById('empty-state').style.display = 'none';
     document.getElementById('task-details-view').style.display = 'none';
-    document.querySelector('#form-section .form-header h3').textContent = '✏️ Edit Maintenance Record';
+    document.querySelector('#form-section .form-header h3').textContent = '<i class="fas fa-edit"></i> Edit Maintenance Record';
   } catch(err) { showToast('Failed to load for edit', 'error'); }
 }
 async function updateTaskStatus(id, status) { try { await apiPut(`/maintenance/${id}/status`, { status: status }); showToast(`Record marked as ${status}`, 'success'); loadTasks(); if (currentViewTask && currentViewTask.id === id) viewTaskDetails(id); } catch(err) { showToast('Failed to update status', 'error'); } }

@@ -442,6 +442,31 @@
 }
 
 
+  /* Icon Picker */
+  .apt-icon-picker { position: relative; }
+  .apt-icon-trigger {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+    border: 1px solid #e2e8f0; border-radius: 20px; background: white;
+    cursor: pointer; font-size: 0.9rem; user-select: none; transition: border-color 0.2s;
+  }
+  .apt-icon-trigger:hover { border-color: #c9933a; }
+  .apt-icon-trigger .preview-icon { font-size: 18px; color: #1e2a3e; width: 22px; text-align: center; }
+  .apt-icon-trigger .preview-label { flex: 1; color: #1e2a3e; font-size: 0.85rem; }
+  .apt-icon-grid {
+    display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: white; border: 1px solid #c9933a; border-radius: 12px; z-index: 9999;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.13); padding: 10px;
+    display: none; grid-template-columns: repeat(6, 1fr); gap: 6px;
+  }
+  .apt-icon-grid.open { display: grid; }
+  .apt-icon-opt {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; padding: 8px 4px; border-radius: 8px; cursor: pointer;
+    font-size: 18px; color: #1e2a3e; transition: background 0.15s;
+  }
+  .apt-icon-opt:hover { background: #f5f3ef; }
+  .apt-icon-opt.selected { background: #fef9f0; border: 1.5px solid #c9933a; }
+  .apt-icon-opt span { font-size: 9px; color: #64748b; }
   </style>
 </head>
 <body>
@@ -458,7 +483,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -473,8 +498,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -514,7 +539,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -555,7 +580,7 @@
     </a>
     <button class="" onclick="openReservationModal()"></button>
     <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
+  <i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span>
 </button>
     
     <div class="user-dropdown">
@@ -598,14 +623,14 @@
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
   <div class="notification-header">
-    <span>📢 Notifications</span>
+    <span><i class="fas fa-bullhorn"></i> Notifications</span>
     <div>
       <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+      <button id="close-notif-panel"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
+    <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
   </div>
 </div>
 </main>
@@ -614,8 +639,8 @@
 <div class="reservation-modal-overlay" id="apt-modal-overlay" onclick="closeApartmentModal()"></div>
 <div class="reservation-modal" id="apt-modal">
   <div class="reservation-modal-header">
-    <h3 id="apt-modal-title">➕ Add Apartment</h3>
-    <button class="reservation-modal-close" onclick="closeApartmentModal()">✕</button>
+    <h3 id="apt-modal-title"><i class="fas fa-plus"></i> Add Apartment</h3>
+    <button class="reservation-modal-close" onclick="closeApartmentModal()"><i class="fas fa-times"></i></button>
   </div>
   <div class="reservation-modal-body">
     <form id="apt-form">
@@ -624,10 +649,21 @@
       <div class="form-group"><label>Type</label><input type="text" id="apt-type" class="form-control" required></div>
       <div class="form-group"><label>Max Adults</label><input type="number" id="apt-max-adults" class="form-control" required min="1" value="2"></div>
       <div class="form-group"><label>Rate per Night (TSH)</label><input type="number" id="apt-rate" class="form-control" required min="0" value="90000"></div>
-      <div class="form-group"><label>Emoji (optional)</label><input type="text" id="apt-emoji" class="form-control" placeholder="e.g., 🏠"></div>
+      <div class="form-group">
+        <label><i class="fas fa-icons"></i> Icon</label>
+        <input type="hidden" id="apt-emoji" value="fa-home">
+        <div class="apt-icon-picker">
+          <div class="apt-icon-trigger" id="apt-icon-trigger" onclick="toggleAptIconPicker()">
+            <span class="preview-icon"><i class="fas fa-home" id="apt-icon-preview"></i></span>
+            <span class="preview-label" id="apt-icon-label">Home</span>
+            <i class="fas fa-chevron-down" style="color:#94a3b8;font-size:11px;transition:transform 0.2s" id="apt-icon-chevron"></i>
+          </div>
+          <div class="apt-icon-grid" id="apt-icon-grid"></div>
+        </div>
+      </div>
       <div class="form-group"><label>Color (hex)</label><input type="color" id="apt-color" class="form-control" value="#2d9c6e"></div>
       <hr class="divider" />
-      <button type="submit" class="btn btn-success" id="apt-submit-btn">✅ Save Apartment</button>
+      <button type="submit" class="btn btn-success" id="apt-submit-btn"><i class="fas fa-check-circle"></i> Save Apartment</button>
       <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeApartmentModal()">Cancel</button>
     </form>
   </div>
@@ -637,8 +673,8 @@
 <div class="reservation-modal-overlay" id="change-password-modal-overlay" onclick="closeChangePasswordModal()"></div>
 <div class="reservation-modal" id="change-password-modal">
   <div class="reservation-modal-header">
-    <h3>🔐 Change Password</h3>
-    <button class="reservation-modal-close" onclick="closeChangePasswordModal()">✕</button>
+    <h3><i class="fas fa-lock"></i> Change Password</h3>
+    <button class="reservation-modal-close" onclick="closeChangePasswordModal()"><i class="fas fa-times"></i></button>
   </div>
   <div class="reservation-modal-body">
     <form id="change-password-form">
@@ -646,7 +682,7 @@
       <div class="form-group"><label>New Password (min 6)</label><input type="password" id="new-password" class="form-control" required></div>
       <div class="form-group"><label>Confirm Password</label><input type="password" id="confirm-password" class="form-control" required></div>
       <hr class="divider" />
-      <button type="submit" class="btn btn-success">✅ Update Password</button>
+      <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeChangePasswordModal()">Cancel</button>
     </form>
   </div>
@@ -685,7 +721,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '🚪'
+        icon: '<i class="fas fa-door-open"></i>'
       });
     });
     
@@ -705,7 +741,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '📅'
+        icon: '<i class="fas fa-calendar-alt"></i>'
       });
     });
     
@@ -720,7 +756,7 @@ async function loadNotifications() {
           message: `${item.name} is low in stock (${item.quantity} left)`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '<i class="fas fa-exclamation-triangle"></i>'
         });
       });
     } catch(e) {
@@ -735,7 +771,7 @@ async function loadNotifications() {
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications`);
+    console.log(`<i class="fas fa-bullhorn"></i> Loaded ${notifications.length} notifications`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
   }
@@ -748,7 +784,7 @@ function renderNotifications() {
   const unreadCount = notifications.filter(n => !n.read).length;
   
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -759,7 +795,7 @@ function renderNotifications() {
         ${escapeHtml(notif.message)}
       </div>
       <div class="notification-time">
-        <span>🕐 ${notif.time}</span>
+        <span><i class="fas fa-clock"></i> ${notif.time}</span>
       </div>
     </div>
   `).join('');
@@ -934,20 +970,20 @@ async function loadApartments() {
     const tbody = document.getElementById('apartments-tbody');
     if (!tbody) return;
     if (apartments.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" class="empty-state">🏢 No apartments found. Click "Add Apartment" to create one.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><i class="fas fa-building"></i> No apartments found. Click "Add Apartment" to create one.</td></tr>';
       return;
     }
     tbody.innerHTML = apartments.map(apt => `
       <tr>
-        <td><span style="font-size:24px">${escapeHtml(apt.emoji) || '🏠'}</span></td>
+        <td><span style="font-size:24px"><i class="fas ${(apt.emoji && apt.emoji.startsWith('fa-')) ? apt.emoji : 'fa-home'}"></i></span></td>
         <td><strong>${escapeHtml(apt.name)}</strong></td>
         <td>${escapeHtml(apt.type)}</td>
         <td>${apt.maxAdults}</td>
         <td>${fmtTSH(apt.ratePerNight)}</td>
         <td><div class="color-preview" style="background:${apt.color || '#2d9c6e'}"></div></td>
         <td>
-          <button class="btn-sm btn-warning" onclick="openEditApartmentModal(${apt.id})">✏️ Edit</button>
-          <button class="btn-sm btn-danger" onclick="deleteApartment(${apt.id})">🗑 Delete</button>
+          <button class="btn-sm btn-warning" onclick="openEditApartmentModal(${apt.id})"><i class="fas fa-edit"></i> Edit</button>
+          <button class="btn-sm btn-danger" onclick="deleteApartment(${apt.id})"><i class="fas fa-trash-alt"></i> Delete</button>
         </td>
       </tr>
     `).join('');
@@ -1022,13 +1058,14 @@ async function apiPut(endpoint, data) {
   // ADD/EDIT MODAL FUNCTIONS
   // ============================================================
   function openAddApartmentModal() {
-    document.getElementById('apt-modal-title').innerText = '➕ Add Apartment';
+    document.getElementById('apt-modal-title').innerText = '<i class="fas fa-plus"></i> Add Apartment';
     document.getElementById('apt-id').value = '';
     document.getElementById('apt-name').value = '';
     document.getElementById('apt-type').value = '';
     document.getElementById('apt-max-adults').value = '2';
     document.getElementById('apt-rate').value = '90000';
-    document.getElementById('apt-emoji').value = '';
+    document.getElementById('apt-emoji').value = 'fa-home';
+    setAptIconPicker('fa-home');
     document.getElementById('apt-color').value = '#2d9c6e';
     document.getElementById('apt-modal').classList.add('open');
     document.getElementById('apt-modal-overlay').classList.add('open');
@@ -1038,13 +1075,15 @@ async function apiPut(endpoint, data) {
   function openEditApartmentModal(id) {
     const apt = apartments.find(a => a.id === id);
     if (!apt) return;
-    document.getElementById('apt-modal-title').innerText = '✏️ Edit Apartment';
+    document.getElementById('apt-modal-title').innerText = '<i class="fas fa-edit"></i> Edit Apartment';
     document.getElementById('apt-id').value = apt.id;
     document.getElementById('apt-name').value = apt.name;
     document.getElementById('apt-type').value = apt.type;
     document.getElementById('apt-max-adults').value = apt.maxAdults;
     document.getElementById('apt-rate').value = apt.ratePerNight;
-    document.getElementById('apt-emoji').value = apt.emoji || '';
+    const iconVal = apt.emoji || 'fa-home';
+    document.getElementById('apt-emoji').value = iconVal;
+    setAptIconPicker(iconVal);
     document.getElementById('apt-color').value = apt.color || '#2d9c6e';
     document.getElementById('apt-modal').classList.add('open');
     document.getElementById('apt-modal-overlay').classList.add('open');
@@ -1256,6 +1295,95 @@ if (changePasswordForm) {
   window.logout = logout;
   window.openChangePasswordModal = openChangePasswordModal;
   window.closeChangePasswordModal = closeChangePasswordModal;
+</script>
+
+<script>
+  const APT_ICONS = [
+    { cls: 'fa-home',            label: 'Home' },
+    { cls: 'fa-building',        label: 'Building' },
+    { cls: 'fa-hotel',           label: 'Hotel' },
+    { cls: 'fa-bed',             label: 'Bed' },
+    { cls: 'fa-door-open',       label: 'Door' },
+    { cls: 'fa-star',            label: 'Star' },
+    { cls: 'fa-crown',           label: 'Crown' },
+    { cls: 'fa-gem',             label: 'Gem' },
+    { cls: 'fa-sun',             label: 'Sun' },
+    { cls: 'fa-leaf',            label: 'Leaf' },
+    { cls: 'fa-tree',            label: 'Tree' },
+    { cls: 'fa-city',            label: 'City' },
+    { cls: 'fa-landmark',        label: 'Landmark' },
+    { cls: 'fa-couch',           label: 'Couch' },
+    { cls: 'fa-bath',            label: 'Bath' },
+    { cls: 'fa-concierge-bell',  label: 'Concierge' },
+    { cls: 'fa-key',             label: 'Key' },
+    { cls: 'fa-umbrella-beach',  label: 'Beach' },
+    { cls: 'fa-swimming-pool',   label: 'Pool' },
+    { cls: 'fa-mountain',        label: 'Mountain' },
+    { cls: 'fa-water',           label: 'Water' },
+    { cls: 'fa-wine-glass-alt',  label: 'Wine' },
+    { cls: 'fa-utensils',        label: 'Dining' },
+    { cls: 'fa-spa',             label: 'Spa' },
+  ];
+
+  function buildAptIconGrid() {
+    const grid = document.getElementById('apt-icon-grid');
+    if (!grid || grid.dataset.built) return;
+    grid.dataset.built = '1';
+    const current = document.getElementById('apt-emoji').value || 'fa-home';
+    APT_ICONS.forEach(({ cls, label }) => {
+      const opt = document.createElement('div');
+      opt.className = 'apt-icon-opt' + (cls === current ? ' selected' : '');
+      opt.dataset.cls = cls;
+      opt.innerHTML = `<i class="fas ${cls}"></i><span>${label}</span>`;
+      opt.onclick = () => selectAptIcon(cls, label);
+      grid.appendChild(opt);
+    });
+  }
+
+  function selectAptIcon(cls, label) {
+    document.getElementById('apt-emoji').value = cls;
+    const preview = document.getElementById('apt-icon-preview');
+    preview.className = 'fas ' + cls;
+    document.getElementById('apt-icon-label').textContent = label;
+    document.querySelectorAll('.apt-icon-opt').forEach(o => {
+      o.classList.toggle('selected', o.dataset.cls === cls);
+    });
+    closeAptIconPicker();
+  }
+
+  function setAptIconPicker(cls) {
+    const info = APT_ICONS.find(i => i.cls === cls) || { cls: 'fa-home', label: 'Home' };
+    const preview = document.getElementById('apt-icon-preview');
+    if (preview) {
+      preview.className = 'fas ' + info.cls;
+      document.getElementById('apt-icon-label').textContent = info.label;
+    }
+    document.querySelectorAll('.apt-icon-opt').forEach(o => {
+      o.classList.toggle('selected', o.dataset.cls === info.cls);
+    });
+  }
+
+  function toggleAptIconPicker() {
+    buildAptIconGrid();
+    const grid = document.getElementById('apt-icon-grid');
+    const chevron = document.getElementById('apt-icon-chevron');
+    const isOpen = grid.classList.toggle('open');
+    chevron.style.transform = isOpen ? 'rotate(180deg)' : '';
+  }
+
+  function closeAptIconPicker() {
+    const grid = document.getElementById('apt-icon-grid');
+    const chevron = document.getElementById('apt-icon-chevron');
+    grid.classList.remove('open');
+    chevron.style.transform = '';
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.apt-icon-picker')) closeAptIconPicker();
+  });
+
+  window.toggleAptIconPicker = toggleAptIconPicker;
+  window.setAptIconPicker = setAptIconPicker;
 </script>
 </body>
 </html>

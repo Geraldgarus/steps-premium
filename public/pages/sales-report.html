@@ -130,45 +130,45 @@
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-top">
     <a class="sidebar-logo" href="/">
-      <div class="logo-icon">🏨</div>
+      <div class="logo-icon"><i class="fas fa-hotel"></i></div>
       <div class="logo-text">
         <span>Steps</span>
         <span>Premium Suite</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
     
     <!-- CORE OPERATIONS -->
     <div class="nav-section-label">Core Operations</div>
-    <a href="/dashboard" class="nav-item ">📊 Stay View</a>
-    <a href="/reservations" class="nav-item">📅 Reservations</a>
-    <a href="/housekeeping" class="nav-item">🧹 Housekeeping</a>
+    <a href="/dashboard" class="nav-item "><i class="fas fa-chart-bar"></i> Stay View</a>
+    <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
     
     <!-- PROPERTY -->
     <div class="nav-section-label">Property</div>
-    <a href="/apartments" class="nav-item">🏠 Apartments View</a>
-    <a href="/apartments-list" class="nav-item">📋 Apartments List</a>
+    <a href="/apartments" class="nav-item"><i class="fas fa-home"></i> Apartments View</a>
+    <a href="/apartments-list" class="nav-item"><i class="fas fa-clipboard-list"></i> Apartments List</a>
     
     <!-- STORE & PROCUREMENT (COMBINED) -->
     <div class="nav-section-label">Store & Procurement</div>
-    <a href="/store-main" class="nav-item">🏬 Main Store</a>
-    <a href="/store-outlets" class="nav-item">🏪 Outlets Store</a>
-    <a href="/purchase-orders" class="nav-item">📦 Purchase Orders</a>
-    <a href="/goods-receipt" class="nav-item">✅ Goods Receipt</a>
+    <a href="/store-main" class="nav-item"><i class="fas fa-store"></i> Main Store</a>
+    <a href="/store-outlets" class="nav-item"><i class="fas fa-store-alt"></i> Outlets Store</a>
+    <a href="/purchase-orders" class="nav-item"><i class="fas fa-box"></i> Purchase Orders</a>
+    <a href="/goods-receipt" class="nav-item"><i class="fas fa-check-circle"></i> Goods Receipt</a>
     
     <!-- REPORTS (KEPT SEPARATE) -->
     <div class="nav-section-label">Reports</div>
-    <a href="/reports" class="nav-item active">📊 Reservations Report</a>
-    <a href="/purchase-orders-reports" class="nav-item">📄 Purchase Orders Report</a>
-    <a href="/goods-receipt-reports" class="nav-item">📋 Goods Receipt Report</a>
-    <a href="/store-inventory-reports" class="nav-item">📦 Store Inventory Report</a>
+    <a href="/reports" class="nav-item active"><i class="fas fa-chart-bar"></i> Reservations Report</a>
+    <a href="/purchase-orders-reports" class="nav-item"><i class="fas fa-file-alt"></i> Purchase Orders Report</a>
+    <a href="/goods-receipt-reports" class="nav-item"><i class="fas fa-clipboard-list"></i> Goods Receipt Report</a>
+    <a href="/store-inventory-reports" class="nav-item"><i class="fas fa-box"></i> Store Inventory Report</a>
     
     <!-- ADMIN -->
     <div class="nav-section-label">Administration</div>
-    <a href="/users" class="nav-item">👥 User Management</a>
+    <a href="/users" class="nav-item"><i class="fas fa-users"></i> User Management</a>
     
   </nav>
   
@@ -184,7 +184,7 @@
   </div>
   <div class="navbar-right">
     <button class="btn-add-reservation" onclick="alert('Add reservation')">＋ Add Reservation</button>
-    <button class="notif-btn">🔔<span class="badge">3</span></button>
+    <button class="notif-btn"><i class="fas fa-bell"></i><span class="badge">3</span></button>
     <div class="user-dropdown">
       <div class="user-pill" id="userPill"><div class="user-avatar" id="userAvatar">U</div><div class="user-info"><span id="userName">Loading...</span><span id="userRole">Loading...</span></div><i class="fas fa-chevron-down"></i></div>
       <div class="dropdown-menu" id="dropdownMenu"><button onclick="alert('Change password')"><i class="fas fa-key"></i> Change Password</button><hr><button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button></div>
@@ -196,10 +196,10 @@
   <div class="filter-bar">
     <div class="filter-group"><label>From Date</label><input type="date" id="filter-from"></div>
     <div class="filter-group"><label>To Date</label><input type="date" id="filter-to"></div>
-    <button class="btn-gold" onclick="loadSalesReport()">🔍 Apply Filter</button>
-    <button class="btn-outline" onclick="clearFilters()">✕ Clear</button>
-    <button class="btn-outline" onclick="exportToCSV()">📎 Export CSV</button>
-    <button class="btn-print" onclick="printReport()">🖨️ Print Report</button>
+    <button class="btn-gold" onclick="loadSalesReport()"><i class="fas fa-search"></i> Apply Filter</button>
+    <button class="btn-outline" onclick="clearFilters()"><i class="fas fa-times"></i> Clear</button>
+    <button class="btn-outline" onclick="exportToCSV()"><i class="fas fa-file-export"></i> Export CSV</button>
+    <button class="btn-print" onclick="printReport()"><i class="fas fa-print"></i> Print Report</button>
   </div>
 
   <div class="stats-row">
@@ -404,8 +404,8 @@ async function loadSalesReport() {
             <div>
               <div class="best-seller-name">${escapeHtml(product.name)}</div>
               <div class="best-seller-stats">
-                <span>📦 ${product.quantity} units sold</span>
-                <span>💰 ${fmtTSH(product.revenue)}</span>
+                <span><i class="fas fa-box"></i> ${product.quantity} units sold</span>
+                <span><i class="fas fa-money-bill-wave"></i> ${fmtTSH(product.revenue)}</span>
               </div>
             </div>
           </div>

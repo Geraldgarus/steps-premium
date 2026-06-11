@@ -91,7 +91,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -106,8 +106,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -147,7 +147,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item active"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item active"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -173,7 +173,7 @@
     <div><div class="page-title">Expenditure Management</div><div class="page-subtitle">Track expenses and monitor profit</div></div>
   </div>
   <div class="navbar-right">
-    <button class="notif-btn" id="notif-btn">🔔<span class="badge" id="notif-badge">0</span></button>
+    <button class="notif-btn" id="notif-btn"><i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span></button>
     <div class="user-dropdown">
       <div class="user-pill" id="userPill">
         <div class="user-avatar" id="userAvatar">U</div>
@@ -193,7 +193,7 @@
   <div class="expenditure-container">
     <div class="expenditure-left">
       <div class="filter-section">
-        <h4>🔍 Filter Expenditures</h4>
+        <h4><i class="fas fa-search"></i> Filter Expenditures</h4>
         <div class="filter-row">
           <input type="date" id="filter-from" placeholder="From Date">
           <input type="date" id="filter-to" placeholder="To Date">
@@ -201,14 +201,14 @@
         <div class="filter-row">
           <select id="filter-category">
             <option value="">All Categories</option>
-            <option value="Utilities">💡 Utilities</option>
-            <option value="Salaries">👥 Salaries</option>
-            <option value="Maintenance">🔧 Maintenance</option>
-            <option value="Supplies">📦 Supplies</option>
-            <option value="Marketing">📢 Marketing</option>
-            <option value="Taxes">📄 Taxes</option>
-            <option value="Repairs">🛠️ Repairs</option>
-            <option value="Other">📌 Other</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Salaries">Salaries</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Supplies">Supplies</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Taxes">Taxes</option>
+            <option value="Repairs">Repairs</option>
+            <option value="Other">Other</option>
           </select>
         </div>
         <div class="filter-actions">
@@ -218,7 +218,7 @@
       </div>
       <div style="margin-bottom: 15px; display: flex; justify-content: space-between;">
         <strong>Expenditure Records</strong>
-        <button class="btn btn-outline btn-sm" onclick="loadExpenditures()">🔄 Refresh</button>
+        <button class="btn btn-outline btn-sm" onclick="loadExpenditures()"><i class="fas fa-sync-alt"></i> Refresh</button>
       </div>
       <div id="expenditure-list" class="expenditure-list">
         <div style="text-align: center; padding: 20px;">Loading expenditures...</div>
@@ -229,17 +229,17 @@
       <!-- Summary Cards - FILTERED -->
       <div class="summary-cards" id="summary-cards">
         <div class="summary-card revenue">
-          <h4>💰 Total Revenue</h4>
+          <h4><i class="fas fa-money-bill-wave"></i> Total Revenue</h4>
           <div class="amount" id="total-revenue">TSh 0</div>
           <div style="font-size: 10px; opacity: 0.7;" id="revenue-period">(all time)</div>
         </div>
         <div class="summary-card expense">
-          <h4>📉 Total Expenses</h4>
+          <h4><i class="fas fa-chart-line fa-flip-vertical"></i> Total Expenses</h4>
           <div class="amount" id="total-expenses">TSh 0</div>
           <div style="font-size: 10px; opacity: 0.7;" id="expense-period">(filtered period)</div>
         </div>
         <div class="summary-card profit">
-          <h4>📈 Net Profit</h4>
+          <h4><i class="fas fa-chart-line"></i> Net Profit</h4>
           <div class="amount" id="net-profit">TSh 0</div>
           <div style="font-size: 10px; opacity: 0.7;" id="profit-period">(filtered period)</div>
         </div>
@@ -247,71 +247,71 @@
 
       <div id="form-section" class="form-section">
         <div class="form-header">
-          <h3>➕ New Expenditure</h3>
+          <h3><i class="fas fa-plus"></i> New Expenditure</h3>
           <button class="btn btn-outline btn-sm" onclick="cancelForm()">Cancel</button>
         </div>
         <form id="expenditure-form">
           <div class="form-group-row">
             <div class="form-group">
-              <label>📅 Date</label>
+              <label><i class="fas fa-calendar-alt"></i> Date</label>
               <input type="date" id="expenditure-date" class="form-control" required>
             </div>
             <div class="form-group">
-              <label>🔢 Expenditure Number</label>
+              <label><i class="fas fa-hashtag"></i> Expenditure Number</label>
               <input type="text" id="expenditure-number" class="form-control" readonly>
             </div>
           </div>
           <div class="form-group-row">
             <div class="form-group">
-              <label>📂 Category</label>
+              <label><i class="fas fa-folder-open"></i> Category</label>
               <select id="category" class="form-control" required>
                 <option value="">Select Category</option>
-                <option value="Utilities">💡 Utilities (Electricity, Water, Internet)</option>
-                <option value="Salaries">👥 Salaries & Wages</option>
-                <option value="Maintenance">🔧 Property Maintenance</option>
-                <option value="Supplies">📦 Office Supplies</option>
-                <option value="Marketing">📢 Marketing & Advertising</option>
-                <option value="Taxes">📄 Taxes & Licenses</option>
-                <option value="Repairs">🛠️ Repairs</option>
-                <option value="Other">📌 Other</option>
+                <option value="Utilities">Utilities (Electricity, Water, Internet)</option>
+                <option value="Salaries">Salaries & Wages</option>
+                <option value="Maintenance">Property Maintenance</option>
+                <option value="Supplies">Office Supplies</option>
+                <option value="Marketing">Marketing & Advertising</option>
+                <option value="Taxes">Taxes & Licenses</option>
+                <option value="Repairs">Repairs</option>
+                <option value="Other">Other</option>
               </select>
             </div>
             <div class="form-group">
-              <label>💰 Amount (TSh)</label>
+              <label><i class="fas fa-money-bill-wave"></i> Amount (TSh)</label>
               <input type="number" id="amount" class="form-control" placeholder="0" min="0" step="1000" required>
             </div>
           </div>
           <div class="form-group">
-            <label>📝 Description</label>
+            <label><i class="fas fa-pen"></i> Description</label>
             <textarea id="description" class="form-control" rows="2" placeholder="Describe the expenditure..." required></textarea>
           </div>
           <div class="form-group-row">
             <div class="form-group">
-              <label>👤 Paid To</label>
+              <label><i class="fas fa-user"></i> Paid To</label>
               <input type="text" id="paid-to" class="form-control" placeholder="Vendor/Recipient name">
             </div>
             <div class="form-group">
-              <label>💳 Payment Method</label>
+              <label><i class="fas fa-credit-card"></i> Payment Method</label>
               <select id="payment-method" class="form-control">
-                <option value="cash">💵 Cash</option>
-                <option value="bank">🏦 Bank Transfer</option>
-                <option value="card">💳 Card</option>
-                <option value="cheque">📝 Cheque</option>
-                <option value="mobile">📱 Mobile Payment</option>
+                <option value="cash">Cash</option>
+                <option value="bank">Bank Transfer</option>
+                <option value="card">Card</option>
+                <option value="cheque">Cheque</option>
+                <option value="mobile">Mobile Payment</option>
               </select>
             </div>
           </div>
           <div class="form-group">
-            <label>🧾 Receipt Number (Optional)</label>
+            <label><i class="fas fa-receipt"></i> Receipt Number (Optional)</label>
             <input type="text" id="receipt-number" class="form-control" placeholder="Receipt/Reference number">
           </div>
           <div class="form-group">
-            <label>📝 Remarks / Notes</label>
+            <label><i class="fas fa-pen"></i> Remarks / Notes</label>
             <textarea id="remarks" class="form-control" rows="2" placeholder="Additional notes..."></textarea>
           </div>
           <hr class="divider">
           <div style="display: flex; gap: 10px;">
-            <button type="submit" class="btn btn-success" style="flex:1">💾 Save Expenditure</button>
+            <button type="submit" class="btn btn-success" style="flex:1"><i class="fas fa-save"></i> Save Expenditure</button>
             <button type="button" class="btn btn-outline" onclick="cancelForm()" style="flex:1">Cancel</button>
           </div>
         </form>
@@ -319,10 +319,10 @@
       
       <div id="empty-state">
         <div style="text-align: center; padding: 60px 20px;">
-          <div style="font-size: 64px;">💰</div>
+          <div style="font-size: 64px;"><i class="fas fa-money-bill-wave"></i></div>
           <h3>No Expenditure Selected</h3>
           <p>Click "New Expenditure" to record an expense</p>
-          <button class="btn btn-gold" onclick="showForm()">➕ New Expenditure</button>
+          <button class="btn btn-gold" onclick="showForm()"><i class="fas fa-plus"></i> New Expenditure</button>
         </div>
       </div>
       
@@ -334,14 +334,14 @@
   
   <div class="notification-panel" id="notification-panel">
     <div class="notification-header">
-      <span>📢 Notifications</span>
+      <span><i class="fas fa-bullhorn"></i> Notifications</span>
       <div>
         <button id="mark-all-read-btn">Mark all read</button>
-        <button id="close-notif-panel">✕</button>
+        <button id="close-notif-panel"><i class="fas fa-times"></i></button>
       </div>
     </div>
     <div class="notification-list" id="notification-list">
-      <div class="empty-notifications">📭 No new notifications</div>
+      <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
     </div>
   </div>
 </main>
@@ -349,13 +349,13 @@
 <div class="toast-container" id="toast-container"></div>
 <div id="changePwOverlay"></div>
 <div id="changePwModal">
-  <div class="change-pw-header"><h3>🔐 Change Password</h3><button id="closeChangePwBtn">✕</button></div>
+  <div class="change-pw-header"><h3><i class="fas fa-lock"></i> Change Password</h3><button id="closeChangePwBtn"><i class="fas fa-times"></i></button></div>
   <div class="change-pw-body">
     <form id="change-password-form">
       <div class="form-group"><label>Current Password</label><input type="password" id="current-password" class="form-control" required></div>
       <div class="form-group"><label>New Password (min 6 characters)</label><input type="password" id="new-password" class="form-control" required></div>
       <div class="form-group"><label>Confirm New Password</label><input type="password" id="confirm-password" class="form-control" required></div>
-      <hr class="divider"><button type="submit" class="btn-pw-success">✅ Update Password</button>
+      <hr class="divider"><button type="submit" class="btn-pw-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" id="cancelChangePwBtn" style="background:transparent;border:1px solid #e2e8f0;padding:12px;border-radius:40px;width:100%;margin-top:10px;">Cancel</button>
     </form>
   </div>
@@ -381,7 +381,7 @@ function showForm() {
   document.getElementById('payment-method').value = 'cash';
   document.getElementById('receipt-number').value = '';
   document.getElementById('remarks').value = '';
-  document.querySelector('#form-section .form-header h3').textContent = '➕ New Expenditure';
+  document.querySelector('#form-section .form-header h3').textContent = '<i class="fas fa-plus"></i> New Expenditure';
 }
 
 function cancelForm() {
@@ -506,7 +506,7 @@ async function loadFinancialSummary(fromDate, toDate) {
       profitEl.style.color = 'white';
     }
     
-    console.log(`📊 Financial Summary - Period: ${periodLabel}, Revenue: ${filteredRevenue}, Expenses: ${filteredExpenses}, Profit: ${filteredProfit}`);
+    console.log(`<i class="fas fa-chart-bar"></i> Financial Summary - Period: ${periodLabel}, Revenue: ${filteredRevenue}, Expenses: ${filteredExpenses}, Profit: ${filteredProfit}`);
   } catch(err) {
     console.error('Failed to load financial summary:', err);
   }
@@ -545,7 +545,7 @@ function renderExpendituresList() {
   let container = document.getElementById('expenditure-list');
   if (!container) return;
   if (expenditures.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:20px;">📭 No expenditures found</div>';
+    container.innerHTML = '<div style="text-align:center;padding:20px;"><i class="fas fa-inbox"></i> No expenditures found</div>';
     return;
   }
   let html = '';
@@ -554,9 +554,9 @@ function renderExpendituresList() {
     html += `
       <div class="expenditure-item" onclick="viewExpenditureDetails(${exp.id})">
         <div class="expenditure-number">#${escapeHtml(exp.expenditure_number)}</div>
-        <div class="expenditure-category">📂 ${escapeHtml(exp.category)}</div>
-        <div class="expenditure-amount">💰 ${fmtTSH(exp.amount)}</div>
-        <div class="expenditure-date">📅 ${dateStr}</div>
+        <div class="expenditure-category"><i class="fas fa-folder-open"></i> ${escapeHtml(exp.category)}</div>
+        <div class="expenditure-amount"><i class="fas fa-money-bill-wave"></i> ${fmtTSH(exp.amount)}</div>
+        <div class="expenditure-date"><i class="fas fa-calendar-alt"></i> ${dateStr}</div>
       </div>
     `;
   }
@@ -571,8 +571,8 @@ async function viewExpenditureDetails(id) {
     
     document.getElementById('expenditure-details-content').innerHTML = `
       <div class="form-header">
-        <h3>💰 Expenditure Details</h3>
-        <button class="btn btn-outline btn-sm" onclick="closeExpenditureDetails()">✕ Close</button>
+        <h3><i class="fas fa-money-bill-wave"></i> Expenditure Details</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeExpenditureDetails()"><i class="fas fa-times"></i> Close</button>
       </div>
       <div style="background:#f5f5f5;padding:15px;border-radius:12px;">
         <p><strong>Expenditure Number:</strong> #${escapeHtml(exp.expenditure_number)}</p>
@@ -587,8 +587,8 @@ async function viewExpenditureDetails(id) {
         <p><strong>Recorded:</strong> ${exp.created_at ? new Date(exp.created_at).toLocaleString() : 'N/A'}</p>
       </div>
       <div style="display:flex;gap:10px;margin-top:20px;">
-        <button class="btn btn-gold" onclick="openEditExpenditure(${exp.id})" style="flex:1">✏️ Edit</button>
-        <button class="btn btn-danger" onclick="deleteExpenditure(${exp.id})" style="flex:1">🗑 Delete</button>
+        <button class="btn btn-gold" onclick="openEditExpenditure(${exp.id})" style="flex:1"><i class="fas fa-edit"></i> Edit</button>
+        <button class="btn btn-danger" onclick="deleteExpenditure(${exp.id})" style="flex:1"><i class="fas fa-trash-alt"></i> Delete</button>
         <button class="btn btn-outline" onclick="closeExpenditureDetails()" style="flex:1">Close</button>
       </div>
     `;
@@ -623,7 +623,7 @@ async function openEditExpenditure(id) {
     document.getElementById('form-section').classList.add('active');
     document.getElementById('empty-state').style.display = 'none';
     document.getElementById('expenditure-details-view').style.display = 'none';
-    document.querySelector('#form-section .form-header h3').textContent = '✏️ Edit Expenditure';
+    document.querySelector('#form-section .form-header h3').textContent = '<i class="fas fa-edit"></i> Edit Expenditure';
   } catch(err) {
     showToast('Failed to load for edit', 'error');
   }
@@ -724,7 +724,7 @@ async function loadExpenditureNotifications() {
         message: `${highExpenses.length} expense(s) above TSh 100,000`,
         time: new Date().toLocaleTimeString(),
         read: false,
-        icon: '⚠️'
+        icon: '<i class="fas fa-exclamation-triangle"></i>'
       });
     }
     
@@ -746,7 +746,7 @@ async function loadExpenditureNotifications() {
         message: `${recentExpenses.length} expense(s) in last 7 days: ${fmtTSH(totalRecent)}`,
         time: new Date().toLocaleTimeString(),
         read: false,
-        icon: '📅'
+        icon: '<i class="fas fa-calendar-alt"></i>'
       });
     }
     
@@ -759,7 +759,7 @@ async function loadExpenditureNotifications() {
         message: `Total: ${expenditures.length} expenses, Total amount: ${fmtTSH(totalExpenses)}`,
         time: new Date().toLocaleTimeString(),
         read: false,
-        icon: '💰'
+        icon: '<i class="fas fa-money-bill-wave"></i>'
       });
     }
     
@@ -776,7 +776,7 @@ function renderExpenditureNotifications() {
   if (!container) return;
   
   if (expenditureNotifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -788,7 +788,7 @@ function renderExpenditureNotifications() {
           <span class="notification-icon">${notif.icon}</span>
           ${escapeHtml(notif.message)}
         </div>
-        <div class="notification-time">🕐 ${notif.time}</div>
+        <div class="notification-time"><i class="fas fa-clock"></i> ${notif.time}</div>
       </div>
     `;
   }

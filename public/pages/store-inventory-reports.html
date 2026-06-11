@@ -770,7 +770,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -785,8 +785,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -826,7 +826,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -853,7 +853,7 @@
   </div>
   <div class="navbar-right">
     <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
+  <i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span>
 </button>
     <div class="user-dropdown">
       <div class="user-pill" id="userPill">
@@ -874,9 +874,9 @@
 <main class="main-content">
   <div class="filter-bar">
     <div class="filter-group"><label>Category</label><select id="filter-category"><option value="all">All Categories</option><option value="food">Food</option><option value="housekeeping">Housekeeping</option><option value="other">Other</option></select></div>
-    <button class="btn-gold" onclick="loadReport()">🔍 Apply</button>
+    <button class="btn-gold" onclick="loadReport()"><i class="fas fa-search"></i> Apply</button>
     <button class="btn-outline" onclick="clearFilters()">Clear</button>
-    <button class="btn-outline" onclick="exportToCSV()">📎 Export</button>
+    <button class="btn-outline" onclick="exportToCSV()"><i class="fas fa-file-export"></i> Export</button>
   </div>
   
   <div class="stats-row">
@@ -886,10 +886,10 @@
   </div>
   
   <div class="card">
-    <div class="card-header"><span>📦 Current Inventory</span><span id="result-count"></span></div>
+    <div class="card-header"><span><i class="fas fa-box"></i> Current Inventory</span><span id="result-count"></span></div>
     <div class="card-body">
       <div class="search-box">
-        <input type="text" id="search-input" placeholder="🔍 Search by item name or category..." oninput="filterTable()">
+        <input type="text" id="search-input" placeholder="Search by item name or category..." oninput="filterTable()">
         <button class="btn-outline" onclick="document.getElementById('search-input').value='';filterTable()">Clear</button>
       </div>
      <div class="table-scroll-container">
@@ -913,14 +913,14 @@
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
   <div class="notification-header">
-    <span>📢 Notifications</span>
+    <span><i class="fas fa-bullhorn"></i> Notifications</span>
     <div>
       <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+      <button id="close-notif-panel"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
+    <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
   </div>
 </div>
 </main>
@@ -931,8 +931,8 @@
 <div id="changePwOverlay"></div>
 <div id="changePwModal">
   <div class="change-pw-header">
-    <h3>🔐 Change Password</h3>
-    <button id="closeChangePwBtn">✕</button>
+    <h3><i class="fas fa-lock"></i> Change Password</h3>
+    <button id="closeChangePwBtn"><i class="fas fa-times"></i></button>
   </div>
   <div class="change-pw-body">
     <form id="change-password-form">
@@ -949,7 +949,7 @@
         <input type="password" id="confirm-password" class="form-control" required>
       </div>
       <hr class="divider" />
-      <button type="submit" class="btn-pw-success">✅ Update Password</button>
+      <button type="submit" class="btn-pw-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" class="btn-pw-cancel" id="cancelChangePwBtn">Cancel</button>
     </form>
   </div>
@@ -998,7 +998,7 @@ async function loadNotifications() {
           message: `${totalItems} items in inventory, total value ${fmtTSH(totalValue)}`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '📦'
+          icon: '<i class="fas fa-box"></i>'
         });
       }
       
@@ -1009,7 +1009,7 @@ async function loadNotifications() {
           message: `${lowStockItems} item(s) are low in stock (less than 5 units)`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '<i class="fas fa-exclamation-triangle"></i>'
         });
       }
     }
@@ -1022,7 +1022,7 @@ async function loadNotifications() {
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications for inventory report page`);
+    console.log(`<i class="fas fa-bullhorn"></i> Loaded ${notifications.length} notifications for inventory report page`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
     renderNotifications();
@@ -1035,7 +1035,7 @@ function renderNotifications() {
   if (!container) return;
   
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -1046,7 +1046,7 @@ function renderNotifications() {
         ${escapeHtml(notif.message)}
       </div>
       <div class="notification-time">
-        <span>🕐 ${notif.time}</span>
+        <span><i class="fas fa-clock"></i> ${notif.time}</span>
       </div>
     </div>
   `).join('');
@@ -1274,15 +1274,15 @@ document.getElementById('userAvatar').innerText = ((currentUser.fullName || curr
     
     try {
   await apiPost('/auth/change-password', {
-    userId: currentUserData.id,  // ✅ Use currentUserData (defined above)
+    userId: currentUserData.id,  // <i class="fas fa-check-circle"></i> Use currentUserData (defined above)
     oldPassword: currentPassword,
     newPassword: newPassword
   });
   
-  showToast('Password changed successfully! Please login again.', '✅');
+  showToast('Password changed successfully! Please login again.', '<i class="fas fa-check-circle"></i>');
   setTimeout(() => { logout(); }, 1500);
 } catch (err) {
-  showToast('Failed to change password: ' + err.message, '❌');
+  showToast('Failed to change password: ' + err.message, '<i class="fas fa-times-circle"></i>');
 }
 });
   

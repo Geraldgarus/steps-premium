@@ -23,7 +23,7 @@ async function applyReportFilter() {
     await loadApartments();
     renderReportData(summary, allRes, from, to);
   } catch (err) {
-    showToast('Failed to load reports: ' + err.message, '❌');
+    showToast('Failed to load reports: ' + err.message, '<i class="fas fa-times-circle"></i>');
   }
 }
 
@@ -131,7 +131,7 @@ async function generatePrintReport() {
       .footer{margin-top:40px;border-top:1px solid #e5e7eb;padding-top:16px;font-size:11px;color:#9ca3af;display:flex;justify-content:space-between}
       @media print{body{padding:20px}}
     </style></head><body>
-    <div class="header"><div class="logo-area"><h1>🏨 Steps Premium Suite</h1><p>Property Management System · Dar es Salaam, Tanzania</p></div><div class="report-meta"><div class="period">Period: ${periodLabel}</div><div class="generated">Generated: ${new Date().toLocaleString('en-GB')}</div></div></div>
+    <div class="header"><div class="logo-area"><h1><i class="fas fa-hotel"></i> Steps Premium Suite</h1><p>Property Management System · Dar es Salaam, Tanzania</p></div><div class="report-meta"><div class="period">Period: ${periodLabel}</div><div class="generated">Generated: ${new Date().toLocaleString('en-GB')}</div></div></div>
     <div class="summary-grid"><div class="summary-box"><div class="label">Total Reservations</div><div class="value">${s.totalReservations}</div></div><div class="summary-box"><div class="label">Total Revenue</div><div class="value" style="font-size:15px">${fmtTSH(s.totalRevenue)}</div></div><div class="summary-box"><div class="label">Total Nights Sold</div><div class="value">${s.totalNights}</div></div><div class="summary-box"><div class="label">Avg. Stay</div><div class="value">${s.avgStayNights ? s.avgStayNights.toFixed(1) : '—'} nts</div></div></div>
     <h2>Revenue by Apartment</h2><table><thead><tr><th>Apartment</th><th>Bookings</th><th>Nights</th><th>Revenue</th><th>Rate/Night</th></tr></thead><tbody>${aptRows}</tbody></table>
     <h2>Reservation Detail (${filtered.length} records)</h2><table><thead><tr><th>Guest</th><th>Apartment</th><th>Check-in</th><th>Check-out</th><th>Nights</th><th>Guests</th><th>Rate</th><th>Total</th></tr></thead><tbody>${resRows || '<tr><td colspan="8" style="text-align:center;color:#9ca3af;padding:20px">No reservations in this period</td></tr>'}</tbody></table>
@@ -140,7 +140,7 @@ async function generatePrintReport() {
     </body></html>`);
     win.document.close();
   } catch (err) {
-    showToast('Report generation failed: ' + err.message, '❌');
+    showToast('Report generation failed: ' + err.message, '<i class="fas fa-times-circle"></i>');
   }
 }
 
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     APARTMENTS = await apiGet('/apartments');
   } catch (err) {
-    showToast('⚠️ Cannot reach API server', '❌');
+    showToast('<i class="fas fa-exclamation-triangle"></i> Cannot reach API server', '<i class="fas fa-times-circle"></i>');
   }
   loadAndRenderReports();
 });

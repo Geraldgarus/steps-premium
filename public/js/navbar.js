@@ -21,8 +21,8 @@ function createChangePasswordModal() {
     <div class="reservation-modal-overlay" id="change-password-modal-overlay" onclick="closeChangePasswordModal()"></div>
     <div class="reservation-modal" id="change-password-modal">
       <div class="reservation-modal-header">
-        <h3>🔐 Change Password</h3>
-        <button class="reservation-modal-close" onclick="closeChangePasswordModal()">✕</button>
+        <h3><i class="fas fa-lock"></i> Change Password</h3>
+        <button class="reservation-modal-close" onclick="closeChangePasswordModal()"><i class="fas fa-times"></i></button>
       </div>
       <div class="reservation-modal-body">
         <form id="change-password-form">
@@ -39,7 +39,7 @@ function createChangePasswordModal() {
             <input type="password" id="confirm-password" class="form-control" required>
           </div>
           <hr class="divider" />
-          <button type="submit" class="btn btn-success">✅ Update Password</button>
+          <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Update Password</button>
           <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeChangePasswordModal()">Cancel</button>
         </form>
       </div>
@@ -55,11 +55,11 @@ function createChangePasswordModal() {
     const user = getCurrentUser();
     
     if (newPassword !== confirmPassword) {
-      showToast('New passwords do not match', '⚠️');
+      showToast('New passwords do not match', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     if (newPassword.length < 6) {
-      showToast('Password must be at least 6 characters', '⚠️');
+      showToast('Password must be at least 6 characters', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     
@@ -76,10 +76,10 @@ function createChangePasswordModal() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
       
-      showToast('Password changed successfully! Please login again.', '✅');
+      showToast('Password changed successfully! Please login again.', '<i class="fas fa-check-circle"></i>');
       setTimeout(() => { logout(); }, 1500);
     } catch (err) {
-      showToast('Failed to change password: ' + err.message, '❌');
+      showToast('Failed to change password: ' + err.message, '<i class="fas fa-times-circle"></i>');
     }
   });
 }
@@ -136,7 +136,7 @@ async function loadNavbar() {
     console.error('Could not load navbar from any path');
     container.innerHTML = `
       <div style="background:#dc2626; color:white; padding:10px; text-align:center;">
-        ⚠️ Navbar failed to load. Please check console for details.
+        <i class="fas fa-exclamation-triangle"></i> Navbar failed to load. Please check console for details.
       </div>
     `;
     return;

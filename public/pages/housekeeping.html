@@ -653,7 +653,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -668,8 +668,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item active"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item active"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -709,7 +709,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -745,7 +745,7 @@
     </a>
     <button class="" onclick="alert('Add reservation')"></button>
     <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
+  <i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span>
 </button>
     
     <div class="user-dropdown">
@@ -771,7 +771,7 @@
   <div class="card">
     <div class="card-header">
       <span class="card-title">Room Status Overview</span>
-      <button class="btn btn-outline" onclick="refreshStatus()">🔄 Refresh</button>
+      <button class="btn btn-outline" onclick="refreshStatus()"><i class="fas fa-sync-alt"></i> Refresh</button>
     </div>
     
   <div class="stats-summary" id="stats-summary">
@@ -790,20 +790,20 @@
     </div>
     
     <div id="hk-status-grid" class="rooms-grid">
-      <div class="loading-overlay">📋 Loading room status...</div>
+      <div class="loading-overlay"><i class="fas fa-clipboard-list"></i> Loading room status...</div>
     </div>
   </div>
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
   <div class="notification-header">
-    <span>📢 Notifications</span>
+    <span><i class="fas fa-bullhorn"></i> Notifications</span>
     <div>
       <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+      <button id="close-notif-panel"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
+    <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
   </div>
 </div>
 </main>
@@ -844,7 +844,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '🚪'
+        icon: '<i class="fas fa-door-open"></i>'
       });
     });
     
@@ -864,7 +864,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '📅'
+        icon: '<i class="fas fa-calendar-alt"></i>'
       });
     });
     
@@ -879,7 +879,7 @@ async function loadNotifications() {
           message: `${item.name} is low in stock (${item.quantity} left)`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '<i class="fas fa-exclamation-triangle"></i>'
         });
       });
     } catch(e) {
@@ -894,7 +894,7 @@ async function loadNotifications() {
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications`);
+    console.log(`<i class="fas fa-bullhorn"></i> Loaded ${notifications.length} notifications`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
   }
@@ -907,7 +907,7 @@ function renderNotifications() {
   const unreadCount = notifications.filter(n => !n.read).length;
   
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -918,7 +918,7 @@ function renderNotifications() {
         ${escapeHtml(notif.message)}
       </div>
       <div class="notification-time">
-        <span>🕐 ${notif.time}</span>
+        <span><i class="fas fa-clock"></i> ${notif.time}</span>
       </div>
     </div>
   `).join('');
@@ -1090,8 +1090,8 @@ document.getElementById('userAvatar').innerText = userInitial.toUpperCase();;
         <div class="reservation-modal-overlay" id="change-password-modal-overlay" onclick="closeChangePasswordModal()"></div>
         <div class="reservation-modal" id="change-password-modal">
           <div class="reservation-modal-header">
-            <h3>🔐 Change Password</h3>
-            <button class="reservation-modal-close" onclick="closeChangePasswordModal()">✕</button>
+            <h3><i class="fas fa-lock"></i> Change Password</h3>
+            <button class="reservation-modal-close" onclick="closeChangePasswordModal()"><i class="fas fa-times"></i></button>
           </div>
           <div class="reservation-modal-body">
             <form id="change-password-form">
@@ -1099,7 +1099,7 @@ document.getElementById('userAvatar').innerText = userInitial.toUpperCase();;
               <div class="form-group"><label>New Password (min 6)</label><input type="password" id="new-password" class="form-control" required></div>
               <div class="form-group"><label>Confirm Password</label><input type="password" id="confirm-password" class="form-control" required></div>
               <hr class="divider" />
-              <button type="submit" class="btn btn-success">✅ Update Password</button>
+              <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Update Password</button>
               <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeChangePasswordModal()">Cancel</button>
             </form>
           </div>
@@ -1158,7 +1158,7 @@ document.getElementById('userAvatar').innerText = userInitial.toUpperCase();;
   
  async function loadHousekeepingStatus() {
   const grid = document.getElementById('hk-status-grid');
-  grid.innerHTML = '<div class="loading-overlay">⏳ Loading room status...</div>';
+  grid.innerHTML = '<div class="loading-overlay"><i class="fas fa-spinner fa-spin"></i> Loading room status...</div>';
   
   try {
     // Get token from session storage
@@ -1190,7 +1190,7 @@ document.getElementById('userAvatar').innerText = userInitial.toUpperCase();;
     renderStatusGrid();
   } catch (err) {
     console.error('Load error:', err);
-    grid.innerHTML = '<div class="loading-overlay">❌ Failed to load room status. Please refresh.</div>';
+    grid.innerHTML = '<div class="loading-overlay"><i class="fas fa-times-circle"></i> Failed to load room status. Please refresh.</div>';
     showToast('Failed to load status: ' + err.message, 'error');
   }
 }
@@ -1224,7 +1224,7 @@ document.getElementById('userAvatar').innerText = userInitial.toUpperCase();;
     }
     
     if (filtered.length === 0) {
-      grid.innerHTML = '<div class="loading-overlay">📭 No rooms match the selected filter.</div>';
+      grid.innerHTML = '<div class="loading-overlay"><i class="fas fa-inbox"></i> No rooms match the selected filter.</div>';
       return;
     }
     
@@ -1261,21 +1261,21 @@ document.getElementById('userAvatar').innerText = userInitial.toUpperCase();;
       } else if (isOccupied) {
         cardClass = 'occupied';
         statusClass = 'occupied';
-        statusIcon = '🔵';
+        statusIcon = '<i class="fas fa-circle" style="color:#3b82f6"></i>';
         statusText = 'Occupied';
         showClean = false;
         showDirty = true;
       } else if (currentStatus === 'dirty') {
         cardClass = 'dirty';
         statusClass = 'dirty';
-        statusIcon = '🔴';
+        statusIcon = '<i class="fas fa-circle" style="color:#ef4444"></i>';
         statusText = 'Needs Cleaning';
         showClean = true;
         showDirty = false;
       } else {
         cardClass = 'clean';
         statusClass = 'clean';
-        statusIcon = '✅';
+        statusIcon = '<i class="fas fa-check-circle"></i>';
         statusText = 'Clean & Ready';
         showClean = false;
         showDirty = true;
@@ -1284,7 +1284,7 @@ document.getElementById('userAvatar').innerText = userInitial.toUpperCase();;
       html += `
         <div class="room-card ${cardClass}" data-apt-id="${apt.apartment_id}">
           <div class="room-header">
-            <span class="room-icon">${apt.emoji || '🏠'}</span>
+            <span class="room-icon">${apt.emoji || '<i class="fas fa-home"></i>'}</span>
             <span class="room-status ${statusClass}">${statusIcon} ${statusText}</span>
           </div>
           <div class="room-body">
@@ -1353,7 +1353,7 @@ async function markAsClean(apartmentId, aptName) {
     
     if (!response.ok) throw new Error('Update failed');
     
-    showToast(`✅ ${aptName} marked as clean!`, 'success');
+    showToast(`<i class="fas fa-check-circle"></i> ${aptName} marked as clean!`, 'success');
     setTimeout(() => loadHousekeepingStatus(), 500);
   } catch (err) {
     showToast('Failed to update status: ' + err.message, 'error');
@@ -1382,7 +1382,7 @@ async function markAsDirty(apartmentId, aptName) {
     
     if (!response.ok) throw new Error('Update failed');
     
-    showToast(`🔴 ${aptName} marked as dirty!`, 'success');
+    showToast(`<i class="fas fa-circle" style="color:#ef4444"></i> ${aptName} marked as dirty!`, 'success');
     setTimeout(() => loadHousekeepingStatus(), 500);
   } catch (err) {
     showToast('Failed to update status: ' + err.message, 'error');

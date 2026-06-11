@@ -541,7 +541,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -556,8 +556,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -597,7 +597,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -628,7 +628,7 @@
   <div class="navbar-right">
     <button class="btn-add-reservation" onclick="openAddUserModal()">＋ Add New User</button>
    <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
+  <i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span>
 </button>
     
     <div class="user-dropdown" id="userDropdown">
@@ -659,9 +659,9 @@
     <!-- Filter Bar -->
     <div class="filter-bar">
       <button class="filter-btn active" data-filter="all">All Users</button>
-      <button class="filter-btn" data-filter="locked">🔒 Locked Users</button>
-      <button class="filter-btn" data-filter="active">✅ Active</button>
-      <button class="filter-btn" data-filter="warning">⚠️ Has Failed Attempts</button>
+      <button class="filter-btn" data-filter="locked"><i class="fas fa-lock"></i> Locked Users</button>
+      <button class="filter-btn" data-filter="active"><i class="fas fa-check-circle"></i> Active</button>
+      <button class="filter-btn" data-filter="warning"><i class="fas fa-exclamation-triangle"></i> Has Failed Attempts</button>
     </div>
     
     <div style="overflow-x: auto;">
@@ -685,14 +685,14 @@
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
   <div class="notification-header">
-    <span>📢 Notifications</span>
+    <span><i class="fas fa-bullhorn"></i> Notifications</span>
     <div>
       <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+      <button id="close-notif-panel"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
+    <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
   </div>
 </div>
 </main>
@@ -701,8 +701,8 @@
 <div class="reservation-modal-overlay" id="user-modal-overlay" onclick="closeUserModal()"></div>
 <div class="reservation-modal" id="user-modal">
   <div class="reservation-modal-header">
-    <h3 id="user-modal-title">➕ Add New User</h3>
-    <button class="reservation-modal-close" onclick="closeUserModal()">✕</button>
+    <h3 id="user-modal-title"><i class="fas fa-plus"></i> Add New User</h3>
+    <button class="reservation-modal-close" onclick="closeUserModal()"><i class="fas fa-times"></i></button>
   </div>
   <div class="reservation-modal-body">
     <form id="user-form">
@@ -733,7 +733,7 @@
         </select>
       </div>
       <hr class="divider" />
-      <button type="submit" class="btn btn-success" id="user-submit-btn">✅ Save User</button>
+      <button type="submit" class="btn btn-success" id="user-submit-btn"><i class="fas fa-check-circle"></i> Save User</button>
       <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeUserModal()">Cancel</button>
     </form>
   </div>
@@ -742,14 +742,14 @@
 <!-- Change Password Modal -->
 <div class="reservation-modal-overlay" id="change-password-modal-overlay" onclick="closeChangePasswordModal()"></div>
 <div class="reservation-modal" id="change-password-modal">
-  <div class="reservation-modal-header"><h3>🔐 Change Password</h3><button class="reservation-modal-close" onclick="closeChangePasswordModal()">✕</button></div>
+  <div class="reservation-modal-header"><h3><i class="fas fa-lock"></i> Change Password</h3><button class="reservation-modal-close" onclick="closeChangePasswordModal()"><i class="fas fa-times"></i></button></div>
   <div class="reservation-modal-body">
     <form id="change-password-form">
       <div class="form-group"><label>Current Password</label><input type="password" id="current-password" class="form-control" required></div>
       <div class="form-group"><label>New Password (min 6)</label><input type="password" id="new-password" class="form-control" required></div>
       <div class="form-group"><label>Confirm Password</label><input type="password" id="confirm-password" class="form-control" required></div>
       <hr class="divider" />
-      <button type="submit" class="btn btn-success">✅ Update Password</button>
+      <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeChangePasswordModal()">Cancel</button>
     </form>
   </div>
@@ -788,7 +788,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '🚪'
+        icon: '<i class="fas fa-door-open"></i>'
       });
     });
     
@@ -808,7 +808,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '📅'
+        icon: '<i class="fas fa-calendar-alt"></i>'
       });
     });
     
@@ -823,7 +823,7 @@ async function loadNotifications() {
           message: `${item.name} is low in stock (${item.quantity} left)`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '<i class="fas fa-exclamation-triangle"></i>'
         });
       });
     } catch(e) {
@@ -838,7 +838,7 @@ async function loadNotifications() {
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications`);
+    console.log(`<i class="fas fa-bullhorn"></i> Loaded ${notifications.length} notifications`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
   }
@@ -851,7 +851,7 @@ function renderNotifications() {
   const unreadCount = notifications.filter(n => !n.read).length;
   
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -862,7 +862,7 @@ function renderNotifications() {
         ${escapeHtml(notif.message)}
       </div>
       <div class="notification-time">
-        <span>🕐 ${notif.time}</span>
+        <span><i class="fas fa-clock"></i> ${notif.time}</span>
       </div>
     </div>
   `).join('');
@@ -1044,11 +1044,11 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
     const confirmPassword = document.getElementById('confirm-password').value;
     
     if (newPassword !== confirmPassword) {
-      showToast('New passwords do not match', '⚠️');
+      showToast('New passwords do not match', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     if (newPassword.length < 6) {
-      showToast('Password must be at least 6 characters', '⚠️');
+      showToast('Password must be at least 6 characters', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     
@@ -1058,10 +1058,10 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
         oldPassword: currentPassword,
         newPassword: newPassword
       });
-      showToast('Password changed successfully! Please login again.', '✅');
+      showToast('Password changed successfully! Please login again.', '<i class="fas fa-check-circle"></i>');
       setTimeout(() => { logout(); }, 1500);
     } catch (err) {
-      showToast('Failed to change password: ' + err.message, '❌');
+      showToast('Failed to change password: ' + err.message, '<i class="fas fa-times-circle"></i>');
     }
   });
   
@@ -1075,7 +1075,7 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
       users = data;
       applyFilter();
     } catch (err) {
-      showToast('Failed to load users: ' + err.message, '❌');
+      showToast('Failed to load users: ' + err.message, '<i class="fas fa-times-circle"></i>');
     }
   }
   
@@ -1103,7 +1103,7 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
     const tbody = document.getElementById('users-tbody');
     if (!tbody) return;
     if (filteredUsers.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="empty-state">👥 No users found.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="empty-state"><i class="fas fa-users"></i> No users found.</td></tr>';
       return;
     }
     
@@ -1118,11 +1118,11 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
       
       let statusHtml = '';
       if (isLocked) {
-        statusHtml = `<span class="status-locked">🔒 Locked (${minutesLeft} min left)</span>`;
+        statusHtml = `<span class="status-locked"><i class="fas fa-lock"></i> Locked (${minutesLeft} min left)</span>`;
       } else if (user.failed_attempts > 0) {
-        statusHtml = `<span class="status-warning">⚠️ ${user.failed_attempts}/5 attempts</span>`;
+        statusHtml = `<span class="status-warning"><i class="fas fa-exclamation-triangle"></i> ${user.failed_attempts}/5 attempts</span>`;
       } else {
-        statusHtml = `<span class="status-active">✅ Active</span>`;
+        statusHtml = `<span class="status-active"><i class="fas fa-check-circle"></i> Active</span>`;
       }
       
       return `
@@ -1135,9 +1135,9 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
           <td>${user.created_at ? new Date(user.created_at).toLocaleDateString() : '—'}</td>
           <td>${statusHtml}</td>
           <td>
-            ${isLocked ? `<button class="btn-sm btn-success" onclick="unlockUser(${user.id}, '${escapeHtml(user.username)}')">🔓 Unlock</button>` : ''}
-            <button class="btn-sm btn-warning" onclick="openEditUserModal(${user.id})">✏️ Edit</button>
-            <button class="btn-sm btn-danger" onclick="deleteUser(${user.id}, '${escapeHtml(user.username)}')">🗑 Delete</button>
+            ${isLocked ? `<button class="btn-sm btn-success" onclick="unlockUser(${user.id}, '${escapeHtml(user.username)}')"><i class="fas fa-unlock"></i> Unlock</button>` : ''}
+            <button class="btn-sm btn-warning" onclick="openEditUserModal(${user.id})"><i class="fas fa-edit"></i> Edit</button>
+            <button class="btn-sm btn-danger" onclick="deleteUser(${user.id}, '${escapeHtml(user.username)}')"><i class="fas fa-trash-alt"></i> Delete</button>
           </td>
         </tr>
       `;
@@ -1172,10 +1172,10 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
     if (!confirm(`Delete user "${username}"? This action cannot be undone.`)) return;
     try {
       await apiDelete(`/users/${id}`);
-      showToast(`User "${username}" deleted`, '🗑️');
+      showToast(`User "${username}" deleted`, '<i class="fas fa-trash-alt"></i>');
       await loadUsers();
     } catch (err) {
-      showToast('Delete failed: ' + err.message, '❌');
+      showToast('Delete failed: ' + err.message, '<i class="fas fa-times-circle"></i>');
     }
   }
   
@@ -1191,7 +1191,7 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
   
   // Add/Edit Modal functions
   function openAddUserModal() {
-    document.getElementById('user-modal-title').innerText = '➕ Add New User';
+    document.getElementById('user-modal-title').innerText = '<i class="fas fa-plus"></i> Add New User';
     document.getElementById('user-id').value = '';
     document.getElementById('user-username').value = '';
     document.getElementById('user-fullname').value = '';
@@ -1209,7 +1209,7 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
   function openEditUserModal(id) {
     const user = users.find(u => u.id === id);
     if (!user) return;
-    document.getElementById('user-modal-title').innerText = '✏️ Edit User';
+    document.getElementById('user-modal-title').innerText = '<i class="fas fa-edit"></i> Edit User';
     document.getElementById('user-id').value = user.id;
     document.getElementById('user-username').value = user.username;
     document.getElementById('user-fullname').value = user.full_name || '';
@@ -1241,7 +1241,7 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
     const role = document.getElementById('user-role').value;
     
     if (!username || !email || !role) {
-      showToast('Please fill all required fields', '⚠️');
+      showToast('Please fill all required fields', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     
@@ -1254,30 +1254,30 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
         const payload = { username, email, role, full_name };
         if (password && password.length >= 6) payload.password = password;
         else if (password && password.length < 6) {
-          showToast('Password must be at least 6 characters', '⚠️');
+          showToast('Password must be at least 6 characters', '<i class="fas fa-exclamation-triangle"></i>');
           submitBtn.disabled = false;
-          submitBtn.textContent = '✅ Save User';
+          submitBtn.textContent = '<i class="fas fa-check-circle"></i> Save User';
           return;
         }
         await apiPut(`/users/${id}`, payload);
-        showToast('User updated successfully!', '📝');
+        showToast('User updated successfully!', '<i class="fas fa-pen"></i>');
       } else {
         if (!password || password.length < 6) {
-          showToast('Password must be at least 6 characters', '⚠️');
+          showToast('Password must be at least 6 characters', '<i class="fas fa-exclamation-triangle"></i>');
           submitBtn.disabled = false;
-          submitBtn.textContent = '✅ Save User';
+          submitBtn.textContent = '<i class="fas fa-check-circle"></i> Save User';
           return;
         }
         await apiPost('/users', { username, email, password, role, full_name });
-        showToast('User created successfully!', '✅');
+        showToast('User created successfully!', '<i class="fas fa-check-circle"></i>');
       }
       closeUserModal();
       await loadUsers();
     } catch (err) {
-      showToast('Failed to save user: ' + err.message, '❌');
+      showToast('Failed to save user: ' + err.message, '<i class="fas fa-times-circle"></i>');
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = '✅ Save User';
+      submitBtn.textContent = '<i class="fas fa-check-circle"></i> Save User';
     }
   });
   

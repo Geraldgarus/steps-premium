@@ -82,7 +82,7 @@ function getApt(id) {
   return APARTMENTS.find(a => a.id === id); 
 }
 
-function showToast(msg, icon = '✅') {
+function showToast(msg, icon = '<i class="fas fa-check-circle"></i>') {
   let tc = document.getElementById('toast-container');
   if (!tc) {
     tc = document.createElement('div');
@@ -101,6 +101,6 @@ function setLoading(containerId, isLoading) {
   const el = document.getElementById(containerId);
   if (!el) return;
   if (isLoading) {
-    el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray-300)">⏳ Loading…</div>';
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray-300)"><i class="fas fa-spinner fa-spin"></i> Loading…</div>';
   }
 }

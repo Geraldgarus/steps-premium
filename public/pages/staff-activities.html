@@ -198,7 +198,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -213,8 +213,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -254,7 +254,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -280,7 +280,7 @@
     <div><div class="page-title">Staff Activities</div><div class="page-subtitle">Track daily tasks and activities</div></div>
   </div>
   <div class="navbar-right">
-    <button class="notif-btn" id="notif-btn">🔔<span class="badge" id="notif-badge">0</span></button>
+    <button class="notif-btn" id="notif-btn"><i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span></button>
     <div class="user-dropdown">
       <div class="user-pill" id="userPill">
         <div class="user-avatar" id="userAvatar">U</div>
@@ -300,7 +300,7 @@
   <div class="activities-container">
     <div class="activities-left">
       <div class="filter-section">
-        <h4>🔍 Filter Activities</h4>
+        <h4><i class="fas fa-search"></i> Filter Activities</h4>
         <div class="filter-row">
           <input type="date" id="filter-from" placeholder="From Date">
           <input type="date" id="filter-to" placeholder="To Date">
@@ -315,7 +315,7 @@
       </div>
       <div style="margin-bottom: 15px; display: flex; justify-content: space-between;">
         <strong>Staff Activities</strong>
-        <button class="btn btn-outline btn-sm" onclick="loadActivities()">🔄 Refresh</button>
+        <button class="btn btn-outline btn-sm" onclick="loadActivities()"><i class="fas fa-sync-alt"></i> Refresh</button>
       </div>
       <div id="activities-list" class="activities-list">
         <div style="text-align: center; padding: 20px;">Loading activities...</div>
@@ -325,39 +325,39 @@
     <div class="activities-right">
       <div id="form-section" class="form-section">
         <div class="form-header">
-          <h3>➕ New Activity</h3>
+          <h3><i class="fas fa-plus"></i> New Activity</h3>
           <button class="btn btn-outline btn-sm" onclick="cancelForm()">Cancel</button>
         </div>
         <form id="activity-form">
           <div class="form-group">
-            <label>📅 Date</label>
+            <label><i class="fas fa-calendar-alt"></i> Date</label>
             <input type="date" id="activity-date" class="form-control" required>
           </div>
           
           <div class="tasks-container">
             <div class="tasks-header">
-              <strong>✅ Tasks Done Today</strong>
+              <strong><i class="fas fa-check-circle"></i> Tasks Done Today</strong>
               <button type="button" class="btn-add-task" onclick="addTaskField()">+ Add Task</button>
             </div>
             <div id="tasks-list-container"></div>
             <div class="tasks-summary" id="tasks-summary">
-              <span class="summary-badge total">📊 Tasks: <span id="total-tasks">0</span></span>
-              <span class="summary-badge completed">✅ Completed: <span id="completed-tasks">0</span></span>
-              <span class="summary-badge pending">⏳ Pending: <span id="pending-tasks">0</span></span>
+              <span class="summary-badge total"><i class="fas fa-chart-bar"></i> Tasks: <span id="total-tasks">0</span></span>
+              <span class="summary-badge completed"><i class="fas fa-check-circle"></i> Completed: <span id="completed-tasks">0</span></span>
+              <span class="summary-badge pending"><i class="fas fa-spinner fa-spin"></i> Pending: <span id="pending-tasks">0</span></span>
             </div>
           </div>
           
           <div class="form-group">
-            <label>👤 Prepared By</label>
+            <label><i class="fas fa-user"></i> Prepared By</label>
             <input type="text" id="prepared-by" class="form-control" placeholder="Name of person who did the tasks" required>
           </div>
           <div class="form-group">
-            <label>📝 Remarks / Notes</label>
+            <label><i class="fas fa-pen"></i> Remarks / Notes</label>
             <textarea id="remarks" class="form-control" rows="2" placeholder="Additional notes..."></textarea>
           </div>
           <hr class="divider">
           <div style="display: flex; gap: 10px;">
-            <button type="submit" class="btn btn-success" style="flex:1">💾 Save Activity</button>
+            <button type="submit" class="btn btn-success" style="flex:1"><i class="fas fa-save"></i> Save Activity</button>
             <button type="button" class="btn btn-outline" onclick="cancelForm()" style="flex:1">Cancel</button>
           </div>
         </form>
@@ -365,10 +365,10 @@
       
       <div id="empty-state">
         <div style="text-align: center; padding: 60px 20px;">
-          <div style="font-size: 64px;">📋</div>
+          <div style="font-size: 64px;"><i class="fas fa-clipboard-list"></i></div>
           <h3>No Activity Selected</h3>
           <p>Click "New Activity" to log today's tasks</p>
-          <button class="btn btn-gold" onclick="showForm()">➕ New Activity</button>
+          <button class="btn btn-gold" onclick="showForm()"><i class="fas fa-plus"></i> New Activity</button>
         </div>
       </div>
       
@@ -380,14 +380,14 @@
   
   <div class="notification-panel" id="notification-panel">
     <div class="notification-header">
-      <span>📢 Notifications</span>
+      <span><i class="fas fa-bullhorn"></i> Notifications</span>
       <div>
         <button id="mark-all-read-btn">Mark all read</button>
-        <button id="close-notif-panel">✕</button>
+        <button id="close-notif-panel"><i class="fas fa-times"></i></button>
       </div>
     </div>
     <div class="notification-list" id="notification-list">
-      <div class="empty-notifications">📭 No new notifications</div>
+      <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
     </div>
   </div>
 </main>
@@ -395,13 +395,13 @@
 <div class="toast-container" id="toast-container"></div>
 <div id="changePwOverlay"></div>
 <div id="changePwModal">
-  <div class="change-pw-header"><h3>🔐 Change Password</h3><button id="closeChangePwBtn">✕</button></div>
+  <div class="change-pw-header"><h3><i class="fas fa-lock"></i> Change Password</h3><button id="closeChangePwBtn"><i class="fas fa-times"></i></button></div>
   <div class="change-pw-body">
     <form id="change-password-form">
       <div class="form-group"><label>Current Password</label><input type="password" id="current-password" class="form-control" required></div>
       <div class="form-group"><label>New Password (min 6 characters)</label><input type="password" id="new-password" class="form-control" required></div>
       <div class="form-group"><label>Confirm New Password</label><input type="password" id="confirm-password" class="form-control" required></div>
-      <hr class="divider"><button type="submit" class="btn-pw-success">✅ Update Password</button>
+      <hr class="divider"><button type="submit" class="btn-pw-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" id="cancelChangePwBtn" style="background:transparent;border:1px solid #e2e8f0;padding:12px;border-radius:40px;width:100%;margin-top:10px;">Cancel</button>
     </form>
   </div>
@@ -471,7 +471,7 @@ function renderTasksList() {
         <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTaskCompleted(${task.id})">
         <input type="text" placeholder="Enter task description..." value="${escapeHtml(task.description)}" 
                onchange="updateTaskDescription(${task.id}, this.value)">
-        <button type="button" onclick="removeTask(${task.id})">🗑</button>
+        <button type="button" onclick="removeTask(${task.id})"><i class="fas fa-trash-alt"></i></button>
       </div>
     `;
   }
@@ -479,7 +479,7 @@ function renderTasksList() {
 }
 
 function getTasksDescription() {
-  return tasksList.map(t => `${t.completed ? '✅' : '⏳'} ${t.description}`).join('\n');
+  return tasksList.map(t => `${t.completed ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-spinner fa-spin"></i>'} ${t.description}`).join('\n');
 }
 
 function showForm() {
@@ -493,7 +493,7 @@ function showForm() {
   document.getElementById('activity-date').value = new Date().toISOString().split('T')[0];
   document.getElementById('prepared-by').value = '';
   document.getElementById('remarks').value = '';
-  document.querySelector('#form-section .form-header h3').textContent = '➕ New Activity';
+  document.querySelector('#form-section .form-header h3').textContent = '<i class="fas fa-plus"></i> New Activity';
 }
 
 function cancelForm() {
@@ -576,7 +576,7 @@ function renderActivitiesList() {
   let container = document.getElementById('activities-list');
   if (!container) return;
   if (activities.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:20px;">📭 No activities found</div>';
+    container.innerHTML = '<div style="text-align:center;padding:20px;"><i class="fas fa-inbox"></i> No activities found</div>';
     return;
   }
   let html = '';
@@ -587,10 +587,10 @@ function renderActivitiesList() {
     
     html += `
       <div class="activity-item" onclick="viewActivityDetails(${activity.id})">
-        <div class="activity-date">📅 ${dateStr}</div>
+        <div class="activity-date"><i class="fas fa-calendar-alt"></i> ${dateStr}</div>
         <div class="activity-meta">
-          <span>👤 ${escapeHtml(preparedBy)}</span>
-          <span>📋 ${taskCount} task(s)</span>
+          <span><i class="fas fa-user"></i> ${escapeHtml(preparedBy)}</span>
+          <span><i class="fas fa-clipboard-list"></i> ${taskCount} task(s)</span>
         </div>
       </div>
     `;
@@ -604,10 +604,10 @@ async function viewActivityDetails(id) {
     currentViewActivity = activity;
     let dateStr = activity.activity_date ? new Date(activity.activity_date).toLocaleDateString() : 'N/A';
     
-    let tasksHtml = '<div class="tasks-container" style="margin-top:10px;"><strong>✅ Tasks Done:</strong><ul style="margin-top:8px;margin-left:20px;">';
+    let tasksHtml = '<div class="tasks-container" style="margin-top:10px;"><strong><i class="fas fa-check-circle"></i> Tasks Done:</strong><ul style="margin-top:8px;margin-left:20px;">';
     if (activity.tasks && activity.tasks.length > 0) {
       for (let task of activity.tasks) {
-        const statusIcon = task.completed ? '✅' : '⏳';
+        const statusIcon = task.completed ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-spinner fa-spin"></i>';
         tasksHtml += `<li style="margin-bottom:5px;">${statusIcon} ${escapeHtml(task.description)}</li>`;
       }
     } else if (activity.tasks_description) {
@@ -619,8 +619,8 @@ async function viewActivityDetails(id) {
     
     document.getElementById('activity-details-content').innerHTML = `
       <div class="form-header">
-        <h3>📋 Activity Details</h3>
-        <button class="btn btn-outline btn-sm" onclick="closeActivityDetails()">✕ Close</button>
+        <h3><i class="fas fa-clipboard-list"></i> Activity Details</h3>
+        <button class="btn btn-outline btn-sm" onclick="closeActivityDetails()"><i class="fas fa-times"></i> Close</button>
       </div>
       <div style="background:#f5f5f5;padding:15px;border-radius:12px;">
         <p><strong>Date:</strong> ${dateStr}</p>
@@ -630,8 +630,8 @@ async function viewActivityDetails(id) {
         <p><strong>Recorded:</strong> ${activity.created_at ? new Date(activity.created_at).toLocaleString() : 'N/A'}</p>
       </div>
       <div style="display:flex;gap:10px;margin-top:20px;">
-        <button class="btn btn-gold" onclick="openEditActivity(${activity.id})" style="flex:1">✏️ Edit</button>
-        <button class="btn btn-danger" onclick="deleteActivity(${activity.id})" style="flex:1">🗑 Delete</button>
+        <button class="btn btn-gold" onclick="openEditActivity(${activity.id})" style="flex:1"><i class="fas fa-edit"></i> Edit</button>
+        <button class="btn btn-danger" onclick="deleteActivity(${activity.id})" style="flex:1"><i class="fas fa-trash-alt"></i> Delete</button>
         <button class="btn btn-outline" onclick="closeActivityDetails()" style="flex:1">Close</button>
       </div>
     `;
@@ -679,7 +679,7 @@ async function openEditActivity(id) {
     document.getElementById('form-section').classList.add('active');
     document.getElementById('empty-state').style.display = 'none';
     document.getElementById('activity-details-view').style.display = 'none';
-    document.querySelector('#form-section .form-header h3').textContent = '✏️ Edit Activity';
+    document.querySelector('#form-section .form-header h3').textContent = '<i class="fas fa-edit"></i> Edit Activity';
   } catch(err) {
     showToast('Failed to load for edit', 'error');
   }
@@ -771,7 +771,7 @@ async function loadStaffNotifications() {
         message: `${todayActivities.length} activity(s) recorded today`,
         time: new Date().toLocaleTimeString(),
         read: false,
-        icon: '📋'
+        icon: '<i class="fas fa-clipboard-list"></i>'
       });
     }
     
@@ -790,7 +790,7 @@ async function loadStaffNotifications() {
         message: `${pendingTasksCount} task(s) pending completion`,
         time: new Date().toLocaleTimeString(),
         read: false,
-        icon: '⏳'
+        icon: '<i class="fas fa-spinner fa-spin"></i>'
       });
     }
     
@@ -810,7 +810,7 @@ async function loadStaffNotifications() {
         message: `Total: ${activities.length} activities, ${totalTasks} tasks`,
         time: new Date().toLocaleTimeString(),
         read: false,
-        icon: '📊'
+        icon: '<i class="fas fa-chart-bar"></i>'
       });
     }
     
@@ -827,7 +827,7 @@ function renderStaffNotifications() {
   if (!container) return;
   
   if (staffNotifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -839,7 +839,7 @@ function renderStaffNotifications() {
           <span class="notification-icon">${notif.icon}</span>
           ${escapeHtml(notif.message)}
         </div>
-        <div class="notification-time">🕐 ${notif.time}</div>
+        <div class="notification-time"><i class="fas fa-clock"></i> ${notif.time}</div>
       </div>
     `;
   }

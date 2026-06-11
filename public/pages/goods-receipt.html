@@ -514,7 +514,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -529,8 +529,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -570,7 +570,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -599,7 +599,7 @@
   </div>
   <div class="navbar-right">
    <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
+  <i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span>
 </button>
     
     <div class="user-dropdown">
@@ -626,12 +626,12 @@
     <!-- LEFT SIDE - GRN List -->
     <div class="grn-left">
       <div class="calendar-box">
-        <label style="display: block; margin-bottom: 8px; font-weight: 500;">📅 Filter by Date</label>
+        <label style="display: block; margin-bottom: 8px; font-weight: 500;"><i class="fas fa-calendar-alt"></i> Filter by Date</label>
         <input type="date" id="filter-date" value="">
       </div>
       <div style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
         <strong>Goods Receipt Notes</strong>
-        <button class="btn btn-outline btn-sm" onclick="loadGRNs()">🔄 Refresh</button>
+        <button class="btn btn-outline btn-sm" onclick="loadGRNs()"><i class="fas fa-sync-alt"></i> Refresh</button>
       </div>
       <div id="grn-list" class="grn-list">
         <div class="empty-state">Loading GRNs...</div>
@@ -652,14 +652,14 @@
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
   <div class="notification-header">
-    <span>📢 Notifications</span>
+    <span><i class="fas fa-bullhorn"></i> Notifications</span>
     <div>
       <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+      <button id="close-notif-panel"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
+    <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
   </div>
 </div>
 </main>
@@ -670,8 +670,8 @@
 <div id="changePwOverlay"></div>
 <div id="changePwModal">
   <div class="change-pw-header">
-    <h3>🔐 Change Password</h3>
-    <button id="closeChangePwBtn">✕</button>
+    <h3><i class="fas fa-lock"></i> Change Password</h3>
+    <button id="closeChangePwBtn"><i class="fas fa-times"></i></button>
   </div>
   <div class="change-pw-body">
     <form id="change-password-form">
@@ -688,7 +688,7 @@
         <input type="password" id="confirm-password" class="form-control" required>
       </div>
       <hr class="divider" />
-      <button type="submit" class="btn-pw-success">✅ Update Password</button>
+      <button type="submit" class="btn-pw-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" id="cancelChangePwBtn" style="background:transparent;border:1px solid #e2e8f0;padding:12px;border-radius:40px;width:100%;cursor:pointer;margin-top:10px;">Cancel</button>
     </form>
   </div>
@@ -724,7 +724,7 @@ async function loadNotifications() {
           message: `${grns.length} goods receipt note(s) found for today`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '📋'
+          icon: '<i class="fas fa-clipboard-list"></i>'
         });
       }
       
@@ -737,7 +737,7 @@ async function loadNotifications() {
           message: `Total GRNs in system: ${allGrns.length}`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '✅'
+          icon: '<i class="fas fa-check-circle"></i>'
         });
       }
     } catch(e) {
@@ -752,7 +752,7 @@ async function loadNotifications() {
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications for goods receipt page`);
+    console.log(`<i class="fas fa-bullhorn"></i> Loaded ${notifications.length} notifications for goods receipt page`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
     renderNotifications();
@@ -765,7 +765,7 @@ function renderNotifications() {
   if (!container) return;
   
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -776,7 +776,7 @@ function renderNotifications() {
         ${escapeHtml(notif.message)}
       </div>
       <div class="notification-time">
-        <span>🕐 ${notif.time}</span>
+        <span><i class="fas fa-clock"></i> ${notif.time}</span>
       </div>
     </div>
   `).join('');
@@ -977,10 +977,10 @@ function escapeHtml(str) {
     newPassword: newPassword
   });
   
-  showToast('Password changed successfully! Please login again.', '✅');
+  showToast('Password changed successfully! Please login again.', '<i class="fas fa-check-circle"></i>');
   setTimeout(() => { logout(); }, 1500);
 } catch (err) {
-  showToast('Failed to change password: ' + err.message, '❌');
+  showToast('Failed to change password: ' + err.message, '<i class="fas fa-times-circle"></i>');
 }
 });
 
@@ -1032,16 +1032,16 @@ function escapeHtml(str) {
   function renderGRNList() {
     var container = document.getElementById('grn-list');
     if (grns.length === 0) {
-      container.innerHTML = '<div class="empty-state">📭 No goods receipt notes for this date</div>';
+      container.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i> No goods receipt notes for this date</div>';
       return;
     }
     var html = '';
     for (var i = 0; i < grns.length; i++) {
       var grn = grns[i];
       html += '<div class="grn-item" data-grn-id="' + grn.id + '" onclick="viewGRNDetails(' + grn.id + ')">';
-      html += '<div class="grn-number">📋 ' + escapeHtml(grn.grn_number) + '</div>';
-      html += '<div class="grn-date">📅 ' + grn.receipt_date + ' | PO: ' + escapeHtml(grn.po_number) + '</div>';
-      html += '<div class="grn-vendor">🏪 ' + escapeHtml(grn.vendor_name) + '</div>';
+      html += '<div class="grn-number"><i class="fas fa-clipboard-list"></i> ' + escapeHtml(grn.grn_number) + '</div>';
+      html += '<div class="grn-date"><i class="fas fa-calendar-alt"></i> ' + grn.receipt_date + ' | PO: ' + escapeHtml(grn.po_number) + '</div>';
+      html += '<div class="grn-vendor"><i class="fas fa-store-alt"></i> ' + escapeHtml(grn.vendor_name) + '</div>';
       html += '</div>';
     }
     container.innerHTML = html;
@@ -1054,12 +1054,12 @@ function escapeHtml(str) {
       var rightPanel = document.getElementById('grn-details');
       
       var itemsHtml = '<div style="margin-bottom: 20px;">';
-      itemsHtml += '<h3 style="margin-bottom: 15px;">📋 ' + escapeHtml(data.grn_number) + '</h3>';
+      itemsHtml += '<h3 style="margin-bottom: 15px;"><i class="fas fa-clipboard-list"></i> ' + escapeHtml(data.grn_number) + '</h3>';
       itemsHtml += '<div style="background: #f5f5f5; padding: 15px; border-radius: 12px; margin-bottom: 20px;">';
       itemsHtml += '<p><strong>PO Number:</strong> ' + escapeHtml(data.po_number) + '</p>';
       itemsHtml += '<p><strong>Vendor:</strong> ' + escapeHtml(data.vendor_name) + '</p>';
       itemsHtml += '<p><strong>Receipt Date:</strong> ' + data.receipt_date + '</p>';
-      itemsHtml += '<p><strong>Status:</strong> <span style="color: #059669;">✓ ' + data.status.toUpperCase() + '</span></p>';
+      itemsHtml += '<p><strong>Status:</strong> <span style="color: #059669;"><i class="fas fa-check"></i> ' + data.status.toUpperCase() + '</span></p>';
       itemsHtml += '<p><strong>Notes:</strong> ' + (data.notes || 'None') + '</p>';
       itemsHtml += '<p><strong>Created By:</strong> ' + (data.created_by || 'system') + '</p>';
       itemsHtml += '</div>';
@@ -1084,7 +1084,7 @@ function escapeHtml(str) {
       itemsHtml += '</tbody></table></div>';
       
       itemsHtml += '<div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">';
-      itemsHtml += '<button class="btn-gold" onclick="printGRN(' + data.id + ')">🖨️ Print GRN</button>';
+      itemsHtml += '<button class="btn-gold" onclick="printGRN(' + data.id + ')"><i class="fas fa-print"></i> Print GRN</button>';
       itemsHtml += '</div>';
       
       rightPanel.innerHTML = itemsHtml;

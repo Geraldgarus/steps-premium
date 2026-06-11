@@ -323,29 +323,29 @@
 
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-top">
-    <a class="sidebar-logo" href="/"><div class="logo-icon">🏨</div><div class="logo-text"><span>Steps</span><span>Premium Suite</span></div></a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <a class="sidebar-logo" href="/"><div class="logo-icon"><i class="fas fa-hotel"></i></div><div class="logo-text"><span>Steps</span><span>Premium Suite</span></div></a>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section-label">Main</div>
-    <a href="/dashboard" class="nav-item">📊 Stay View</a>
-    <a href="/apartments" class="nav-item">🏠 Apartments View</a>
-    <a href="/apartments-list" class="nav-item">🏠 Apartments List</a>
-    <a href="/reservations" class="nav-item">📋 Reservations</a>
-    <a href="/users" class="nav-item">👥 User Management</a>
+    <a href="/dashboard" class="nav-item"><i class="fas fa-chart-bar"></i> Stay View</a>
+    <a href="/apartments" class="nav-item"><i class="fas fa-home"></i> Apartments View</a>
+    <a href="/apartments-list" class="nav-item"><i class="fas fa-home"></i> Apartments List</a>
+    <a href="/reservations" class="nav-item"><i class="fas fa-clipboard-list"></i> Reservations</a>
+    <a href="/users" class="nav-item"><i class="fas fa-users"></i> User Management</a>
     <div class="nav-section-label">Operations</div>
-    <a href="/housekeeping" class="nav-item">🧹 Housekeeping</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
     <div class="nav-section-label">Store & Procurement</div>
-    <a href="/store-main" class="nav-item">🏬 Main Store</a>
-    <a href="/store-outlets" class="nav-item">🏪 Outlets</a>
-    <a href="/purchase-orders" class="nav-item">📦 Purchase Orders</a>
-    <a href="/goods-receipt" class="nav-item">📋 Goods Receipt</a>
+    <a href="/store-main" class="nav-item"><i class="fas fa-store"></i> Main Store</a>
+    <a href="/store-outlets" class="nav-item"><i class="fas fa-store-alt"></i> Outlets</a>
+    <a href="/purchase-orders" class="nav-item"><i class="fas fa-box"></i> Purchase Orders</a>
+    <a href="/goods-receipt" class="nav-item"><i class="fas fa-clipboard-list"></i> Goods Receipt</a>
     <div class="nav-section-label">Sales</div>
-    <a href="/point-of-sale" class="nav-item active">🛒 Point of Sale</a>
+    <a href="/point-of-sale" class="nav-item active"><i class="fas fa-shopping-cart"></i> Point of Sale</a>
     <div class="nav-section-label">Reports</div>
-    <a href="/purchase-orders-reports" class="nav-item">📊 PO Report</a>
-    <a href="/goods-receipt-reports" class="nav-item">📊 GRN Report</a>
-    <a href="/store-inventory-reports" class="nav-item">📊 Store Report</a>
+    <a href="/purchase-orders-reports" class="nav-item"><i class="fas fa-chart-bar"></i> PO Report</a>
+    <a href="/goods-receipt-reports" class="nav-item"><i class="fas fa-chart-bar"></i> GRN Report</a>
+    <a href="/store-inventory-reports" class="nav-item"><i class="fas fa-chart-bar"></i> Store Report</a>
   </nav>
   <div class="sidebar-footer"><small>Steps PMS v1.0 · Dar es Salaam</small></div>
 </aside>
@@ -357,7 +357,7 @@
   </div>
   <div class="navbar-right">
     <button class="btn-add-reservation" onclick="alert('Add reservation')">＋ Add Reservation</button>
-    <button class="notif-btn">🔔<span class="badge">3</span></button>
+    <button class="notif-btn"><i class="fas fa-bell"></i><span class="badge">3</span></button>
     <div class="user-dropdown">
       <div class="user-pill" id="userPill"><div class="user-avatar" id="userAvatar">U</div><div class="user-info"><span id="userName">Loading...</span><span id="userRole">Loading...</span></div><i class="fas fa-chevron-down"></i></div>
       <div class="dropdown-menu" id="dropdownMenu"><button onclick="alert('Change password')"><i class="fas fa-key"></i> Change Password</button><hr><button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button></div>
@@ -370,7 +370,7 @@
     <!-- LEFT PANEL -->
     <div class="pos-left">
       <div class="search-box">
-        <input type="text" id="search-items" placeholder="🔍 Search POS items...">
+        <input type="text" id="search-items" placeholder="Search POS items...">
       </div>
       <div class="items-scroll-area">
         <div class="items-grid" id="items-grid">
@@ -392,7 +392,7 @@
       </div>
 
       <div class="cart-header">
-        <strong>🛒 Current Order Items</strong>
+        <strong><i class="fas fa-shopping-cart"></i> Current Order Items</strong>
         <span id="item-count">0 items</span>
       </div>
       
@@ -408,9 +408,9 @@
           <span id="cart-total">TSh 0</span>
         </div>
         <div class="action-buttons">
-          <button class="btn-save" onclick="saveCurrentOrder()">💾 Save Order</button>
-          <button class="btn-print" onclick="printCurrentOrder()">🖨️ Print Receipt</button>
-          <button class="btn-cancel" onclick="clearCurrentOrder()">✕ Cancel Order</button>
+          <button class="btn-save" onclick="saveCurrentOrder()"><i class="fas fa-save"></i> Save Order</button>
+          <button class="btn-print" onclick="printCurrentOrder()"><i class="fas fa-print"></i> Print Receipt</button>
+          <button class="btn-cancel" onclick="clearCurrentOrder()"><i class="fas fa-times"></i> Cancel Order</button>
         </div>
       </div>
     </div>
@@ -504,7 +504,7 @@
         <div class="item-card" onclick="addToCurrentOrder(${item.id})">
           <div class="item-name">${escapeHtml(item.name)}</div>
           <div class="item-price">${fmtTSH(item.price)}</div>
-          <div class="item-stock">📦 ${stockText}</div>
+          <div class="item-stock"><i class="fas fa-box"></i> ${stockText}</div>
         </div>
       `;
     });
@@ -653,7 +653,7 @@
         <div class="order-tab ${isActive ? 'active' : ''}" onclick="switchToOrder(${order.id})">
           <span>#${order.orderNumber}</span>
           <span style="font-size:10px;">${itemCount} items</span>
-          <button class="delete-order" onclick="event.stopPropagation(); deleteOrder(${order.id})">✕</button>
+          <button class="delete-order" onclick="event.stopPropagation(); deleteOrder(${order.id})"><i class="fas fa-times"></i></button>
         </div>
       `;
     });
@@ -689,7 +689,7 @@
             <span class="cart-item-qty">${item.quantity}</span>
             <button class="qty-btn" onclick="updateCartItemQuantity(${item.id}, 1)">+</button>
             <span class="cart-item-total">${fmtTSH(total)}</span>
-            <span class="remove-item" onclick="removeCartItem(${item.id})">🗑</span>
+            <span class="remove-item" onclick="removeCartItem(${item.id})"><i class="fas fa-trash-alt"></i></span>
           </div>
         </div>
       `;
@@ -772,7 +772,7 @@ async function saveCurrentOrder() {
     renderOrderTabs();
     renderCurrentOrder();
     
-    showToast(`✅ Order #${order.orderNumber} completed and saved to database!`);
+    showToast(`<i class="fas fa-check-circle"></i> Order #${order.orderNumber} completed and saved to database!`);
     
     if (confirm('Print receipt?')) {
       printReceipt(receiptData);

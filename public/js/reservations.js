@@ -9,17 +9,17 @@ async function loadAndRenderReservations() {
     renderReservationsTable();
     updateReservationStats();
   } catch (err) {
-    showToast('Failed to load reservations: ' + err.message, '❌');
+    showToast('Failed to load reservations: ' + err.message, '<i class="fas fa-times-circle"></i>');
   }
 }
 
 function getPaymentBadge(paymentStatus, balance) {
   if (paymentStatus === 'paid') {
-    return '<span class="payment-badge-paid" style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:20px; font-size:11px; font-weight:600; display:inline-block;">✅ Paid</span>';
+    return '<span class="payment-badge-paid" style="background:#d1fae5; color:#065f46; padding:4px 8px; border-radius:20px; font-size:11px; font-weight:600; display:inline-block;"><i class="fas fa-check-circle"></i> Paid</span>';
   } else if (paymentStatus === 'partial') {
-    return `<span class="payment-badge-partial" style="background:#fef3c7; color:#d97706; padding:4px 8px; border-radius:20px; font-size:11px; font-weight:600; display:inline-block;">🟡 Partial<br><small style="font-size:9px;">Due: ${fmtTSH(balance)}</small></span>`;
+    return `<span class="payment-badge-partial" style="background:#fef3c7; color:#d97706; padding:4px 8px; border-radius:20px; font-size:11px; font-weight:600; display:inline-block;"><i class="fas fa-circle" style="color:#f59e0b"></i> Partial<br><small style="font-size:9px;">Due: ${fmtTSH(balance)}</small></span>`;
   } else {
-    return '<span class="payment-badge-unpaid" style="background:#fee2e2; color:#dc2626; padding:4px 8px; border-radius:20px; font-size:11px; font-weight:600; display:inline-block;">❌ Unpaid</span>';
+    return '<span class="payment-badge-unpaid" style="background:#fee2e2; color:#dc2626; padding:4px 8px; border-radius:20px; font-size:11px; font-weight:600; display:inline-block;"><i class="fas fa-times-circle"></i> Unpaid</span>';
   }
 }
 
@@ -28,7 +28,7 @@ function renderReservationsTable() {
   const now = new Date();
   
   if (!reservations || !reservations.length) {
-    tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="empty-icon">📋</div><p>No reservations yet</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="empty-icon"><i class="fas fa-clipboard-list"></i></div><p>No reservations yet</p></div></td></tr>`;
     return;
   }
   
@@ -120,7 +120,7 @@ function updateReservationStats() {
   if (upcomingCountElem) upcomingCountElem.textContent = upcoming;
   if (checkoutTodayCountElem) checkoutTodayCountElem.textContent = checkoutToday;
   
-  console.log(`📊 Stats: Active=${active}, Upcoming=${upcoming}, Checkouts Today=${checkoutToday}, Time=${now.toLocaleTimeString()}`);
+  console.log(`<i class="fas fa-chart-bar"></i> Stats: Active=${active}, Upcoming=${upcoming}, Checkouts Today=${checkoutToday}, Time=${now.toLocaleTimeString()}`);
 }
 
 async function openDetail(resId) {
@@ -139,48 +139,48 @@ async function openDetail(resId) {
     // Get payment status badge
     let paymentBadge = '';
     if (res.paymentStatus === 'paid') {
-      paymentBadge = '<span style="background:#d1fae5; color:#065f46; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;">✅ Paid in Full</span>';
+      paymentBadge = '<span style="background:#d1fae5; color:#065f46; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;"><i class="fas fa-check-circle"></i> Paid in Full</span>';
     } else if (res.paymentStatus === 'partial') {
-      paymentBadge = `<span style="background:#fef3c7; color:#d97706; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;">🟡 Partial Payment<br><small>Due: ${fmtTSH(res.balance || 0)}</small></span>`;
+      paymentBadge = `<span style="background:#fef3c7; color:#d97706; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;"><i class="fas fa-circle" style="color:#f59e0b"></i> Partial Payment<br><small>Due: ${fmtTSH(res.balance || 0)}</small></span>`;
     } else {
-      paymentBadge = '<span style="background:#fee2e2; color:#dc2626; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;">❌ Unpaid</span>';
+      paymentBadge = '<span style="background:#fee2e2; color:#dc2626; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;"><i class="fas fa-times-circle"></i> Unpaid</span>';
     }
 
     document.getElementById('detail-body').innerHTML = [
-      { icon: '👤', label: 'Guest Name', value: escapeHtml(res.guest) },
-      { icon: '📧', label: 'Email', value: escapeHtml(res.email) },
-      { icon: '📱', label: 'Mobile', value: escapeHtml(res.mobile || '—') },
-      { icon: '🪪', label: 'ID Type', value: escapeHtml(res.idType || '—') },
-      { icon: '📋', label: 'ID Number', value: escapeHtml(res.identification || '—') },
-      { icon: '🌍', label: 'Country', value: escapeHtml(res.country || '—') },
-      { icon: '🏙️', label: 'City', value: escapeHtml(res.city || '—') },
-      { icon: '🏠', label: 'Apartment', value: escapeHtml(apt.name) },
-      { icon: '💳', label: 'Rate Type', value: escapeHtml(res.rateType) },
-      { icon: '📅', label: 'Check-in', value: fmtDate(res.checkin) },
-      { icon: '📅', label: 'Check-out', value: fmtDate(res.checkout) + ' at 11:00 AM' },
-      { icon: '🌙', label: 'Nights', value: nights + ' night' + (nights !== 1 ? 's' : '') },
-      { icon: '👨‍👩‍👧', label: 'Adults / Children', value: `${res.adults} Adults, ${res.children} Children` },
+      { icon: '<i class="fas fa-user"></i>', label: 'Guest Name', value: escapeHtml(res.guest) },
+      { icon: '<i class="fas fa-envelope"></i>', label: 'Email', value: escapeHtml(res.email) },
+      { icon: '<i class="fas fa-mobile-alt"></i>', label: 'Mobile', value: escapeHtml(res.mobile || '—') },
+      { icon: '<i class="fas fa-id-card"></i>', label: 'ID Type', value: escapeHtml(res.idType || '—') },
+      { icon: '<i class="fas fa-clipboard-list"></i>', label: 'ID Number', value: escapeHtml(res.identification || '—') },
+      { icon: '<i class="fas fa-globe-africa"></i>', label: 'Country', value: escapeHtml(res.country || '—') },
+      { icon: '<i class="fas fa-city"></i>', label: 'City', value: escapeHtml(res.city || '—') },
+      { icon: '<i class="fas fa-home"></i>', label: 'Apartment', value: escapeHtml(apt.name) },
+      { icon: '<i class="fas fa-credit-card"></i>', label: 'Rate Type', value: escapeHtml(res.rateType) },
+      { icon: '<i class="fas fa-calendar-alt"></i>', label: 'Check-in', value: fmtDate(res.checkin) },
+      { icon: '<i class="fas fa-calendar-alt"></i>', label: 'Check-out', value: fmtDate(res.checkout) + ' at 11:00 AM' },
+      { icon: '<i class="fas fa-moon"></i>', label: 'Nights', value: nights + ' night' + (nights !== 1 ? 's' : '') },
+      { icon: '<i class="fas fa-users"></i>', label: 'Adults / Children', value: `${res.adults} Adults, ${res.children} Children` },
     ].map(r => `<div class="detail-row"><div class="detail-icon">${r.icon}</div><div><div class="detail-label">${r.label}</div><div class="detail-value">${r.value}</div></div></div>`).join('') +
     
     // PAYMENT SECTION
     `<div style="margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div class="detail-label" style="font-size: 13px; font-weight: 600;">💰 Payment Status</div>
+        <div class="detail-label" style="font-size: 13px; font-weight: 600;"><i class="fas fa-money-bill-wave"></i> Payment Status</div>
         <div>${paymentBadge}</div>
       </div>
-      <div class="detail-row"><div class="detail-icon">💳</div><div><div class="detail-label">Payment Method</div><div class="detail-value">${escapeHtml(res.paymentMethod || '—')}</div></div></div>
-      <div class="detail-row"><div class="detail-icon">💵</div><div><div class="detail-label">Amount Paid</div><div class="detail-value">${fmtTSH(res.amountPaid || 0)}</div></div></div>
-      <div class="detail-row"><div class="detail-icon">⚖️</div><div><div class="detail-label">Balance Due</div><div class="detail-value">${fmtTSH(res.balance || 0)}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-credit-card"></i></div><div><div class="detail-label">Payment Method</div><div class="detail-value">${escapeHtml(res.paymentMethod || '—')}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-dollar-sign"></i></div><div><div class="detail-label">Amount Paid</div><div class="detail-value">${fmtTSH(res.amountPaid || 0)}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-balance-scale"></i></div><div><div class="detail-label">Balance Due</div><div class="detail-value">${fmtTSH(res.balance || 0)}</div></div></div>
     </div>` +
     
     `<div class="detail-total"><span>Total Rate</span><span>${fmtTSH(res.total)}</span></div>` +
-    (isActive ? `<div style="margin-top:16px;padding:12px;background:#e8f5e9;border-radius:8px;text-align:center;">🟢 Currently staying - Checkout at 11:00 AM</div>` : 
-                 `<div style="margin-top:16px;padding:12px;background:#f5f5f5;border-radius:8px;text-align:center;">✅ Reservation completed</div>`);
+    (isActive ? `<div style="margin-top:16px;padding:12px;background:#e8f5e9;border-radius:8px;text-align:center;"><i class="fas fa-circle" style="color:#22c55e"></i> Currently staying - Checkout at 11:00 AM</div>` : 
+                 `<div style="margin-top:16px;padding:12px;background:#f5f5f5;border-radius:8px;text-align:center;"><i class="fas fa-check-circle"></i> Reservation completed</div>`);
 
     document.getElementById('panel-overlay').classList.add('open');
     document.getElementById('detail-panel').classList.add('open');
   } catch (err) {
-    showToast('Could not load reservation: ' + err.message, '❌');
+    showToast('Could not load reservation: ' + err.message, '<i class="fas fa-times-circle"></i>');
   }
 }
 
@@ -197,16 +197,16 @@ async function deleteSelectedReservation() {
     await apiDelete(`/reservations/${selectedReservation.id}`);
     closeDetailPanel();
     loadAndRenderReservations();
-    showToast('Reservation deleted', '🗑️');
+    showToast('Reservation deleted', '<i class="fas fa-trash-alt"></i>');
   } catch (err) {
-    showToast('Delete failed: ' + err.message, '❌');
+    showToast('Delete failed: ' + err.message, '<i class="fas fa-times-circle"></i>');
   }
 }
 
 // Checkout function for reservations page
 async function checkoutReservation() {
   if (!selectedReservation) {
-    showToast('No reservation selected', '⚠️');
+    showToast('No reservation selected', '<i class="fas fa-exclamation-triangle"></i>');
     return;
   }
   
@@ -215,7 +215,7 @@ async function checkoutReservation() {
   rCheckout.setHours(11, 0, 0, 0);
   
   if (rCheckout <= now) {
-    showToast('Guest is already checked out (after 11:00 AM)', 'ℹ️');
+    showToast('Guest is already checked out (after 11:00 AM)', '<i class="fas fa-info-circle"></i>');
     closeDetailPanel();
     await loadAndRenderReservations();
     return;
@@ -232,11 +232,11 @@ async function checkoutReservation() {
   try {
     const payload = { ...selectedReservation, checkout: today, total: newTotal };
     await apiPut(`/reservations/${selectedReservation.id}`, payload);
-    showToast(`✅ ${selectedReservation.guest} checked out! New total: ${fmtTSH(newTotal)}`, '🚪');
+    showToast(`<i class="fas fa-check-circle"></i> ${selectedReservation.guest} checked out! New total: ${fmtTSH(newTotal)}`, '<i class="fas fa-door-open"></i>');
     closeDetailPanel();
     await loadAndRenderReservations();
   } catch (err) {
-    showToast('Checkout failed: ' + err.message, '❌');
+    showToast('Checkout failed: ' + err.message, '<i class="fas fa-times-circle"></i>');
   }
 }
 
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     APARTMENTS = await apiGet('/apartments');
   } catch (err) {
-    showToast('⚠️ Cannot reach API server', '❌');
+    showToast('<i class="fas fa-exclamation-triangle"></i> Cannot reach API server', '<i class="fas fa-times-circle"></i>');
   }
   loadAndRenderReservations();
 });

@@ -500,7 +500,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -515,8 +515,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -556,7 +556,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -599,7 +599,7 @@
     </a>
     <button class="" onclick="openReservationModal()"></button>
     <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
+  <i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span>
 </button>
     
     <!-- User Dropdown -->
@@ -634,14 +634,14 @@
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
   <div class="notification-header">
-    <span>📢 Notifications</span>
+    <span><i class="fas fa-bullhorn"></i> Notifications</span>
     <div>
       <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+      <button id="close-notif-panel"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
+    <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
   </div>
 </div>
 </main>
@@ -650,31 +650,31 @@
 <div class="reservation-modal-overlay" id="reservation-modal-overlay" onclick="closeReservationModal()"></div>
 <div class="reservation-modal" id="reservation-modal">
   <div class="reservation-modal-header">
-    <h3>➕ New Reservation</h3>
-    <button class="reservation-modal-close" onclick="closeReservationModal()">✕</button>
+    <h3><i class="fas fa-plus"></i> New Reservation</h3>
+    <button class="reservation-modal-close" onclick="closeReservationModal()"><i class="fas fa-times"></i></button>
   </div>
   <div class="reservation-modal-body">
     <form id="reservation-form-modal">
       <div class="form-group-row cols-2">
         <div class="form-group">
-          <label>📅 Check-in Date</label>
+          <label><i class="fas fa-calendar-alt"></i> Check-in Date</label>
           <input type="date" id="modal-f-checkin" class="form-control" required />
         </div>
         <div class="form-group">
-          <label>📅 Check-out Date</label>
+          <label><i class="fas fa-calendar-alt"></i> Check-out Date</label>
           <input type="date" id="modal-f-checkout" class="form-control" required />
         </div>
       </div>
       
       <div class="form-group-row cols-2">
         <div class="form-group">
-          <label>🏠 Apartment</label>
+          <label><i class="fas fa-home"></i> Apartment</label>
           <select id="modal-f-apt" class="form-control" required>
             <option value="">Select Apartment</option>
           </select>
         </div>
         <div class="form-group">
-          <label>💰 Rate Type</label>
+          <label><i class="fas fa-money-bill-wave"></i> Rate Type</label>
           <select id="modal-f-ratetype" class="form-control">
             <option value="Full">Full (100%)</option>
             <option value="Partial">Partial (60%)</option>
@@ -684,7 +684,7 @@
       
       <div class="form-group-row" style="grid-template-columns:1fr 1fr 1.2fr">
         <div class="form-group">
-          <label>👤 Adults</label>
+          <label><i class="fas fa-user"></i> Adults</label>
           <div class="stepper">
             <button type="button" onclick="modalStepperChange('modal-f-adults', -1)">−</button>
             <input type="number" id="modal-f-adults" value="1" min="1" max="6" />
@@ -700,7 +700,7 @@
           </div>
         </div>
         <div class="form-group">
-  <label>💰 Total Rate</label>
+  <label><i class="fas fa-money-bill-wave"></i> Total Rate</label>
   <div id="modal-total-container">
     <div style="display: flex; align-items: center; gap: 8px;">
       <div class="rate-display" id="modal-f-total" style="flex: 1;">—</div>
@@ -717,26 +717,26 @@
       
       <div class="form-group-row cols-3">
         <div class="form-group">
-          <label>👤 Guest Name</label>
+          <label><i class="fas fa-user"></i> Guest Name</label>
           <input type="text" id="modal-f-guest" class="form-control" placeholder="Full name" required />
         </div>
         <div class="form-group">
-          <label>📧 Email</label>
+          <label><i class="fas fa-envelope"></i> Email</label>
           <input type="email" id="modal-f-email" class="form-control" placeholder="Email address" required />
         </div>
         <div class="form-group">
-          <label>📱 Mobile</label>
+          <label><i class="fas fa-mobile-alt"></i> Mobile</label>
           <input type="tel" id="modal-f-mobile" class="form-control" placeholder="+255 XXX XXX" required />
         </div>
       </div>
       <!-- NEW ROW: National ID / ID Type - ADD THIS AFTER City field -->
 <div class="form-group-row cols-2">
   <div class="form-group">
-    <label>🪪 NIDA / Passport Number</label>
+    <label><i class="fas fa-id-card"></i> NIDA / Passport Number</label>
     <input type="text" id="modal-f-identification" class="form-control" placeholder="NIDA Number or Passport ID" />
   </div>
   <div class="form-group">
-    <label>📋 ID Type</label>
+    <label><i class="fas fa-clipboard-list"></i> ID Type</label>
     <select id="modal-f-id-type" class="form-control">
       <option value="NIDA">NIDA (National ID)</option>
       <option value="Passport">Passport</option>
@@ -748,7 +748,7 @@
 </div>
      <div class="form-group-row cols-2">
   <div class="form-group">
-    <label>🌍 Country</label>
+    <label><i class="fas fa-globe-africa"></i> Country</label>
     <div class="select-wrapper" id="modal-country-wrapper">
       <div class="searchable-select" id="modal-country-select-btn">
         <span id="modal-selected-country-text">Select Country</span>
@@ -756,7 +756,7 @@
       </div>
       <div class="select-dropdown" id="modal-country-dropdown">
         <div class="select-search">
-          <input type="text" id="modal-country-search" placeholder="🔍 Search country..." autocomplete="off">
+          <input type="text" id="modal-country-search" placeholder="Search country..." autocomplete="off">
         </div>
         <div id="modal-country-options">
           <div style="padding: 20px; text-align: center; color: #94a3b8;">Loading countries...</div>
@@ -766,13 +766,13 @@
     <input type="hidden" id="modal-f-country" value="">
   </div>
   <div class="form-group">
-    <label>🏙️ City</label>
+    <label><i class="fas fa-city"></i> City</label>
     <input type="text" id="modal-f-city" class="form-control" placeholder="City" />
   </div>
 </div>
       <hr class="divider" />
       
-      <button type="submit" class="btn btn-success">✅ Confirm Reservation</button>
+      <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Confirm Reservation</button>
       <button type="button" class="btn btn-outline" style="margin-top: 10px; width: 100%;" onclick="closeReservationModal()">Cancel</button>
     </form>
   </div>
@@ -782,8 +782,8 @@
 <div class="reservation-modal-overlay" id="edit-modal-overlay" onclick="closeEditModal()"></div>
 <div class="reservation-modal" id="edit-modal">
   <div class="reservation-modal-header">
-    <h3>✏️ Edit Reservation</h3>
-    <button class="reservation-modal-close" onclick="closeEditModal()">✕</button>
+    <h3><i class="fas fa-edit"></i> Edit Reservation</h3>
+    <button class="reservation-modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
   </div>
   <div class="reservation-modal-body">
     <form id="edit-form-modal">
@@ -791,24 +791,24 @@
       
       <div class="form-group-row cols-2">
         <div class="form-group">
-          <label>📅 Check-in Date</label>
+          <label><i class="fas fa-calendar-alt"></i> Check-in Date</label>
           <input type="date" id="edit-f-checkin" class="form-control" required />
         </div>
         <div class="form-group">
-          <label>📅 Check-out Date</label>
+          <label><i class="fas fa-calendar-alt"></i> Check-out Date</label>
           <input type="date" id="edit-f-checkout" class="form-control" required />
         </div>
       </div>
       
       <div class="form-group-row cols-2">
         <div class="form-group">
-          <label>🏠 Apartment</label>
+          <label><i class="fas fa-home"></i> Apartment</label>
           <select id="edit-f-apt" class="form-control" required>
             <option value="">Select Apartment</option>
           </select>
         </div>
         <div class="form-group">
-          <label>💰 Rate Type</label>
+          <label><i class="fas fa-money-bill-wave"></i> Rate Type</label>
           <select id="edit-f-ratetype" class="form-control">
             <option value="Full">Full (100%)</option>
             <option value="Partial">Partial (60%)</option>
@@ -818,7 +818,7 @@
       
       <div class="form-group-row" style="grid-template-columns:1fr 1fr 1.2fr">
         <div class="form-group">
-          <label>👤 Adults</label>
+          <label><i class="fas fa-user"></i> Adults</label>
           <div class="stepper">
             <button type="button" onclick="editStepperChange('edit-f-adults', -1)">−</button>
             <input type="number" id="edit-f-adults" value="1" min="1" max="6" />
@@ -826,7 +826,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>👤 Children</label>
+          <label><i class="fas fa-user"></i> Children</label>
           <div class="stepper">
             <button type="button" onclick="editStepperChange('edit-f-children', -1)">−</button>
             <input type="number" id="edit-f-children" value="0" min="0" max="6" />
@@ -834,7 +834,7 @@
           </div>
         </div>
         <div class="form-group">
-  <label>💰 Total Rate</label>
+  <label><i class="fas fa-money-bill-wave"></i> Total Rate</label>
   <div id="edit-total-container">
     <div style="display: flex; align-items: center; gap: 8px;">
       <div class="rate-display" id="edit-f-total" style="flex: 1;">—</div>
@@ -853,26 +853,26 @@
       
       <div class="form-group-row cols-3">
         <div class="form-group">
-          <label>👤 Guest Name</label>
+          <label><i class="fas fa-user"></i> Guest Name</label>
           <input type="text" id="edit-f-guest" class="form-control" placeholder="Full name" required />
         </div>
         <div class="form-group">
-          <label>📧 Email</label>
+          <label><i class="fas fa-envelope"></i> Email</label>
           <input type="email" id="edit-f-email" class="form-control" placeholder="Email address" required />
         </div>
         <div class="form-group">
-          <label>📱 Mobile</label>
+          <label><i class="fas fa-mobile-alt"></i> Mobile</label>
           <input type="tel" id="edit-f-mobile" class="form-control" placeholder="+255 XXX XXX" required />
         </div>
       </div>
       <!-- NEW ROW: National ID / ID Type - ADD THIS AFTER City field in Edit Modal -->
 <div class="form-group-row cols-2">
   <div class="form-group">
-    <label>🪪 NIDA / Passport Number</label>
+    <label><i class="fas fa-id-card"></i> NIDA / Passport Number</label>
     <input type="text" id="edit-f-identification" class="form-control" placeholder="NIDA Number or Passport ID" />
   </div>
   <div class="form-group">
-    <label>📋 ID Type</label>
+    <label><i class="fas fa-clipboard-list"></i> ID Type</label>
     <select id="edit-f-id-type" class="form-control">
       <option value="NIDA">NIDA (National ID)</option>
       <option value="Passport">Passport</option>
@@ -884,7 +884,7 @@
 </div>
       <div class="form-group-row cols-2">
   <div class="form-group">
-    <label>🌍 Country</label>
+    <label><i class="fas fa-globe-africa"></i> Country</label>
     <div class="select-wrapper" id="edit-country-wrapper">
       <div class="searchable-select" id="edit-country-select-btn">
         <span id="edit-selected-country-text">Select Country</span>
@@ -892,7 +892,7 @@
       </div>
       <div class="select-dropdown" id="edit-country-dropdown">
         <div class="select-search">
-          <input type="text" id="edit-country-search" placeholder="🔍 Search country..." autocomplete="off">
+          <input type="text" id="edit-country-search" placeholder="Search country..." autocomplete="off">
         </div>
         <div id="edit-country-options">
           <div style="padding: 20px; text-align: center; color: #94a3b8;">Loading countries...</div>
@@ -902,13 +902,13 @@
     <input type="hidden" id="edit-f-country" value="">
   </div>
   <div class="form-group">
-    <label>🏙️ City</label>
+    <label><i class="fas fa-city"></i> City</label>
     <input type="text" id="edit-f-city" class="form-control" placeholder="City" />
   </div>
 </div>
       <hr class="divider" />
       
-      <button type="submit" class="btn btn-gold">💾 Update Reservation</button>
+      <button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> Update Reservation</button>
       <button type="button" class="btn btn-outline" style="margin-top: 10px; width: 100%;" onclick="closeEditModal()">Cancel</button>
     </form>
   </div>
@@ -919,13 +919,13 @@
 <div class="detail-panel" id="detail-panel">
   <div class="detail-panel-header">
     <h3>Reservation Details</h3>
-    <button class="close-panel" onclick="closeDetailPanel()">✕</button>
+    <button class="close-panel" onclick="closeDetailPanel()"><i class="fas fa-times"></i></button>
   </div>
   <div class="detail-panel-body" id="detail-body"></div>
   <div class="detail-panel-footer">
     <button class="btn btn-outline" style="flex:1" onclick="closeDetailPanel()">Close</button>
     
-    <button class="btn btn-danger" onclick="deleteSelectedReservation()">🗑 Delete</button>
+    <button class="btn btn-danger" onclick="deleteSelectedReservation()"><i class="fas fa-trash-alt"></i> Delete</button>
   </div>
 </div>
 
@@ -1005,7 +1005,7 @@ function applyCustomTotal(type) {
   customArea.style.display = 'none';
   customArea.innerHTML = '';
   
-  showToast(`✅ Custom total applied! Nightly rate: ${fmtTSH(nightlyRate)}`, 'success');
+  showToast(`<i class="fas fa-check-circle"></i> Custom total applied! Nightly rate: ${fmtTSH(nightlyRate)}`, 'success');
   console.log(`Custom Total: ${fmtTSH(customTotal)} | Nights: ${nights} | Nightly Rate: ${fmtTSH(nightlyRate)}`);
 }
 
@@ -1098,7 +1098,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '🚪'
+        icon: '<i class="fas fa-door-open"></i>'
       });
     });
     
@@ -1118,7 +1118,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '📅'
+        icon: '<i class="fas fa-calendar-alt"></i>'
       });
     });
     
@@ -1133,7 +1133,7 @@ async function loadNotifications() {
           message: `${item.name} is low in stock (${item.quantity} left)`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '<i class="fas fa-exclamation-triangle"></i>'
         });
       });
     } catch(e) {
@@ -1148,7 +1148,7 @@ async function loadNotifications() {
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications`);
+    console.log(`<i class="fas fa-bullhorn"></i> Loaded ${notifications.length} notifications`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
   }
@@ -1161,7 +1161,7 @@ function renderNotifications() {
   const unreadCount = notifications.filter(n => !n.read).length;
   
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -1172,7 +1172,7 @@ function renderNotifications() {
         ${escapeHtml(notif.message)}
       </div>
       <div class="notification-time">
-        <span>🕐 ${notif.time}</span>
+        <span><i class="fas fa-clock"></i> ${notif.time}</span>
       </div>
     </div>
   `).join('');
@@ -1300,10 +1300,10 @@ let modalCountriesList = [];
 
 async function loadModalCountries() {
   try {
-    console.log('🌍 Loading countries for add modal...');
+    console.log('<i class="fas fa-globe-africa"></i> Loading countries for add modal...');
     const countries = await apiGet('/countries');
     modalCountriesList = countries;
-    console.log(`✅ Loaded ${countries.length} countries`);
+    console.log(`<i class="fas fa-check-circle"></i> Loaded ${countries.length} countries`);
     
     // Pre-render the options so they're ready when dropdown opens
     renderModalCountryOptions('');
@@ -1331,7 +1331,7 @@ function checkCountryDropdown() {
   console.log('- Countries loaded:', countriesCount);
   
   if (countriesCount === 0) {
-    console.log('⚠️ No countries loaded! Refreshing...');
+    console.log('<i class="fas fa-exclamation-triangle"></i> No countries loaded! Refreshing...');
     loadModalCountries();
   }
 }
@@ -1450,7 +1450,7 @@ let editCountriesList = [];
 
 async function loadEditCountries() {
   try {
-    console.log('🌍 Loading countries for edit modal...');
+    console.log('<i class="fas fa-globe-africa"></i> Loading countries for edit modal...');
     const countries = await apiGet('/countries');
     editCountriesList = countries;
     renderEditCountryOptions('');
@@ -1573,11 +1573,11 @@ async function initModalForm() {
     try { 
       modalAPARTMENTS = await apiGet('/apartments'); 
     } catch(err) { 
-      showToast('Failed to load apartments', '❌'); 
+      showToast('Failed to load apartments', '<i class="fas fa-times-circle"></i>'); 
       return;
     }
   }
-    // ✅ ADD THESE LINES - Reset identification fields
+    // <i class="fas fa-check-circle"></i> ADD THESE LINES - Reset identification fields
   document.getElementById('modal-f-identification').value = '';
   document.getElementById('modal-f-id-type').value = 'NIDA';
 
@@ -1619,7 +1619,7 @@ function modalStepperChange(id, delta) {
 }
 
 function modalUpdateRate() {
-  console.log('🔄 Updating rate...');
+  console.log('<i class="fas fa-sync-alt"></i> Updating rate...');
   
   const aptId = parseInt(document.getElementById('modal-f-apt')?.value);
   const rateType = document.getElementById('modal-f-ratetype')?.value;
@@ -1646,7 +1646,7 @@ function modalUpdateRate() {
   document.getElementById('modal-f-total').innerHTML = total > 0 ? fmtTSH(total) : '—';
   document.getElementById('modal-f-total-hidden').value = total;
   
-  console.log(`✅ ${nights} nights × ${apt.ratePerNight} × ${multiplier} = ${total}`);
+  console.log(`<i class="fas fa-check-circle"></i> ${nights} nights × ${apt.ratePerNight} × ${multiplier} = ${total}`);
 }
 // Force recalculation when dates lose focus
 function forceRateUpdate() {
@@ -1686,12 +1686,12 @@ async function initEditForm(reservationId) {
       try { 
         editAPARTMENTS = await apiGet('/apartments'); 
       } catch(err) { 
-        showToast('Failed to load apartments', '❌'); 
+        showToast('Failed to load apartments', '<i class="fas fa-times-circle"></i>'); 
         return;
       }
     }
 
-     // ✅ ADD THESE LINES - Load identification fields
+     // <i class="fas fa-check-circle"></i> ADD THESE LINES - Load identification fields
     document.getElementById('edit-f-identification').value = reservation.identification || '';
     document.getElementById('edit-f-id-type').value = reservation.idType || 'NIDA';
 
@@ -1734,7 +1734,7 @@ async function initEditForm(reservationId) {
     editUpdateRate();
     
   } catch (err) {
-    showToast('Failed to load reservation data: ' + err.message, '❌');
+    showToast('Failed to load reservation data: ' + err.message, '<i class="fas fa-times-circle"></i>');
   }
 }
 
@@ -1781,7 +1781,7 @@ function openEditFromDetail() {
   if (selectedReservation && selectedReservation.id) {
     openEditModal(selectedReservation.id);
   } else {
-    showToast('No reservation selected', '⚠️');
+    showToast('No reservation selected', '<i class="fas fa-exclamation-triangle"></i>');
   }
 }
 
@@ -1789,7 +1789,7 @@ function openEditFromDetail() {
 // New Reservation Form
 // Force manual calculation before saving
 function forceManualCalculation() {
-  console.log('🔧 Forcing manual calculation before save...');
+  console.log('<i class="fas fa-wrench"></i> Forcing manual calculation before save...');
   
   // Get current form values
   const aptId = parseInt(document.getElementById('modal-f-apt')?.value);
@@ -1830,7 +1830,7 @@ function forceManualCalculation() {
   document.getElementById('modal-f-total-hidden').value = total;
   document.getElementById('modal-f-total').innerHTML = fmtTSH(total);
   
-  console.log(`✅ Manual calculation: ${nights} nights × ${apt.ratePerNight} × ${multiplier} = ${total}`);
+  console.log(`<i class="fas fa-check-circle"></i> Manual calculation: ${nights} nights × ${apt.ratePerNight} × ${multiplier} = ${total}`);
   
   return total;
 }
@@ -1843,17 +1843,17 @@ function forceManualCalculation() {
 document.getElementById('reservation-form-modal')?.addEventListener('submit', async function(e) {
   e.preventDefault();
   
-  // 🔧 FORCE MANUAL CALCULATION BEFORE SAVING
+  // <i class="fas fa-wrench"></i> FORCE MANUAL CALCULATION BEFORE SAVING
   const forcedTotal = forceManualCalculation();
   
   const checkin = document.getElementById('modal-f-checkin').value;
   const checkout = document.getElementById('modal-f-checkout').value;
   
   if (checkin >= checkout) { 
-    showToast('Check-out must be after check-in', '⚠️'); 
+    showToast('Check-out must be after check-in', '<i class="fas fa-exclamation-triangle"></i>'); 
     return; 
   }
- // ✅ ADD VALIDATION HERE
+ // <i class="fas fa-check-circle"></i> ADD VALIDATION HERE
   const idType = document.getElementById('modal-f-id-type').value;
   const idNumber = document.getElementById('modal-f-identification').value;
   
@@ -1876,7 +1876,7 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
   
   // Validate total is not zero
   if (finalTotal <= 0) {
-    showToast('Please ensure total amount is calculated correctly', '⚠️');
+    showToast('Please ensure total amount is calculated correctly', '<i class="fas fa-exclamation-triangle"></i>');
     return;
   }
 
@@ -1892,7 +1892,7 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
     children: parseInt(document.getElementById('modal-f-children').value),
     rateType: document.getElementById('modal-f-ratetype').value,
     total: finalTotal,
-    // ✅ ADD THESE TWO LINES
+    // <i class="fas fa-check-circle"></i> ADD THESE TWO LINES
   identification: document.getElementById('modal-f-identification').value,
   idType: document.getElementById('modal-f-id-type').value
   };
@@ -1900,11 +1900,11 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
   try {
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
-    submitBtn.textContent = '⏳ Saving...';
+    submitBtn.textContent = '<i class="fas fa-spinner fa-spin"></i> Saving...';
     submitBtn.disabled = true;
     
     await apiPost('/reservations', payload);
-    showToast('✅ Reservation confirmed successfully!', '🎉');
+    showToast('<i class="fas fa-check-circle"></i> Reservation confirmed successfully!', '<i class="fas fa-glass-cheers"></i>');
     closeReservationModal();
     document.getElementById('reservation-form-modal').reset();
     
@@ -1919,14 +1919,14 @@ document.getElementById('reservation-form-modal')?.addEventListener('submit', as
     submitBtn.textContent = originalText;
     submitBtn.disabled = false;
   } catch (err) {
-    showToast(err.message, '⚠️');
+    showToast(err.message, '<i class="fas fa-exclamation-triangle"></i>');
   }
 });
 
 
 // Force manual calculation for Edit Modal
 function forceManualCalculationEdit() {
-  console.log('🔧 Forcing manual calculation for edit...');
+  console.log('<i class="fas fa-wrench"></i> Forcing manual calculation for edit...');
   
   const aptId = parseInt(document.getElementById('edit-f-apt')?.value);
   const rateType = document.getElementById('edit-f-ratetype')?.value;
@@ -1969,10 +1969,10 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
   const checkout = document.getElementById('edit-f-checkout').value;
   
   if (checkin >= checkout) { 
-    showToast('Check-out must be after check-in', '⚠️'); 
+    showToast('Check-out must be after check-in', '<i class="fas fa-exclamation-triangle"></i>'); 
     return; 
   }
-    // ✅ ADD VALIDATION HERE
+    // <i class="fas fa-check-circle"></i> ADD VALIDATION HERE
   const idType = document.getElementById('edit-f-id-type').value;
   const idNumber = document.getElementById('edit-f-identification').value;
   
@@ -1990,7 +1990,7 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
   }
   
   if (finalTotal <= 0) {
-    showToast('Please ensure total amount is calculated correctly', '⚠️');
+    showToast('Please ensure total amount is calculated correctly', '<i class="fas fa-exclamation-triangle"></i>');
     return;
   }
 
@@ -2008,7 +2008,7 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     total: finalTotal,
     userId: currentUser.id,
     username: currentUser.fullName || currentUser.username,
-   // ✅ ADD THESE TWO LINES
+   // <i class="fas fa-check-circle"></i> ADD THESE TWO LINES
   identification: document.getElementById('edit-f-identification').value,
   idType: document.getElementById('edit-f-id-type').value
 
@@ -2017,11 +2017,11 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
   try {
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
-    submitBtn.textContent = '⏳ Updating...';
+    submitBtn.textContent = '<i class="fas fa-spinner fa-spin"></i> Updating...';
     submitBtn.disabled = true;
     
     await apiPut(`/reservations/${reservationId}`, payload);
-    showToast('✅ Reservation updated successfully!', '📝');
+    showToast('<i class="fas fa-check-circle"></i> Reservation updated successfully!', '<i class="fas fa-pen"></i>');
     closeEditModal();
     
     setTimeout(() => {
@@ -2031,7 +2031,7 @@ document.getElementById('edit-form-modal')?.addEventListener('submit', async fun
     submitBtn.textContent = originalText;
     submitBtn.disabled = false;
   } catch (err) {
-    showToast('Update failed: ' + err.message, '⚠️');
+    showToast('Update failed: ' + err.message, '<i class="fas fa-exclamation-triangle"></i>');
   }
 });
 
@@ -2041,7 +2041,7 @@ window.openDetail = async function(resId) {
   try {
     document.getElementById('detail-body').innerHTML = `
       <div style="text-align:center;padding:40px;">
-        <div style="font-size:24px;margin-bottom:10px;">⏳</div>
+        <div style="font-size:24px;margin-bottom:10px;"><i class="fas fa-spinner fa-spin"></i></div>
         <div>Loading reservation details...</div>
       </div>
     `;
@@ -2055,39 +2055,39 @@ window.openDetail = async function(resId) {
     const nights = daysBetween(res.checkin, res.checkout);
     
     document.getElementById('detail-body').innerHTML = `
-      <div class="detail-row"><div class="detail-icon">👤</div><div><div class="detail-label">Guest Name</div><div class="detail-value">${escapeHtml(res.guest)}</div></div></div>
-      <div class="detail-row"><div class="detail-icon">📧</div><div><div class="detail-label">Email</div><div class="detail-value">${escapeHtml(res.email)}</div></div></div>
-      <div class="detail-row"><div class="detail-icon">📱</div><div><div class="detail-label">Mobile</div><div class="detail-value">${escapeHtml(res.mobile || '—')}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-user"></i></div><div><div class="detail-label">Guest Name</div><div class="detail-value">${escapeHtml(res.guest)}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-envelope"></i></div><div><div class="detail-label">Email</div><div class="detail-value">${escapeHtml(res.email)}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-mobile-alt"></i></div><div><div class="detail-label">Mobile</div><div class="detail-value">${escapeHtml(res.mobile || '—')}</div></div></div>
       
 <div class="detail-row">
-  <div class="detail-icon">🪪</div>
+  <div class="detail-icon"><i class="fas fa-id-card"></i></div>
   <div>
     <div class="detail-label">ID Type</div>
     <div class="detail-value">${escapeHtml(res.idType || '—')}</div>
   </div>
 </div>
 <div class="detail-row">
-  <div class="detail-icon">📋</div>
+  <div class="detail-icon"><i class="fas fa-clipboard-list"></i></div>
   <div>
     <div class="detail-label">ID Number</div>
     <div class="detail-value">${escapeHtml(res.identification || '—')}</div>
   </div>
 </div>
-      <div class="detail-row"><div class="detail-icon">🌍</div><div><div class="detail-label">Country</div><div class="detail-value">${escapeHtml(res.country || '—')}</div></div></div>
-      <div class="detail-row"><div class="detail-icon">🏙️</div><div><div class="detail-label">City</div><div class="detail-value">${escapeHtml(res.city || '—')}</div></div></div>
-      <div class="detail-row"><div class="detail-icon">🏠</div><div><div class="detail-label">Apartment</div><div class="detail-value">${escapeHtml(apt.name)}</div></div></div>
-      <div class="detail-row"><div class="detail-icon">💳</div><div><div class="detail-label">Rate Type</div><div class="detail-value">${escapeHtml(res.rateType)}</div></div></div>
-      <div class="detail-row"><div class="detail-icon">📅</div><div><div class="detail-label">Check-in</div><div class="detail-value">${fmtDate(res.checkin)}</div></div></div>
-      <div class="detail-row"><div class="detail-icon">📅</div><div><div class="detail-label">Check-out</div><div class="detail-value">${fmtDate(res.checkout)}</div></div></div>
-      <div class="detail-row"><div class="detail-icon">🌙</div><div><div class="detail-label">Nights</div><div class="detail-value">${nights} night${nights !== 1 ? 's' : ''}</div></div></div>
-      <div class="detail-row"><div class="detail-icon">👨‍👩‍👧</div><div><div class="detail-label">Adults / Children</div><div class="detail-value">${res.adults} Adults, ${res.children} Children</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-globe-africa"></i></div><div><div class="detail-label">Country</div><div class="detail-value">${escapeHtml(res.country || '—')}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-city"></i></div><div><div class="detail-label">City</div><div class="detail-value">${escapeHtml(res.city || '—')}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-home"></i></div><div><div class="detail-label">Apartment</div><div class="detail-value">${escapeHtml(apt.name)}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-credit-card"></i></div><div><div class="detail-label">Rate Type</div><div class="detail-value">${escapeHtml(res.rateType)}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-calendar-alt"></i></div><div><div class="detail-label">Check-in</div><div class="detail-value">${fmtDate(res.checkin)}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-calendar-alt"></i></div><div><div class="detail-label">Check-out</div><div class="detail-value">${fmtDate(res.checkout)}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-moon"></i></div><div><div class="detail-label">Nights</div><div class="detail-value">${nights} night${nights !== 1 ? 's' : ''}</div></div></div>
+      <div class="detail-row"><div class="detail-icon"><i class="fas fa-users"></i></div><div><div class="detail-label">Adults / Children</div><div class="detail-value">${res.adults} Adults, ${res.children} Children</div></div></div>
       <div class="detail-total"><span>Total Rate</span><span>${fmtTSH(res.total)}</span></div>
     `;
   } catch (err) {
-    showToast('Could not load reservation: ' + err.message, '❌');
+    showToast('Could not load reservation: ' + err.message, '<i class="fas fa-times-circle"></i>');
     document.getElementById('detail-body').innerHTML = `
       <div style="text-align:center;padding:40px;color:var(--red);">
-        <div style="font-size:48px;margin-bottom:10px;">⚠️</div>
+        <div style="font-size:48px;margin-bottom:10px;"><i class="fas fa-exclamation-triangle"></i></div>
         <div>Failed to load reservation details</div>
       </div>
     `;
@@ -2253,8 +2253,8 @@ function openChangePasswordModal() {
       <div class="reservation-modal-overlay" id="change-password-modal-overlay" onclick="closeChangePasswordModal()"></div>
       <div class="reservation-modal" id="change-password-modal">
         <div class="reservation-modal-header">
-          <h3>🔐 Change Password</h3>
-          <button class="reservation-modal-close" onclick="closeChangePasswordModal()">✕</button>
+          <h3><i class="fas fa-lock"></i> Change Password</h3>
+          <button class="reservation-modal-close" onclick="closeChangePasswordModal()"><i class="fas fa-times"></i></button>
         </div>
         <div class="reservation-modal-body">
           <form id="change-password-form">
@@ -2271,7 +2271,7 @@ function openChangePasswordModal() {
               <input type="password" id="confirm-password" class="form-control" required>
             </div>
             <hr class="divider" />
-            <button type="submit" class="btn btn-success">✅ Update Password</button>
+            <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Update Password</button>
             <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeChangePasswordModal()">Cancel</button>
           </form>
         </div>
@@ -2287,11 +2287,11 @@ function openChangePasswordModal() {
       const confirmPassword = document.getElementById('confirm-password').value;
       
       if (newPassword !== confirmPassword) {
-        showToast('New passwords do not match', '⚠️');
+        showToast('New passwords do not match', '<i class="fas fa-exclamation-triangle"></i>');
         return;
       }
       if (newPassword.length < 6) {
-        showToast('Password must be at least 6 characters', '⚠️');
+        showToast('Password must be at least 6 characters', '<i class="fas fa-exclamation-triangle"></i>');
         return;
       }
       
@@ -2302,10 +2302,10 @@ function openChangePasswordModal() {
     newPassword: newPassword
   });
   
-  showToast('Password changed successfully! Please login again.', '✅');
+  showToast('Password changed successfully! Please login again.', '<i class="fas fa-check-circle"></i>');
   setTimeout(() => { logout(); }, 1500);
 } catch (err) {
-  showToast('Failed to change password: ' + err.message, '❌');
+  showToast('Failed to change password: ' + err.message, '<i class="fas fa-times-circle"></i>');
 }
 });
   }

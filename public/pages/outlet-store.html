@@ -329,7 +329,7 @@
         <span>Premier Suites</span>
       </div>
     </a>
-    <button class="sidebar-close-btn" id="sidebar-close-btn">✕</button>
+    <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fas fa-times"></i></button>
   </div>
   
   <nav class="sidebar-nav">
@@ -344,8 +344,8 @@
     <!-- ============================================================ -->
     <div class="nav-section-label">Operations</div>
     <a href="/reservations" class="nav-item"><i class="fas fa-calendar-alt"></i> Reservations</a>
-    <a href="/housekeeping" class="nav-item"><i class="fas fa-broom"></i> Housekeeping</a>
-    <a href="/maintenance" class="nav-item"><i class="fas fa-wrench"></i> Maintenance</a>
+    <a href="/housekeeping" class="nav-item"><i class="fas fa-soap"></i> Housekeeping</a>
+    <a href="/maintenance" class="nav-item"><i class="fas fa-toolbox"></i> Maintenance</a>
     
     <!-- ============================================================ -->
     <!-- PROPERTY -->
@@ -385,7 +385,7 @@
     <!-- FINANCE -->
     <!-- ============================================================ -->
     <div class="nav-section-label">Finance</div>
-    <a href="/expenditures" class="nav-item"><i class="fas fa-money-bill-wave"></i> Expenditures</a>
+    <a href="/expenditures" class="nav-item"><i class="fas fa-receipt"></i> Expenditures</a>
     
     <!-- ============================================================ -->
     <!-- GUESTS -->
@@ -415,9 +415,9 @@
     <div><div class="page-title" id="nav-title">Outlet Store</div><div class="page-subtitle">Inventory</div></div>
   </div>
   <div class="navbar-right">
-    <button class="btn-add-reservation" onclick="openItemSelector()">📝 Request Item</button>
+    <button class="btn-add-reservation" onclick="openItemSelector()"><i class="fas fa-pen"></i> Request Item</button>
     <button class="notif-btn" id="notif-btn">
-  🔔<span class="badge" id="notif-badge">0</span>
+  <i class="fas fa-bell"></i><span class="badge" id="notif-badge">0</span>
 </button>
     
     <div class="user-dropdown">
@@ -443,7 +443,7 @@
   <div class="card">
     <div class="card-header">
       <span class="card-title" id="card-title">Inventory</span>
-      <button class="btn btn-gold" onclick="openItemSelector()">📝 Request Item</button>
+      <button class="btn btn-gold" onclick="openItemSelector()"><i class="fas fa-pen"></i> Request Item</button>
     </div>
     <div style="overflow-x: auto; padding: 20px;">
       <table class="store-table" id="inventory-table">
@@ -464,14 +464,14 @@
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
   <div class="notification-header">
-    <span>📢 Notifications</span>
+    <span><i class="fas fa-bullhorn"></i> Notifications</span>
     <div>
       <button id="mark-all-read-btn" class="mark-all-read">Mark all read</button>
-      <button id="close-notif-panel">✕</button>
+      <button id="close-notif-panel"><i class="fas fa-times"></i></button>
     </div>
   </div>
   <div class="notification-list" id="notification-list">
-    <div class="empty-notifications">📭 No new notifications</div>
+    <div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>
   </div>
 </div>
 </main>
@@ -480,8 +480,8 @@
 <div id="item-selector-modal" style="display: none;" class="item-select-modal">
   <div class="item-select-content">
     <div class="item-select-header">
-      <h4>🛒 Select Item from Main Store</h4>
-      <button class="close-panel" onclick="closeItemSelector()">✕</button>
+      <h4><i class="fas fa-shopping-cart"></i> Select Item from Main Store</h4>
+      <button class="close-panel" onclick="closeItemSelector()"><i class="fas fa-times"></i></button>
     </div>
     <div class="item-select-body">
       <input type="text" id="item-search-input" class="item-search" placeholder="Search items by name or category..." oninput="filterItemList()">
@@ -526,7 +526,7 @@
           </select>
         </div>
         <div style="display: flex; gap: 10px; margin-top: 15px;">
-          <button class="btn btn-success" onclick="submitRequest()" style="flex: 1;">📤 Send Request</button>
+          <button class="btn btn-success" onclick="submitRequest()" style="flex: 1;"><i class="fas fa-paper-plane"></i> Send Request</button>
           <button class="btn btn-outline" onclick="clearSelectedItem()" style="flex: 1;">Clear</button>
         </div>
       </div>
@@ -541,8 +541,8 @@
 <div class="reservation-modal-overlay" id="change-password-modal-overlay"></div>
 <div class="reservation-modal" id="change-password-modal">
   <div class="reservation-modal-header">
-    <h3>🔐 Change Password</h3>
-    <button class="reservation-modal-close" onclick="closeChangePasswordModal()">✕</button>
+    <h3><i class="fas fa-lock"></i> Change Password</h3>
+    <button class="reservation-modal-close" onclick="closeChangePasswordModal()"><i class="fas fa-times"></i></button>
   </div>
   <div class="reservation-modal-body">
     <form id="change-password-form">
@@ -559,7 +559,7 @@
         <input type="password" id="confirm-password" class="form-control" required>
       </div>
       <hr class="divider" />
-      <button type="submit" class="btn btn-success">✅ Update Password</button>
+      <button type="submit" class="btn btn-success"><i class="fas fa-check-circle"></i> Update Password</button>
       <button type="button" class="btn btn-outline" style="margin-top:10px; width:100%;" onclick="closeChangePasswordModal()">Cancel</button>
     </form>
   </div>
@@ -598,7 +598,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '🚪'
+        icon: '<i class="fas fa-door-open"></i>'
       });
     });
     
@@ -618,7 +618,7 @@ async function loadNotifications() {
         time: new Date().toLocaleTimeString(),
         read: false,
         reservationId: r.id,
-        icon: '📅'
+        icon: '<i class="fas fa-calendar-alt"></i>'
       });
     });
     
@@ -633,7 +633,7 @@ async function loadNotifications() {
           message: `${item.name} is low in stock (${item.quantity} left)`,
           time: new Date().toLocaleTimeString(),
           read: false,
-          icon: '⚠️'
+          icon: '<i class="fas fa-exclamation-triangle"></i>'
         });
       });
     } catch(e) {
@@ -648,7 +648,7 @@ async function loadNotifications() {
     renderNotifications();
     updateNotificationBadge();
     
-    console.log(`📢 Loaded ${notifications.length} notifications`);
+    console.log(`<i class="fas fa-bullhorn"></i> Loaded ${notifications.length} notifications`);
   } catch (err) {
     console.error('Failed to load notifications:', err);
   }
@@ -661,7 +661,7 @@ function renderNotifications() {
   const unreadCount = notifications.filter(n => !n.read).length;
   
   if (notifications.length === 0) {
-    container.innerHTML = '<div class="empty-notifications">📭 No new notifications</div>';
+    container.innerHTML = '<div class="empty-notifications"><i class="fas fa-inbox"></i> No new notifications</div>';
     return;
   }
   
@@ -672,7 +672,7 @@ function renderNotifications() {
         ${escapeHtml(notif.message)}
       </div>
       <div class="notification-time">
-        <span>🕐 ${notif.time}</span>
+        <span><i class="fas fa-clock"></i> ${notif.time}</span>
       </div>
     </div>
   `).join('');
@@ -837,7 +837,7 @@ function openChangePasswordModal() {
     document.body.style.overflow = 'hidden';
   } else {
     console.error('Modal elements not found!');
-    showToast('Please refresh the page and try again.', '⚠️');
+    showToast('Please refresh the page and try again.', '<i class="fas fa-exclamation-triangle"></i>');
   }
   
   // Close dropdown
@@ -869,17 +869,17 @@ if (changePasswordForm) {
     var confirmPassword = document.getElementById('confirm-password').value;
     
     if (newPassword !== confirmPassword) {
-      showToast('New passwords do not match', '⚠️');
+      showToast('New passwords do not match', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     if (newPassword.length < 6) {
-      showToast('Password must be at least 6 characters', '⚠️');
+      showToast('Password must be at least 6 characters', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     
     var currentUserData = getCurrentUser();
     if (!currentUserData) {
-      showToast('User not found. Please login again.', '⚠️');
+      showToast('User not found. Please login again.', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     
@@ -890,10 +890,10 @@ if (changePasswordForm) {
     newPassword: newPassword
   });
   
-  showToast('Password changed successfully! Please login again.', '✅');
+  showToast('Password changed successfully! Please login again.', '<i class="fas fa-check-circle"></i>');
   setTimeout(() => { logout(); }, 1500);
 } catch (err) {
-  showToast('Failed to change password: ' + err.message, '❌');
+  showToast('Failed to change password: ' + err.message, '<i class="fas fa-times-circle"></i>');
 }
 });
 }
@@ -944,7 +944,7 @@ window.closeChangePasswordModal = closeChangePasswordModal;
       inventoryItems = items;
       renderInventory();
     } catch(err) { 
-      showToast('Failed to load inventory: ' + err.message, '❌'); 
+      showToast('Failed to load inventory: ' + err.message, '<i class="fas fa-times-circle"></i>'); 
     }
   }
 
@@ -952,7 +952,7 @@ window.closeChangePasswordModal = closeChangePasswordModal;
     var tbody = document.getElementById('inventory-tbody');
     if (!tbody) return;
     if (inventoryItems.length === 0) {
-      tbody.innerHTML = '<td><td colspan="6" class="empty-state">📭 No items in this store. Request items from Main Store.</td></tr>';
+      tbody.innerHTML = '<td><td colspan="6" class="empty-state"><i class="fas fa-inbox"></i> No items in this store. Request items from Main Store.</td></tr>';
       return;
     }
     var html = '';
@@ -967,7 +967,7 @@ window.closeChangePasswordModal = closeChangePasswordModal;
       html += '<td><strong>' + escapeHtml(item.quantity) + '</strong></td>';
       html += '<td>' + fmtTSH(item.cost) + '</td>';
       html += '<td>' + new Date(item.created_at).toLocaleDateString() + '</td>';
-      html += '<td><button class="btn btn-danger btn-sm" onclick="deleteAllItems(\'' + escapeHtml(item.item_name) + '\')">🗑 Delete All</button></td>';
+      html += '<td><button class="btn btn-danger btn-sm" onclick="deleteAllItems(\'' + escapeHtml(item.item_name) + '\')"><i class="fas fa-trash-alt"></i> Delete All</button></td>';
       html += '</tr>';
     }
     tbody.innerHTML = html;
@@ -977,10 +977,10 @@ window.closeChangePasswordModal = closeChangePasswordModal;
     if (!confirm('Delete ALL "' + itemName + '" from this outlet? This will remove all quantities of this item.')) return;
     try {
       await apiDelete('/outlet-inventory/bulk/' + encodeURIComponent(outletName) + '/' + encodeURIComponent(itemName));
-      showToast('All "' + itemName + '" items deleted', '🗑️');
+      showToast('All "' + itemName + '" items deleted', '<i class="fas fa-trash-alt"></i>');
       await loadInventory();
     } catch(err) { 
-      showToast('Delete failed: ' + err.message, '❌'); 
+      showToast('Delete failed: ' + err.message, '<i class="fas fa-times-circle"></i>'); 
     }
   }
 
@@ -988,14 +988,14 @@ window.closeChangePasswordModal = closeChangePasswordModal;
     try {
       storeItems = await apiGet('/store/items');
     } catch(err) {
-      showToast('Failed to load main store items: ' + err.message, '❌');
+      showToast('Failed to load main store items: ' + err.message, '<i class="fas fa-times-circle"></i>');
       storeItems = [];
     }
   }
 
   function openItemSelector() {
     if (storeItems.length === 0) {
-      showToast('Loading items from Main Store...', '⏳');
+      showToast('Loading items from Main Store...', '<i class="fas fa-spinner fa-spin"></i>');
       loadMainStoreItems().then(function() {
         document.getElementById('item-selector-modal').style.display = 'flex';
         renderItemList();
@@ -1073,7 +1073,7 @@ window.closeChangePasswordModal = closeChangePasswordModal;
   
   async function submitRequest() {
     if (!selectedRequestItem) {
-      showToast('Please select an item first', '⚠️');
+      showToast('Please select an item first', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     
@@ -1086,7 +1086,7 @@ window.closeChangePasswordModal = closeChangePasswordModal;
     var category = categorySelect ? categorySelect.value : selectedRequestItem.category;
     
     if (!quantity_val || quantity_val <= 0) {
-      showToast('Please enter a valid quantity', '⚠️');
+      showToast('Please enter a valid quantity', '<i class="fas fa-exclamation-triangle"></i>');
       return;
     }
     
@@ -1098,10 +1098,10 @@ window.closeChangePasswordModal = closeChangePasswordModal;
         quantity_unit: quantity_unit,
         requested_by: outletName
       });
-      showToast('Request sent to Main Store!', '✅');
+      showToast('Request sent to Main Store!', '<i class="fas fa-check-circle"></i>');
       closeItemSelector();
     } catch(err) {
-      showToast('Failed to send request: ' + err.message, '❌');
+      showToast('Failed to send request: ' + err.message, '<i class="fas fa-times-circle"></i>');
     }
   }
 

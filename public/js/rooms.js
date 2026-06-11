@@ -2,7 +2,7 @@
 async function loadAndRenderRooms() {
   const grid = document.getElementById('rooms-grid');
   if (grid) {
-    grid.innerHTML = '<div style="text-align:center;padding:60px;color:var(--gray-300);grid-column:1/-1">⏳ Loading apartments…</div>';
+    grid.innerHTML = '<div style="text-align:center;padding:60px;color:var(--gray-300);grid-column:1/-1"><i class="fas fa-spinner fa-spin"></i> Loading apartments…</div>';
   }
 
   try {
@@ -12,9 +12,9 @@ async function loadAndRenderRooms() {
     ]);
     renderRooms();
   } catch (err) {
-    showToast('Failed to load apartments: ' + err.message, '❌');
+    showToast('Failed to load apartments: ' + err.message, '<i class="fas fa-times-circle"></i>');
     if (grid) {
-      grid.innerHTML = `<div style="text-align:center;padding:60px;color:var(--gray-300);grid-column:1/-1">❌ Could not load apartments.<br><small>${err.message}</small></div>`;
+      grid.innerHTML = `<div style="text-align:center;padding:60px;color:var(--gray-300);grid-column:1/-1"><i class="fas fa-times-circle"></i> Could not load apartments.<br><small>${err.message}</small></div>`;
     }
   }
 }
@@ -43,7 +43,7 @@ function renderRooms() {
 
     const occupiedInfo = activeRes ? `
       <div class="room-guest-block" onclick="event.stopPropagation();openDetail(${activeRes.id})" style="cursor:pointer;">
-        <div class="room-guest-avatar">👤</div>
+        <div class="room-guest-avatar"><i class="fas fa-user"></i></div>
         <div class="room-guest-details">
           <div class="room-guest-name">${escapeHtml(activeRes.guest)}</div>
           <div class="room-guest-sub">${escapeHtml(activeRes.country || '')}${activeRes.city ? ' · ' + escapeHtml(activeRes.city) : ''}</div>
@@ -63,20 +63,20 @@ function renderRooms() {
       </div>
       <button class="btn btn-outline" style="width:100%;margin-top:10px;font-size:12px;padding:8px" 
         onclick="event.stopPropagation();openDetail(${activeRes.id})">
-        📋 View Full Details
+        <i class="fas fa-clipboard-list"></i> View Full Details
       </button>
     ` : '';
 
     const availableInfo = !activeRes ? `
       <div class="room-available-block">
-        <div class="room-available-icon">✅</div>
+        <div class="room-available-icon"><i class="fas fa-check-circle"></i></div>
         <div class="room-available-text">Available Now</div>
       </div>
       ${upcomingRes ? `
         <div class="room-upcoming-block">
           <div class="room-upcoming-label">Next Booking</div>
           <div class="room-upcoming-guest">${escapeHtml(upcomingRes.guest)}</div>
-          <div class="room-upcoming-dates">📅 ${fmtDate(upcomingRes.checkin)} → ${fmtDate(upcomingRes.checkout)}</div>
+          <div class="room-upcoming-dates"><i class="fas fa-calendar-alt"></i> ${fmtDate(upcomingRes.checkin)} → ${fmtDate(upcomingRes.checkout)}</div>
         </div>
       ` : `
         <div class="room-upcoming-block" style="text-align:center;color:var(--gray-300)">
@@ -92,9 +92,9 @@ function renderRooms() {
     return `
       <div class="room-card" data-apt-id="${apt.id}">
         <div class="room-card-img" style="background:linear-gradient(135deg,${apt.color}22,${apt.color}55)">
-          <span style="font-size:48px">${apt.emoji || '🏠'}</span>
+          <span style="font-size:48px">${apt.emoji || '<i class="fas fa-home"></i>'}</span>
           <div class="room-card-badge ${isOccupied ? 'chip-red' : 'chip-green'}">
-            ${isOccupied ? '🔴 Occupied' : '🟢 Available'}
+            ${isOccupied ? '<i class="fas fa-circle" style="color:#ef4444"></i> Occupied' : '<i class="fas fa-circle" style="color:#22c55e"></i> Available'}
           </div>
         </div>
         <div class="room-card-body">
@@ -102,8 +102,8 @@ function renderRooms() {
             <div>
               <div class="room-card-name">${escapeHtml(apt.name)}</div>
               <div class="room-card-meta">
-                <span>👤 Max ${apt.maxAdults} Adults</span>
-                <span>💰 ${fmtTSH(apt.ratePerNight)}/night</span>
+                <span><i class="fas fa-user"></i> Max ${apt.maxAdults} Adults</span>
+                <span><i class="fas fa-money-bill-wave"></i> ${fmtTSH(apt.ratePerNight)}/night</span>
               </div>
             </div>
             <div class="room-color-dot" style="background:${apt.color}"></div>
@@ -141,10 +141,10 @@ function openBookModal(aptId, aptName, ratePerNight) {
       }
       
       // Show a small notification
-      showToast(`Booking ${aptName} - ${fmtTSH(ratePerNight)}/night`, '🏠');
+      showToast(`Booking ${aptName} - ${fmtTSH(ratePerNight)}/night`, '<i class="fas fa-home"></i>');
     }, 300);
   } else {
-    showToast('Reservation system not ready', '⚠️');
+    showToast('Reservation system not ready', '<i class="fas fa-exclamation-triangle"></i>');
   }
 }
 
@@ -156,7 +156,7 @@ async function openDetail(resId) {
     if (detailBody) {
       detailBody.innerHTML = `
         <div style="text-align:center;padding:40px;">
-          <div style="font-size:24px;margin-bottom:10px;">⏳</div>
+          <div style="font-size:24px;margin-bottom:10px;"><i class="fas fa-spinner fa-spin"></i></div>
           <div>Loading reservation details...</div>
         </div>
       `;
@@ -180,77 +180,77 @@ async function openDetail(resId) {
     if (detailBody) {
       detailBody.innerHTML = `
         <div class="detail-row">
-          <div class="detail-icon">👤</div>
+          <div class="detail-icon"><i class="fas fa-user"></i></div>
           <div>
             <div class="detail-label">Guest Name</div>
             <div class="detail-value">${escapeHtml(res.guest)}</div>
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-icon">📧</div>
+          <div class="detail-icon"><i class="fas fa-envelope"></i></div>
           <div>
             <div class="detail-label">Email</div>
             <div class="detail-value">${escapeHtml(res.email)}</div>
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-icon">📱</div>
+          <div class="detail-icon"><i class="fas fa-mobile-alt"></i></div>
           <div>
             <div class="detail-label">Mobile</div>
             <div class="detail-value">${escapeHtml(res.mobile || '—')}</div>
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-icon">🌍</div>
+          <div class="detail-icon"><i class="fas fa-globe-africa"></i></div>
           <div>
             <div class="detail-label">Country</div>
             <div class="detail-value">${escapeHtml(res.country || '—')}</div>
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-icon">🏙️</div>
+          <div class="detail-icon"><i class="fas fa-city"></i></div>
           <div>
             <div class="detail-label">City</div>
             <div class="detail-value">${escapeHtml(res.city || '—')}</div>
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-icon">🏠</div>
+          <div class="detail-icon"><i class="fas fa-home"></i></div>
           <div>
             <div class="detail-label">Apartment</div>
             <div class="detail-value">${escapeHtml(apt.name)}</div>
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-icon">💳</div>
+          <div class="detail-icon"><i class="fas fa-credit-card"></i></div>
           <div>
             <div class="detail-label">Rate Type</div>
             <div class="detail-value">${escapeHtml(res.rateType)}</div>
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-icon">📅</div>
+          <div class="detail-icon"><i class="fas fa-calendar-alt"></i></div>
           <div>
             <div class="detail-label">Check-in</div>
             <div class="detail-value">${fmtDate(res.checkin)}</div>
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-icon">📅</div>
+          <div class="detail-icon"><i class="fas fa-calendar-alt"></i></div>
           <div>
             <div class="detail-label">Check-out</div>
             <div class="detail-value">${fmtDate(res.checkout)}</div>
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-icon">🌙</div>
+          <div class="detail-icon"><i class="fas fa-moon"></i></div>
           <div>
             <div class="detail-label">Nights</div>
             <div class="detail-value">${nights} night${nights !== 1 ? 's' : ''}</div>
           </div>
         </div>
         <div class="detail-row">
-          <div class="detail-icon">👨‍👩‍👧</div>
+          <div class="detail-icon"><i class="fas fa-users"></i></div>
           <div>
             <div class="detail-label">Adults / Children</div>
             <div class="detail-value">${res.adults} Adults, ${res.children} Children</div>
@@ -263,11 +263,11 @@ async function openDetail(resId) {
       `;
     }
   } catch (err) {
-    showToast('Could not load reservation: ' + err.message, '❌');
+    showToast('Could not load reservation: ' + err.message, '<i class="fas fa-times-circle"></i>');
     if (detailBody) {
       detailBody.innerHTML = `
         <div style="text-align:center;padding:40px;color:var(--red);">
-          <div style="font-size:48px;margin-bottom:10px;">⚠️</div>
+          <div style="font-size:48px;margin-bottom:10px;"><i class="fas fa-exclamation-triangle"></i></div>
           <div>Failed to load reservation details</div>
           <div style="font-size:12px;margin-top:10px;">${err.message}</div>
         </div>
@@ -286,7 +286,7 @@ function closeDetailPanel() {
 
 async function deleteSelectedReservation() {
   if (!selectedReservation) {
-    showToast('No reservation selected', '⚠️');
+    showToast('No reservation selected', '<i class="fas fa-exclamation-triangle"></i>');
     return;
   }
   
@@ -296,9 +296,9 @@ async function deleteSelectedReservation() {
     await apiDelete(`/reservations/${selectedReservation.id}`);
     closeDetailPanel();
     await loadAndRenderRooms();
-    showToast('Reservation deleted successfully', '🗑️');
+    showToast('Reservation deleted successfully', '<i class="fas fa-trash-alt"></i>');
   } catch (err) {
-    showToast('Delete failed: ' + err.message, '❌');
+    showToast('Delete failed: ' + err.message, '<i class="fas fa-times-circle"></i>');
   }
 }
 
