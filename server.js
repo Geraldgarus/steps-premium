@@ -3199,7 +3199,8 @@ app.get('/api/admin/export-db', async (req, res) => {
     'housekeeping_status', 'vendors', 'purchase_orders',
     'purchase_order_items', 'goods_receipt_notes', 'goods_receipt_items',
     'sales_orders', 'sales_items', 'menu_items', 'expenditures',
-    'activity_logs', 'countries'
+    'activity_logs', 'countries', 'maintenance_records', 'staff_activities',
+    'daily_activities'
   ];
   try {
     let sql = '-- Steps Premium Suite Database Export\n';
