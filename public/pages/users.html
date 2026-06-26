@@ -1191,7 +1191,7 @@ if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
   
   // Add/Edit Modal functions
   function openAddUserModal() {
-    document.getElementById('user-modal-title').innerText = '<i class="fas fa-plus"></i> Add New User';
+    document.getElementById('user-modal-title').innerHTML = '<i class="fas fa-plus"></i> Add New User';
     document.getElementById('user-id').value = '';
     document.getElementById('user-username').value = '';
     document.getElementById('user-fullname').value = '';

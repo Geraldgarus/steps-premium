@@ -1058,7 +1058,7 @@ async function apiPut(endpoint, data) {
   // ADD/EDIT MODAL FUNCTIONS
   // ============================================================
   function openAddApartmentModal() {
-    document.getElementById('apt-modal-title').innerText = '<i class="fas fa-plus"></i> Add Apartment';
+    document.getElementById('apt-modal-title').innerHTML = '<i class="fas fa-plus"></i> Add Apartment';
     document.getElementById('apt-id').value = '';
     document.getElementById('apt-name').value = '';
     document.getElementById('apt-type').value = '';
