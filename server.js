@@ -88,7 +88,19 @@ async function logActivity(userId, username, action, entityType, entityId, oldDa
 // ============================================================
 // MIDDLEWARE
 // ============================================================
-app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
+const allowedOrigins = [
+  'https://stepspremium.co.tz',
+  'https://www.stepspremium.co.tz'
+];
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
