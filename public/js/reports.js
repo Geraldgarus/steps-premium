@@ -2,7 +2,7 @@
 async function loadAndRenderReports() {
   const fromEl = document.getElementById('rpt-from');
   const toEl = document.getElementById('rpt-to');
-  if (fromEl && !fromEl.value) fromEl.value = '2026-01-01';
+  if (fromEl && !fromEl.value) fromEl.value = isoDate(new Date());
   if (toEl && !toEl.value) toEl.value = isoDate(new Date());
   await applyReportFilter();
 }
@@ -38,7 +38,7 @@ async function loadApartments() {
 }
 
 function clearReportFilter() {
-  document.getElementById('rpt-from').value = '2026-01-01';
+  document.getElementById('rpt-from').value = isoDate(new Date());
   document.getElementById('rpt-to').value = isoDate(new Date());
   applyReportFilter();
 }
@@ -74,8 +74,7 @@ function renderReportData(summary, filteredRes, fromVal, toVal) {
       <td>${a.bookings}</td>
       <td>${a.nights}</td>
       <td><strong>${a.revenue > 0 ? fmtTSH(a.revenue) : '—'}</strong></td>
-      <td>${fmtTSH(a.ratePerNight)}</td>
-    </table>`).join('');
+    </tr>`).join('');
   }
 
   const badge = document.getElementById('rpt-filter-badge');
@@ -99,11 +98,17 @@ async function generatePrintReport() {
     const s = summary.summary;
     const byApt = summary.byApartment;
 
-    const aptRows = byApt.map(a => `<tr><td>${a.emoji} ${a.name}</td><td>${a.bookings}</td><td>${a.nights}</td><td><strong>${a.revenue > 0 ? fmtTSH(a.revenue) : '—'}</strong></td><td>${fmtTSH(a.ratePerNight)}/night</td></tr>`).join('');
+    const aptRows = byApt.map(a => `<tr><td>${a.emoji} ${a.name}</td><td>${a.bookings}</td><td>${a.nights}</td><td><strong>${a.revenue > 0 ? fmtTSH(a.revenue) : '—'}</strong></td></tr>`).join('');
+
+    const PAYMENT_METHOD_LABELS = { cash: 'Cash', card: 'Card', bank_transfer: 'Bank Transfer', mpesa: 'M-Pesa', tigo_pesa: 'Tigo Pesa', airtel_money: 'Airtel Money', halopesa: 'HaloPesa', cheque: 'Cheque', other: 'Other' };
+    const PAYMENT_STATUS_LABELS = { paid: 'Full Paid', partial: 'Partial', unpaid: 'Unpaid' };
 
     const resRows = filtered.map(r => {
       const apt = byApt.find(a => a.id === r.aptId);
-      return `<tr><td>${r.guest}</td><td>${apt?.name || '—'}</td><td>${fmtDate(r.checkin)}</td><td>${fmtDate(r.checkout)}</td><td>${daysBetween(r.checkin, r.checkout)}n</td><td>${r.adults}A ${r.children}C</td><td>${r.rateType}</td><td><strong>${fmtTSH(r.total)}</strong></td></tr>`;
+      const paymentMethod = PAYMENT_METHOD_LABELS[r.paymentMethod] || r.paymentMethod || '—';
+      const paymentStatus = PAYMENT_STATUS_LABELS[r.paymentStatus] || r.paymentStatus || 'Unpaid';
+      const statusColor = r.paymentStatus === 'paid' ? '#10b981' : (r.paymentStatus === 'partial' ? '#f59e0b' : '#ef4444');
+      return `<tr><td>${r.guest}</td><td>${apt?.name || '—'}</td><td>${fmtDate(r.checkin)}</td><td>${fmtDate(r.checkout)}</td><td>${daysBetween(r.checkin, r.checkout)}n</td><td>${r.adults}A ${r.children}C</td><td>${r.rateType}</td><td><strong>${fmtTSH(r.total)}</strong></td><td>${paymentMethod}</td><td><strong style="color:${statusColor}">${paymentStatus}</strong></td></tr>`;
     }).join('');
 
     const periodLabel = fromVal && toVal ? `${fmtDate(fromVal)} to ${fmtDate(toVal)}` : 'All Time';
@@ -133,8 +138,8 @@ async function generatePrintReport() {
     </style></head><body>
     <div class="header"><div class="logo-area"><h1><i class="fas fa-hotel"></i> Steps Premium Suite</h1><p>Property Management System · Dar es Salaam, Tanzania</p></div><div class="report-meta"><div class="period">Period: ${periodLabel}</div><div class="generated">Generated: ${new Date().toLocaleString('en-GB')}</div></div></div>
     <div class="summary-grid"><div class="summary-box"><div class="label">Total Reservations</div><div class="value">${s.totalReservations}</div></div><div class="summary-box"><div class="label">Total Revenue</div><div class="value" style="font-size:15px">${fmtTSH(s.totalRevenue)}</div></div><div class="summary-box"><div class="label">Total Nights Sold</div><div class="value">${s.totalNights}</div></div><div class="summary-box"><div class="label">Avg. Stay</div><div class="value">${s.avgStayNights ? s.avgStayNights.toFixed(1) : '—'} nts</div></div></div>
-    <h2>Revenue by Apartment</h2><table><thead><tr><th>Apartment</th><th>Bookings</th><th>Nights</th><th>Revenue</th><th>Rate/Night</th></tr></thead><tbody>${aptRows}</tbody></table>
-    <h2>Reservation Detail (${filtered.length} records)</h2><table><thead><tr><th>Guest</th><th>Apartment</th><th>Check-in</th><th>Check-out</th><th>Nights</th><th>Guests</th><th>Rate</th><th>Total</th></tr></thead><tbody>${resRows || '<tr><td colspan="8" style="text-align:center;color:#9ca3af;padding:20px">No reservations in this period</td></tr>'}</tbody></table>
+    <h2>Revenue by Apartment</h2><table><thead><tr><th>Apartment</th><th>Bookings</th><th>Nights</th><th>Revenue</th></tr></thead><tbody>${aptRows}</tbody></table>
+    <h2>Reservation Detail (${filtered.length} records)</h2><table><thead><tr><th>Guest</th><th>Apartment</th><th>Check-in</th><th>Check-out</th><th>Nights</th><th>Guests</th><th>Rate</th><th>Total</th><th>Payment Method</th><th>Payment Status</th></tr></thead><tbody>${resRows || '<tr><td colspan="10" style="text-align:center;color:#9ca3af;padding:20px">No reservations in this period</td></tr>'}</tbody></table>
     <div class="footer"><span>Steps PMS v1.0 · Confidential</span><span>Page 1</span></div>
     <script>window.onload=()=>window.print();<\/script>
     </body></html>`);
