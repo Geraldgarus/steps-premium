@@ -378,7 +378,8 @@
     <a href="/goods-receipt-reports" class="nav-item"><i class="fas fa-stamp"></i> Goods Receipt Report</a>
     <a href="/store-inventory-reports" class="nav-item"><i class="fas fa-boxes"></i> Store Inventory Report</a>
     <a href="/financial-report" class="nav-item active"><i class="fas fa-chart-line"></i> Financial Report</a>
-    
+    <a href="/expenses-report" class="nav-item"><i class="fas fa-receipt"></i> Expenses Report</a>
+
     <!-- ============================================================ -->
     <!-- FINANCE -->
     <!-- ============================================================ -->
@@ -429,20 +430,8 @@
   <div class="report-container">
     <div class="filter-bar">
       <div class="filter-group">
-        <label><i class="fas fa-calendar-alt"></i> From Date</label>
-        <input type="date" id="filter-from" value="">
-      </div>
-      <div class="filter-group">
-        <label><i class="fas fa-calendar-alt"></i> To Date</label>
-        <input type="date" id="filter-to" value="">
-      </div>
-      <div class="filter-group">
         <label>&nbsp;</label>
-        <button class="btn-gold" onclick="loadReport()" style="width: 100%;"><i class="fas fa-chart-bar"></i> Generate Report</button>
-      </div>
-      <div class="filter-group">
-        <label>&nbsp;</label>
-        <button class="btn-outline" onclick="resetFilters()" style="width: 100%;"><i class="fas fa-sync-alt"></i> Reset</button>
+        <button class="btn-gold" onclick="loadReport()" style="width: 100%;"><i class="fas fa-sync-alt"></i> Refresh</button>
       </div>
       <div class="filter-group">
         <label>&nbsp;</label>
@@ -563,24 +552,9 @@ let financialNotifications = [];
 
 async function loadReport() {
   try {
-    const fromDate = document.getElementById('filter-from').value;
-    const toDate = document.getElementById('filter-to').value;
-    
-    let revenueUrl = '/reservations';
-    let expenseUrl = '/expenditures';
-    let params = new URLSearchParams();
-    
-    if (fromDate) params.append('from', fromDate);
-    if (toDate) params.append('to', toDate);
-    
-    if (params.toString()) {
-      revenueUrl += '?' + params.toString();
-      expenseUrl += '?' + params.toString();
-    }
-    
-    const reservations = await apiGet(revenueUrl);
-    const expenditures = await apiGet(expenseUrl);
-    
+    const reservations = await apiGet('/reservations');
+    const expenditures = await apiGet('/expenditures');
+
     currentRevenue = reservations.reduce((sum, r) => sum + (r.total || 0), 0);
     currentExpenses = expenditures.reduce((sum, e) => sum + (e.amount || 0), 0);
     currentProfit = currentRevenue - currentExpenses;
@@ -652,16 +626,8 @@ function renderExpenseTable(expenditures) {
   tbody.innerHTML = html;
 }
 
-function resetFilters() {
-  document.getElementById('filter-from').value = '';
-  document.getElementById('filter-to').value = '';
-  loadReport();
-}
-
 function printReport() {
-  const fromVal = document.getElementById('filter-from').value || '';
-  const toVal = document.getElementById('filter-to').value || '';
-  const periodLabel = fromVal && toVal ? `${fromVal} to ${toVal}` : 'All Time';
+  const periodLabel = 'All Time';
   const revenue = document.getElementById('total-revenue').innerText;
   const expenses = document.getElementById('total-expenses').innerText;
   const profit = document.getElementById('net-profit').innerText;
@@ -848,12 +814,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('userName').innerText = user.fullName || user.username;
   document.getElementById('userRole').innerText = user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : 'User';
   document.getElementById('userAvatar').innerText = (user.fullName || user.username || 'U').charAt(0).toUpperCase();
-  
-  const today = new Date();
-  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  document.getElementById('filter-from').value = isoDate(firstDayOfMonth);
-  document.getElementById('filter-to').value = isoDate(today);
-  
+
   loadReport();
   
   const notifBtn = document.getElementById('notif-btn');
@@ -909,7 +870,6 @@ function showToast(msg, type) { let toast = document.getElementById('toast-conta
 function isoDate(date) { return date.toISOString().split('T')[0]; }
 
 window.loadReport = loadReport;
-window.resetFilters = resetFilters;
 window.printReport = printReport;
 window.logout = logout;
 window.openChangePasswordModal = openChangePasswordModal;

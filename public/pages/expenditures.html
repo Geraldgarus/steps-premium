@@ -50,13 +50,6 @@
     .btn-outline { background: transparent; border: 1px solid #e2e8f0; cursor: pointer; padding: 10px 20px; border-radius: 40px; }
     .btn-danger { background: #ef4444; color: white; border: none; cursor: pointer; padding: 10px 20px; border-radius: 40px; }
     .btn-sm { padding: 4px 10px; font-size: 12px; }
-    .summary-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
-    .summary-card { background: linear-gradient(135deg, #1e2a3e, #2c3e4e); color: white; padding: 15px; border-radius: 16px; text-align: center; }
-    .summary-card h4 { font-size: 12px; opacity: 0.8; margin-bottom: 8px; }
-    .summary-card .amount { font-size: 20px; font-weight: 700; }
-    .summary-card.profit { background: linear-gradient(135deg, #10b981, #059669); }
-    .summary-card.expense { background: linear-gradient(135deg, #ef4444, #dc2626); }
-    .summary-card.revenue { background: linear-gradient(135deg, #c9933a, #a87a2c); }
     .notif-btn { position: relative; background: #f1f5f9; border: none; border-radius: 40px; padding: 8px 12px; cursor: pointer; font-size: 18px; }
     .notif-btn:hover { background: #e2e8f0; }
     .notif-btn .badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; border-radius: 50%; font-size: 10px; padding: 2px 6px; min-width: 18px; text-align: center; display: none; }
@@ -74,7 +67,7 @@
     .change-pw-header button { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
     .change-pw-body { padding: 28px; }
     .btn-pw-success { background: #10b981; color: white; border: none; padding: 12px; border-radius: 40px; width: 100%; cursor: pointer; font-weight: 700; }
-    @media (max-width: 768px) { .expenditure-container { flex-direction: column; } .expenditure-left { width: 100%; order: 2; } .expenditure-right { width: 100%; order: 1; } .summary-cards { grid-template-columns: 1fr; } .form-group-row { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .expenditure-container { flex-direction: column; } .expenditure-left { width: 100%; order: 2; } .expenditure-right { width: 100%; order: 1; } .form-group-row { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -142,7 +135,8 @@
     <a href="/goods-receipt-reports" class="nav-item"><i class="fas fa-stamp"></i> Goods Receipt Report</a>
     <a href="/store-inventory-reports" class="nav-item"><i class="fas fa-boxes"></i> Store Inventory Report</a>
     <a href="/financial-report" class="nav-item"><i class="fas fa-chart-line"></i> Financial Report</a>
-    
+    <a href="/expenses-report" class="nav-item"><i class="fas fa-receipt"></i> Expenses Report</a>
+
     <!-- ============================================================ -->
     <!-- FINANCE -->
     <!-- ============================================================ -->
@@ -226,25 +220,6 @@
     </div>
 
     <div class="expenditure-right">
-      <!-- Summary Cards - FILTERED -->
-      <div class="summary-cards" id="summary-cards">
-        <div class="summary-card revenue">
-          <h4><i class="fas fa-money-bill-wave"></i> Total Revenue</h4>
-          <div class="amount" id="total-revenue">TSh 0</div>
-          <div style="font-size: 10px; opacity: 0.7;" id="revenue-period">(all time)</div>
-        </div>
-        <div class="summary-card expense">
-          <h4><i class="fas fa-chart-line fa-flip-vertical"></i> Total Expenses</h4>
-          <div class="amount" id="total-expenses">TSh 0</div>
-          <div style="font-size: 10px; opacity: 0.7;" id="expense-period">(filtered period)</div>
-        </div>
-        <div class="summary-card profit">
-          <h4><i class="fas fa-chart-line"></i> Net Profit</h4>
-          <div class="amount" id="net-profit">TSh 0</div>
-          <div style="font-size: 10px; opacity: 0.7;" id="profit-period">(filtered period)</div>
-        </div>
-      </div>
-
       <div id="form-section" class="form-section">
         <div class="form-header">
           <h3><i class="fas fa-plus"></i> New Expenditure</h3>
@@ -421,7 +396,6 @@ document.getElementById('expenditure-form')?.addEventListener('submit', async fu
     }
     cancelForm();
     loadExpenditures();
-    loadFinancialSummary(currentFromDate, currentToDate);
   } catch(err) {
     showToast('Failed to save: ' + err.message, 'error');
   }
@@ -447,89 +421,12 @@ async function loadExpenditures() {
     
     expenditures = await apiGet(url);
     renderExpendituresList();
-    
-    // Load financial summary with the same date filters
-    await loadFinancialSummary(from, to);
   } catch(err) {
     document.getElementById('expenditure-list').innerHTML = '<div style="text-align:center;padding:20px;color:#ef4444;">Error loading expenditures</div>';
   }
 }
 
-async function loadFinancialSummary(fromDate, toDate) {
-  try {
-    // Build URL for reservations with date filters
-    let revenueUrl = '/reservations';
-    let expenseUrl = '/expenditures';
-    let params = new URLSearchParams();
-    
-    if (fromDate) params.append('from', fromDate);
-    if (toDate) params.append('to', toDate);
-    
-    if (params.toString()) {
-      revenueUrl += '?' + params.toString();
-      expenseUrl += '?' + params.toString();
-    }
-    
-    // Get filtered revenue from reservations
-    const reservations = await apiGet(revenueUrl);
-    const filteredRevenue = reservations.reduce((sum, r) => sum + (r.total || 0), 0);
-    
-    // Get filtered expenses from expenditures (already filtered by date)
-    let expenseParams = new URLSearchParams();
-    if (fromDate) expenseParams.append('from', fromDate);
-    if (toDate) expenseParams.append('to', toDate);
-    if (currentCategory && currentCategory !== '') expenseParams.append('category', currentCategory);
-    
-    let finalExpenseUrl = '/expenditures';
-    if (expenseParams.toString()) finalExpenseUrl += '?' + expenseParams.toString();
-    
-    const expenses = await apiGet(finalExpenseUrl);
-    const filteredExpenses = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
-    const filteredProfit = filteredRevenue - filteredExpenses;
-    
-    // Update summary cards
-    document.getElementById('total-revenue').innerHTML = fmtTSH(filteredRevenue);
-    document.getElementById('total-expenses').innerHTML = fmtTSH(filteredExpenses);
-    document.getElementById('net-profit').innerHTML = fmtTSH(filteredProfit);
-    
-    // Update period labels
-    const periodLabel = getPeriodLabel(fromDate, toDate);
-    document.getElementById('revenue-period').innerHTML = periodLabel;
-    document.getElementById('expense-period').innerHTML = periodLabel;
-    document.getElementById('profit-period').innerHTML = periodLabel;
-    
-    // Update profit color
-    const profitEl = document.getElementById('net-profit');
-    if (filteredProfit < 0) {
-      profitEl.style.color = '#fecaca';
-    } else {
-      profitEl.style.color = 'white';
-    }
-    
-    console.log(`<i class="fas fa-chart-bar"></i> Financial Summary - Period: ${periodLabel}, Revenue: ${filteredRevenue}, Expenses: ${filteredExpenses}, Profit: ${filteredProfit}`);
-  } catch(err) {
-    console.error('Failed to load financial summary:', err);
-  }
-}
-
-function getPeriodLabel(fromDate, toDate) {
-  if (fromDate && toDate) {
-    return `(${formatDate(fromDate)} - ${formatDate(toDate)})`;
-  } else if (fromDate) {
-    return `(from ${formatDate(fromDate)})`;
-  } else if (toDate) {
-    return `(until ${formatDate(toDate)})`;
-  }
-  return '(all time)';
-}
-
-function formatDate(dateStr) {
-  if (!dateStr) return '';
-  const d = new Date(dateStr);
-  return d.toLocaleDateString();
-}
-
-function applyFilters() { 
+function applyFilters() {
   loadExpenditures(); 
 }
 
