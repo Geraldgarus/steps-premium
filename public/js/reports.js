@@ -1,4 +1,8 @@
 // Reports specific functions
+const PAYMENT_METHOD_LABELS = { cash: 'Cash', card: 'Card', bank_transfer: 'Bank Transfer', mpesa: 'M-Pesa', tigo_pesa: 'Tigo Pesa', airtel_money: 'Airtel Money', halopesa: 'HaloPesa', cheque: 'Cheque', other: 'Other' };
+const PAYMENT_STATUS_LABELS = { paid: 'Full Paid', partial: 'Partial', unpaid: 'Unpaid' };
+const PAYMENT_STATUS_BADGE_CLASS = { paid: 'payment-badge-paid', partial: 'payment-badge-partial', unpaid: 'payment-badge-unpaid' };
+
 async function loadAndRenderReports() {
   const fromEl = document.getElementById('rpt-from');
   const toEl = document.getElementById('rpt-to');
@@ -81,6 +85,24 @@ function renderReportData(summary, filteredRes, fromVal, toVal) {
   if (badge) {
     badge.textContent = fromVal && toVal ? `${fmtDate(fromVal)} → ${fmtDate(toVal)} · ${totalReservations} reservation${totalReservations !== 1 ? 's' : ''}` : `All time · ${totalReservations} reservations`;
   }
+
+  const paymentsTbody = document.getElementById('rpt-payments-table');
+  if (paymentsTbody) {
+    paymentsTbody.innerHTML = filteredRes.map(r => {
+      const apt = byApt.find(a => a.id === r.aptId);
+      const paymentMethod = PAYMENT_METHOD_LABELS[r.paymentMethod] || r.paymentMethod || '—';
+      const paymentStatus = PAYMENT_STATUS_LABELS[r.paymentStatus] || 'Unpaid';
+      const badgeClass = PAYMENT_STATUS_BADGE_CLASS[r.paymentStatus] || 'payment-badge-unpaid';
+      return `<tr>
+        <td><strong>${r.guest}</strong></td>
+        <td>${apt?.name || '—'}</td>
+        <td>${fmtDate(r.checkin)}</td>
+        <td>${fmtDate(r.checkout)}</td>
+        <td>${paymentMethod}</td>
+        <td><span class="${badgeClass}">${paymentStatus}</span></td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:20px">No reservations in this period</td></tr>';
+  }
 }
 
 async function generatePrintReport() {
@@ -99,9 +121,6 @@ async function generatePrintReport() {
     const byApt = summary.byApartment;
 
     const aptRows = byApt.map(a => `<tr><td>${a.emoji} ${a.name}</td><td>${a.bookings}</td><td>${a.nights}</td><td><strong>${a.revenue > 0 ? fmtTSH(a.revenue) : '—'}</strong></td></tr>`).join('');
-
-    const PAYMENT_METHOD_LABELS = { cash: 'Cash', card: 'Card', bank_transfer: 'Bank Transfer', mpesa: 'M-Pesa', tigo_pesa: 'Tigo Pesa', airtel_money: 'Airtel Money', halopesa: 'HaloPesa', cheque: 'Cheque', other: 'Other' };
-    const PAYMENT_STATUS_LABELS = { paid: 'Full Paid', partial: 'Partial', unpaid: 'Unpaid' };
 
     const resRows = filtered.map(r => {
       const apt = byApt.find(a => a.id === r.aptId);

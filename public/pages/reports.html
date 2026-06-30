@@ -175,6 +175,36 @@
     top: 55px;
   }
 }
+
+.payment-badge-paid {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.payment-badge-partial {
+  background: #fef3c7;
+  color: #d97706;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.payment-badge-unpaid {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-block;
+}
   </style>
 </head>
 <body>
@@ -336,6 +366,11 @@
   <div class="card" style="margin-top:20px">
     <div class="card-header"><span class="card-title">Reservations by Apartment</span></div>
     <div style="overflow-x:auto"><table class="data-table"><thead><tr><th>Apartment</th><th>Bookings</th><th>Total Nights</th><th>Total Revenue</th></tr></thead><tbody id="rpt-apt-table"></tbody></table></div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <div class="card-header"><span class="card-title">Reservation Payments</span></div>
+    <div style="overflow-x:auto"><table class="data-table"><thead><tr><th>Guest</th><th>Apartment</th><th>Check-in</th><th>Check-out</th><th>Payment Method</th><th>Payment Status</th></tr></thead><tbody id="rpt-payments-table"></tbody></table></div>
   </div>
   <!-- Notification Panel -->
 <div class="notification-panel" id="notification-panel">
