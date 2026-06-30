@@ -1141,7 +1141,19 @@ function printReservation() {
     if (!str) return '—';
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
-  
+
+  const PRINT_PAYMENT_METHOD_LABELS = { cash: 'Cash', card: 'Card', bank_transfer: 'Bank Transfer', mpesa: 'M-Pesa', tigo_pesa: 'Tigo Pesa', airtel_money: 'Airtel Money', halopesa: 'HaloPesa', cheque: 'Cheque', other: 'Other' };
+  const paymentMethodLabel = PRINT_PAYMENT_METHOD_LABELS[res.paymentMethod] || res.paymentMethod || '—';
+
+  let paymentStatusBadge = '';
+  if (res.paymentStatus === 'paid') {
+    paymentStatusBadge = '<span style="background:#d1fae5; color:#065f46; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;"><i class="fas fa-check-circle"></i> Paid in Full</span>';
+  } else if (res.paymentStatus === 'partial') {
+    paymentStatusBadge = '<span style="background:#fef3c7; color:#d97706; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;"><i class="fas fa-circle" style="color:#f59e0b"></i> Partial Payment</span>';
+  } else {
+    paymentStatusBadge = '<span style="background:#fee2e2; color:#dc2626; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600;"><i class="fas fa-times-circle"></i> Unpaid</span>';
+  }
+
   const printWindow = window.open('', '_blank', 'width=800,height=600');
   if (!printWindow) {
     showToast('Please allow popups to print', 'error');
@@ -1214,6 +1226,16 @@ function printReservation() {
               <div class="stay-row"><span class="stay-label">Guests</span><span class="stay-value">${res.adults || 1} Adult(s), ${res.children || 0} Child(ren)</span></div>
             </div>
             <div class="total-section"><div class="total-row"><span class="total-label">Total Amount</span><span class="total-amount">TSh ${(res.total || 0).toLocaleString()}</span></div></div>
+          </div>
+
+          <div class="stay-section">
+            <div class="section-header"><div class="section-title"><i class="fas fa-money-bill-wave"></i> Payment Details</div></div>
+            <div class="stay-details">
+              <div class="stay-row"><span class="stay-label">Payment Status</span><span class="stay-value">${paymentStatusBadge}</span></div>
+              <div class="stay-row"><span class="stay-label">Payment Method</span><span class="stay-value">${safeEscape(paymentMethodLabel)}</span></div>
+              <div class="stay-row"><span class="stay-label">Amount Paid</span><span class="stay-value">TSh ${(res.amountPaid || 0).toLocaleString()}</span></div>
+              <div class="stay-row"><span class="stay-label">Balance Due</span><span class="stay-value">TSh ${(res.balance || 0).toLocaleString()}</span></div>
+            </div>
           </div>
         </div>
         <div class="footer">
