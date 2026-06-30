@@ -446,7 +446,7 @@
       </div>
       <div class="filter-group">
         <label>&nbsp;</label>
-        <button class="btn-print" onclick="window.print()" style="width: 100%;"><i class="fas fa-print"></i> Print Report</button>
+        <button class="btn-print" onclick="printReport()" style="width: 100%;"><i class="fas fa-print"></i> Print Report</button>
       </div>
     </div>
 
@@ -506,7 +506,7 @@
     </div>
 
     <div class="action-buttons">
-      <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print Financial Report</button>
+      <button class="btn-print" onclick="printReport()"><i class="fas fa-print"></i> Print Financial Report</button>
     </div>
   </div>
   
@@ -656,6 +656,60 @@ function resetFilters() {
   document.getElementById('filter-from').value = '';
   document.getElementById('filter-to').value = '';
   loadReport();
+}
+
+function printReport() {
+  const fromVal = document.getElementById('filter-from').value || '';
+  const toVal = document.getElementById('filter-to').value || '';
+  const periodLabel = fromVal && toVal ? `${fromVal} to ${toVal}` : 'All Time';
+  const revenue = document.getElementById('total-revenue').innerText;
+  const expenses = document.getElementById('total-expenses').innerText;
+  const profit = document.getElementById('net-profit').innerText;
+  const txCount = document.getElementById('transaction-count').innerText;
+  const incomeTableHtml = document.getElementById('income-table').outerHTML;
+  const expenseTableHtml = document.getElementById('expense-table').outerHTML;
+  const summaryTableHtml = document.getElementById('summary-table').outerHTML;
+
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Financial Report - Steps PMS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Georgia,serif;color:#1a2340;background:#fff;padding:40px;font-size:13px}
+    .header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;border-bottom:3px solid #1a2340;padding-bottom:20px}
+    .logo-area h1{font-size:26px;font-weight:700;color:#1a2340}
+    .logo-area p{font-size:12px;color:#9ca3af;margin-top:4px}
+    .report-meta{text-align:right}
+    .report-meta .period{font-size:16px;font-weight:700;color:#c9933a}
+    .report-meta .generated{font-size:11px;color:#9ca3af;margin-top:4px}
+    .summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+    .summary-box{background:#f8f9fa;border:1px solid #e5e7eb;border-radius:10px;padding:16px}
+    .summary-box .label{font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+    .summary-box .value{font-size:20px;font-weight:700;color:#1a2340}
+    h2{font-size:14px;font-weight:700;color:#1a2340;margin:24px 0 10px;border-left:4px solid #c9933a;padding-left:10px}
+    table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:24px}
+    th{background:#1a2340;color:#fff;padding:9px 12px;text-align:left;font-size:11px;font-weight:600}
+    td{padding:8px 12px;border-bottom:1px solid #f0f0f0}
+    tr:nth-child(even) td{background:#fafafa}
+    .total-row td{background:#f3f4f6;font-weight:700;border-bottom:none}
+    .profit-row td{background:#fff;font-weight:700;font-size:14px;border-top:2px solid #1a2340;border-bottom:none}
+    .footer{margin-top:40px;border-top:1px solid #e5e7eb;padding-top:16px;font-size:11px;color:#9ca3af;display:flex;justify-content:space-between}
+    @media print{body{padding:20px}}
+  </style></head><body>
+  <div class="header"><div class="logo-area"><h1><i class="fas fa-hotel"></i> Steps Premium Suite</h1><p>Property Management System &middot; Dar es Salaam, Tanzania</p></div><div class="report-meta"><div class="period">Period: ${periodLabel}</div><div class="generated">Generated: ${new Date().toLocaleString('en-GB')}</div></div></div>
+  <div class="summary-grid">
+    <div class="summary-box"><div class="label">Total Revenue</div><div class="value">${revenue}</div></div>
+    <div class="summary-box"><div class="label">Total Expenses</div><div class="value">${expenses}</div></div>
+    <div class="summary-box"><div class="label">Net Profit</div><div class="value">${profit}</div></div>
+    <div class="summary-box"><div class="label">Transactions</div><div class="value">${txCount}</div></div>
+  </div>
+  <h2>Income (Revenue)</h2>${incomeTableHtml}
+  <h2>Expenses (Expenditures)</h2>${expenseTableHtml}
+  <h2>Profit &amp; Loss Summary</h2>${summaryTableHtml}
+  <div class="footer"><span>Steps PMS v1.0 &middot; Confidential</span><span>Page 1</span></div>
+  <script>window.onload=function(){setTimeout(function(){window.print();},300);};<\/script>
+  </body></html>`);
+  win.document.close();
 }
 
 // ============================================================
@@ -856,6 +910,7 @@ function isoDate(date) { return date.toISOString().split('T')[0]; }
 
 window.loadReport = loadReport;
 window.resetFilters = resetFilters;
+window.printReport = printReport;
 window.logout = logout;
 window.openChangePasswordModal = openChangePasswordModal;
 window.closeChangePasswordModal = closeChangePasswordModal;

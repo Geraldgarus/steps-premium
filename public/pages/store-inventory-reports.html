@@ -877,8 +877,9 @@
     <button class="btn-gold" onclick="loadReport()"><i class="fas fa-search"></i> Apply</button>
     <button class="btn-outline" onclick="clearFilters()">Clear</button>
     <button class="btn-outline" onclick="exportToCSV()"><i class="fas fa-file-export"></i> Export</button>
+    <button class="btn-outline" onclick="printReport()"><i class="fas fa-print"></i> Print</button>
   </div>
-  
+
   <div class="stats-row">
     <div class="stat-card"><div class="stat-label">Total Items</div><div class="stat-value" id="stat-items">—</div></div>
     <div class="stat-card"><div class="stat-label">Total Stock Value</div><div class="stat-value" id="stat-value">—</div></div>
@@ -1382,22 +1383,69 @@ document.getElementById('userAvatar').innerText = ((currentUser.fullName || curr
         csv += '"' + cells[0].innerText + '","' + cells[1].innerText + '","' + cells[2].innerText + '",' + qtyValue + ',"' + cells[4].innerText + '","' + cells[5].innerText + '"\n';
       }
     }
-    var blob = new Blob([csv], {type: 'text/csv'}); 
+    var blob = new Blob([csv], {type: 'text/csv'});
     var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob); 
-    a.download = 'inventory_report_' + new Date().toISOString().split('T')[0] + '.csv'; 
-    a.click(); 
+    a.href = URL.createObjectURL(blob);
+    a.download = 'inventory_report_' + new Date().toISOString().split('T')[0] + '.csv';
+    a.click();
     showToast('Exported successfully!', 'success');
   }
-  
+
+  function printReport() {
+    var category = document.getElementById('filter-category').value;
+    var periodLabel = category && category !== 'all' ? ('Category: ' + category) : 'All Categories';
+    var totalItems = document.getElementById('stat-items').innerText;
+    var totalValue = document.getElementById('stat-value').innerText;
+    var lowStock = document.getElementById('stat-low').innerText;
+    var tableHtml = document.getElementById('inventory-table').outerHTML;
+
+    var win = window.open('', '_blank');
+    win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Store Inventory Report - Steps PMS</title>' +
+    '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">' +
+    '<style>' +
+    '*{box-sizing:border-box;margin:0;padding:0}' +
+    'body{font-family:Georgia,serif;color:#1a2340;background:#fff;padding:40px;font-size:13px}' +
+    '.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;border-bottom:3px solid #1a2340;padding-bottom:20px}' +
+    '.logo-area h1{font-size:26px;font-weight:700;color:#1a2340}' +
+    '.logo-area p{font-size:12px;color:#9ca3af;margin-top:4px}' +
+    '.report-meta{text-align:right}' +
+    '.report-meta .period{font-size:16px;font-weight:700;color:#c9933a}' +
+    '.report-meta .generated{font-size:11px;color:#9ca3af;margin-top:4px}' +
+    '.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}' +
+    '.summary-box{background:#f8f9fa;border:1px solid #e5e7eb;border-radius:10px;padding:16px}' +
+    '.summary-box .label{font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}' +
+    '.summary-box .value{font-size:20px;font-weight:700;color:#1a2340}' +
+    'h2{font-size:14px;font-weight:700;color:#1a2340;margin:24px 0 10px;border-left:4px solid #c9933a;padding-left:10px}' +
+    'table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:24px}' +
+    'th{background:#1a2340;color:#fff;padding:9px 12px;text-align:left;font-size:11px;font-weight:600}' +
+    'td{padding:8px 12px;border-bottom:1px solid #f0f0f0}' +
+    'tr:nth-child(even) td{background:#fafafa}' +
+    '.total-row td{background:#f3f4f6;font-weight:700;border-bottom:none}' +
+    '.footer{margin-top:40px;border-top:1px solid #e5e7eb;padding-top:16px;font-size:11px;color:#9ca3af;display:flex;justify-content:space-between}' +
+    '@media print{body{padding:20px}}' +
+    '</style></head><body>' +
+    '<div class="header"><div class="logo-area"><h1><i class="fas fa-hotel"></i> Steps Premium Suite</h1><p>Property Management System &middot; Dar es Salaam, Tanzania</p></div><div class="report-meta"><div class="period">' + periodLabel + '</div><div class="generated">Generated: ' + new Date().toLocaleString('en-GB') + '</div></div></div>' +
+    '<div class="summary-grid">' +
+    '<div class="summary-box"><div class="label">Total Items</div><div class="value">' + totalItems + '</div></div>' +
+    '<div class="summary-box"><div class="label">Total Stock Value</div><div class="value">' + totalValue + '</div></div>' +
+    '<div class="summary-box"><div class="label">Low Stock Items</div><div class="value">' + lowStock + '</div></div>' +
+    '</div>' +
+    '<h2>Current Inventory</h2>' + tableHtml +
+    '<div class="footer"><span>Steps PMS v1.0 &middot; Confidential</span><span>Page 1</span></div>' +
+    '<script>window.onload=function(){setTimeout(function(){window.print();},300);};<\/script>' +
+    '</body></html>');
+    win.document.close();
+  }
+
   // Initialize
   loadReport();
   
   // Make functions global
-  window.loadReport = loadReport; 
-  window.clearFilters = clearFilters; 
-  window.filterTable = filterTable; 
+  window.loadReport = loadReport;
+  window.clearFilters = clearFilters;
+  window.filterTable = filterTable;
   window.exportToCSV = exportToCSV;
+  window.printReport = printReport;
   window.openChangePasswordModal = openChangePasswordModal;
   window.closeChangePasswordModal = closeChangePasswordModal;
   window.logout = logout;
